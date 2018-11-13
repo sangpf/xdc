@@ -1,0 +1,264 @@
+/*loading动画*/
+
+.over {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f5f5f5;
+    opacity: 1;
+    z-index: 1000;
+}
+
+.layout {
+    display: block;
+    position: fixed;
+    top: 40%;
+    left: 25%;
+    width: 50%;
+    height: 20%;
+    z-index: 1001;
+    text-align: center;
+}
+
+.loading-text {
+    margin-top: 95%;
+    font-size: 14px;
+    color: #333;
+}
+
+.loading {
+    position: relative;
+    margin-left: 50%;
+}
+
+.loading i {
+    display: block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: #333;
+    position: absolute
+}
+
+.loading i:nth-child(1) {
+    top: 15px;
+    left: 0;
+    -webkit-animation: loading 1s ease 0s infinite
+}
+
+.loading i:nth-child(2) {
+    top: 10px;
+    left: 10px;
+    -webkit-animation: loading 1s ease -.12s infinite
+}
+
+.loading i:nth-child(3) {
+    top: 0;
+    left: 15px;
+    -webkit-animation: loading 1s ease -.24s infinite
+}
+
+.loading i:nth-child(4) {
+    top: -10px;
+    left: 10px;
+    -webkit-animation: loading 1s ease -.36s infinite
+}
+
+.loading i:nth-child(5) {
+    top: -15px;
+    left: 0;
+    -webkit-animation: loading 1s ease -.48s infinite
+}
+
+.loading i:nth-child(6) {
+    top: -10px;
+    left: -10px;
+    -webkit-animation: loading 1s ease -.6s infinite
+}
+
+.loading i:nth-child(7) {
+    top: 0;
+    left: -15px;
+    -webkit-animation: loading 1s ease -.72s infinite
+}
+
+.loading i:nth-child(8) {
+    top: 10px;
+    left: -10px;
+    -webkit-animation: loading 1s ease -.84s infinite
+}
+
+@-webkit-keyframes loading {
+    50% {
+        transform: scale(.3);
+        opacity: .3
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1
+    }
+}
+.card-list {
+    background-color: transparent;
+    margin-top: 0!important;
+}
+
+.card-list:after,
+.card-list:before {
+    height: 0 !important;
+}
+
+.card-list li {
+    background-color: #fff;
+    padding: 0;
+    margin-bottom: .12rem;
+}
+
+.card-list li:after {
+    height: 0 !important;
+}
+
+.card-list a {
+    padding: .2rem !important;	/*有用*/
+    margin: 0 !important;
+}
+
+.card-title {
+    color: rgb(0,0,0);
+    font-size: .28rem;
+    line-height: .4rem;
+    font-weight: 400;			/*有用*/
+    white-space: normal;
+    margin-top: -.005rem;
+}
+
+.card-tags {
+    margin: .12rem 0 0 0;
+    border-top: .01rem solid #ebebeb;	/*有用*/
+    padding: .12rem 0 0 0;
+}
+
+.card-tag {
+    display: inline-block;
+    margin-right: .2rem;
+    border-radius: .25rem; 				/*有用*/
+    font-size: .2rem;
+}
+
+.card-tag-yellow {
+    color: #fff;
+    background-color: #ffa11a;
+}
+
+.card-tag-gray {
+    color: #7f7f7f;
+    background-color: #f0f0f0;
+}
+
+.card-tag-green {
+    color: #fff;
+    background-color: #20ca99;
+}
+
+.card-foot-tag {
+    margin-top: .07rem;
+    margin-bottom: .07rem;			/*有用*/
+    padding: .02rem .197rem;
+}
+
+.card-head-tag {
+    min-width: 1.2rem;
+    height: .4rem;				/*有用*/
+    text-align: center;
+    padding: 0;
+}
+
+.card-img {
+    max-width: 2rem !important;
+    height: 1.2rem !important;				/*有用*/
+    margin-right: .16rem !important;
+}
+
+.card-intro {
+    overflow: hidden;
+    padding-top: 0px;
+}
+
+.card-intro .mui-media-body {
+    height: 1.15rem;
+    position: relative;			/*有用*/
+}
+
+.card-summary {
+    color: #969696;
+    font-size: .22rem;
+    line-height: .33rem;
+    margin: .05rem 0;
+}
+
+.card-detail {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 14px;
+    position: absolute;
+    background-image: url(../../images/list.png);    			/*有用*/
+    background-repeat: no-repeat;
+    background-size: 14px auto;
+    padding-left:18px;
+}
+
+.card-time,
+.card-collect,
+.card-publisher,
+.card-award {
+    font-size: .22rem;
+    color: #999999;				/*有用*/
+}
+
+.card-collect {
+    bottom: 0px;
+    right: 0;
+    width: 35%;								/*有用*/
+    background-position: 0 -14px;
+}
+
+.card-publisher {
+    bottom: 0;
+    left: 0;
+    width: 65%;						/*有用*/
+    background-position: 0 -28px;
+}
+.card-time2 {
+    width: 60%;
+    bottom: 0px;
+    left: 0px;
+    background-position: 0 0;
+    font-size: .22rem;
+}
+.card-publisher2 {
+    width: 40%;
+    bottom: 0px;
+    left: 60%;
+    background-position: 0 -28px;
+    font-size: .22rem;
+}
+.list-empty{
+	display: none;
+}
+.list-empty img{
+	display: block;
+    height: 130px;
+    width: auto!important;
+    margin: 20px auto;
+}
+.list-empty p {
+    color: #999;
+    margin-bottom: 55px;
+    font-size: 14px;
+    text-align: center;
+}
+    

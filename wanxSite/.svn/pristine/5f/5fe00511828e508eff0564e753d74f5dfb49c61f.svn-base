@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html manifest="newIns.manifest">
+
+<head>
+    <meta charset="utf-8">
+    <title>心发现</title>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/mui/mui.css">
+    <link rel="stylesheet" href="css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="css/xdc/xdc_main.css">
+    <link rel="stylesheet" href="css/xdc/xdc_survey.css">
+</head>
+
+<body>
+    <!-- 底部操作栏 -->
+    <footer class="footer-bar footer-report-page" id="footer">
+        <div class="footer-container">
+            <!-- 返回 -->
+            <a class="footerIcon icon-angle-left icon-large footer-back-btn" id="backBtn">
+                <span class="footer-back-text">返回</span>
+            </a>
+            <!-- 评论 -->
+            <a class="footerIcon footer-comment-container" id="writeComment" ">
+                <div class="footer-comment">说说你的看法</div>
+            </a>
+            <!-- 点赞 -->
+            <a class="footerIcon footer-icon icon-thumbs-up-alt" id="footThumbUp" tapped="false">
+                <span class="footer-thumb-num" id="footThumbNumUp"></span>
+            </a>
+            <!-- 收藏 -->
+            <a class="footerIcon footer-icon icon-heart-empty" id="footFavorite"></a>
+            <!-- 分享 -->
+            <a class="footerIcon footer-icon icon-share" id="share"></a>
+        </div>
+    </footer>
+    <!-- 分享按钮 -->
+    <!--<div id="sheet1" class="mui-popover mui-popover-bottom mui-popover-action ">-->
+        <!-- 可选择菜单 -->
+        <!--<ul class="mui-table-view">
+            <li class="mui-table-view-cell mui-table-view-cell-fixed">
+                <a href="#" onclick="shareWeixin()">发送给微信好友</a>
+            </li>
+            <li class="mui-table-view-cell mui-table-view-cell-fixed">
+                <a href="#" onclick="shareWeixinCircle()">分享到微信朋友圈</a>
+            </li>
+            <li class="mui-table-view-cell mui-table-view-cell-fixed">
+                <a href="#" onclick="shareWeibo()">分享至微博</a>
+            </li>
+            <li class="mui-table-view-cell mui-table-view-cell-fixed">
+                <a href="#" onclick="shareQQ()">分享到QQ</a>
+            </li>
+            <li class="mui-table-view-cell mui-table-view-cell-fixed">
+                <a href="#" onclick="shareQzone()">分享至QQ空间</a>
+            </li>
+            <li class="mui-table-view-cell mui-table-view-cell-fixed">
+                <a href="#" onclick="shareWanxiaoCircle()">分享至玩校同学圈</a>
+            </li>
+        </ul>-->
+        <!-- 取消菜单 -->
+        <!--<ul class="mui-table-view">
+            <li class="mui-table-view-cell mui-table-view-cell-fixed">
+                <a href="#sheet1"><b>取消</b></a>
+            </li>
+        </ul>
+    </div>-->
+    <!--分享遮罩蒙版-->
+    <div id="sheet1" class="xdc-backdrop">
+    		<div class="share-box">
+    			<p id="share-title">分享至</p>
+    			<hr />
+    			<div class="one-row-img-box">
+    				<img id="share-wxhy" src="images/weixn-hy.png" />
+    				<img id="share-wxpyq" src="images/weixin-pyq.png" />
+    				<img id="share-weibo" src="images/weibo.png"/>
+    			</div>
+    			<div id="one-row-text-box">
+    				<p class="share-wxxhy-text">微信好友</p>
+    				<p class="share-wxpyq-text">微信朋友圈</p>
+    				<p class="share-weibo-text">微博</p>
+    			</div>
+    			<div id="two-row-img-box">
+    				<img id="share-qqhy" src="images/QQ.png" />
+    				<img id="share-qqkj" src="images/qq-kj.png" />
+    				<img id="share-wanxiao" src="images/wmxy-logo.png"/>
+    			</div>
+    			<div id="two-row-text-box">
+    				<p class="share-qqhy-text">QQ好友</p>
+    				<p class="share-qqkj-text">QQ空间</p>
+    				<p class="share-wanxiao-text">完美校园</p>
+    			</div>
+    			<div id="close-img">
+    				<img src="images/close.png" />
+    			</div>
+    		</div>
+    </div>
+    <!-- JS -->
+    <script src="js/mui/mui.min.js"></script>
+    <script src="js/lib/wanxiao-js-api-V1.1.8.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/xdc/usefulFun.js"></script>
+    <script src="js/xdc/report_result.js"></script>
+    <script type="text/javascript" src="http://pingjs.qq.com/h5/stats.js" name="MTAH5" sid="500158849" cid="500158852"></script>
+    <script>
+    if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+        window.applicationCache.update();
+    }
+    MtaH5.clickStat('4300', {
+        'write': 'true'
+    });
+    </script>
+</body>
+
+</html>

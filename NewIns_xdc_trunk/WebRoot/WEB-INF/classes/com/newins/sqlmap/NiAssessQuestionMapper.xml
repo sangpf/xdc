@@ -1,0 +1,2381 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newins.dao.NiAssessQuestionMapper" >
+  <resultMap id="BaseResultMap" type="com.newins.model.NiAssessQuestion" >
+    <id column="aqId" property="aqid" jdbcType="INTEGER" />
+    <result column="aqTitle" property="aqtitle" jdbcType="VARCHAR" />
+    <result column="aqnId" property="aqnid" jdbcType="INTEGER" />
+    <result column="titleImgUrl" property="titleimgurl" jdbcType="VARCHAR" />
+    <result column="questionNum" property="questionnum" jdbcType="TINYINT" />
+    <result column="viewOrder" property="vieworder" jdbcType="TINYINT" />
+    <result column="questionType" property="questiontype" jdbcType="TINYINT" />
+    <result column="required" property="required" jdbcType="BIT" />
+    <result column="optionNum" property="optionnum" jdbcType="TINYINT" />
+    <result column="isSelfDefine" property="isselfdefine" jdbcType="BIT" />
+    <result column="correctAnswer" property="correctanswer" jdbcType="VARCHAR" />
+    <result column="option1Des" property="option1des" jdbcType="VARCHAR" />
+    <result column="option1Link" property="option1link" jdbcType="INTEGER" />
+    <result column="option1Feedback" property="option1feedback" jdbcType="VARCHAR" />
+    <result column="option1TagId" property="option1tagid" jdbcType="INTEGER" />
+    <result column="option1Score" property="option1score" jdbcType="INTEGER" />
+    <result column="option2Des" property="option2des" jdbcType="VARCHAR" />
+    <result column="option2Link" property="option2link" jdbcType="INTEGER" />
+    <result column="option2Feedback" property="option2feedback" jdbcType="VARCHAR" />
+    <result column="option2TagId" property="option2tagid" jdbcType="INTEGER" />
+    <result column="option2Score" property="option2score" jdbcType="INTEGER" />
+    <result column="option3Des" property="option3des" jdbcType="VARCHAR" />
+    <result column="option3Link" property="option3link" jdbcType="INTEGER" />
+    <result column="option3Feedback" property="option3feedback" jdbcType="VARCHAR" />
+    <result column="option3TagId" property="option3tagid" jdbcType="INTEGER" />
+    <result column="option3Score" property="option3score" jdbcType="INTEGER" />
+    <result column="option4Des" property="option4des" jdbcType="VARCHAR" />
+    <result column="option4Link" property="option4link" jdbcType="INTEGER" />
+    <result column="option4Feedback" property="option4feedback" jdbcType="VARCHAR" />
+    <result column="option4TagId" property="option4tagid" jdbcType="INTEGER" />
+    <result column="option4Score" property="option4score" jdbcType="INTEGER" />
+    <result column="option5Des" property="option5des" jdbcType="VARCHAR" />
+    <result column="option5Link" property="option5link" jdbcType="INTEGER" />
+    <result column="option5Feedback" property="option5feedback" jdbcType="VARCHAR" />
+    <result column="option5TagId" property="option5tagid" jdbcType="INTEGER" />
+    <result column="option5Score" property="option5score" jdbcType="INTEGER" />
+    <result column="option6Des" property="option6des" jdbcType="VARCHAR" />
+    <result column="option6Link" property="option6link" jdbcType="INTEGER" />
+    <result column="option6Feedback" property="option6feedback" jdbcType="VARCHAR" />
+    <result column="option6TagId" property="option6tagid" jdbcType="INTEGER" />
+    <result column="option6Score" property="option6score" jdbcType="INTEGER" />
+    <result column="option7Des" property="option7des" jdbcType="VARCHAR" />
+    <result column="option7Link" property="option7link" jdbcType="INTEGER" />
+    <result column="option7Feedback" property="option7feedback" jdbcType="VARCHAR" />
+    <result column="option7TagId" property="option7tagid" jdbcType="INTEGER" />
+    <result column="option7Score" property="option7score" jdbcType="INTEGER" />
+    <result column="option8Des" property="option8des" jdbcType="VARCHAR" />
+    <result column="option8Link" property="option8link" jdbcType="INTEGER" />
+    <result column="option8Feedback" property="option8feedback" jdbcType="VARCHAR" />
+    <result column="option8TagId" property="option8tagid" jdbcType="INTEGER" />
+    <result column="option8Score" property="option8score" jdbcType="INTEGER" />
+    <result column="option9Des" property="option9des" jdbcType="VARCHAR" />
+    <result column="option9Link" property="option9link" jdbcType="INTEGER" />
+    <result column="option9Feedback" property="option9feedback" jdbcType="VARCHAR" />
+    <result column="option9TagId" property="option9tagid" jdbcType="INTEGER" />
+    <result column="option9Score" property="option9score" jdbcType="INTEGER" />
+    <result column="option10Des" property="option10des" jdbcType="VARCHAR" />
+    <result column="option10Link" property="option10link" jdbcType="INTEGER" />
+    <result column="option10Feedback" property="option10feedback" jdbcType="VARCHAR" />
+    <result column="option10TagId" property="option10tagid" jdbcType="INTEGER" />
+    <result column="option10Score" property="option10score" jdbcType="INTEGER" />
+    <result column="option11Des" property="option11des" jdbcType="VARCHAR" />
+    <result column="option11Link" property="option11link" jdbcType="INTEGER" />
+    <result column="option11Feedback" property="option11feedback" jdbcType="VARCHAR" />
+    <result column="option11TagId" property="option11tagid" jdbcType="INTEGER" />
+    <result column="option11Score" property="option11score" jdbcType="INTEGER" />
+    <result column="option12Des" property="option12des" jdbcType="VARCHAR" />
+    <result column="option12Link" property="option12link" jdbcType="INTEGER" />
+    <result column="option12Feedback" property="option12feedback" jdbcType="VARCHAR" />
+    <result column="option12TagId" property="option12tagid" jdbcType="INTEGER" />
+    <result column="option12Score" property="option12score" jdbcType="INTEGER" />
+    <result column="option13Des" property="option13des" jdbcType="VARCHAR" />
+    <result column="option13Link" property="option13link" jdbcType="INTEGER" />
+    <result column="option13Feedback" property="option13feedback" jdbcType="VARCHAR" />
+    <result column="option13TagId" property="option13tagid" jdbcType="INTEGER" />
+    <result column="option13Score" property="option13score" jdbcType="INTEGER" />
+    <result column="option14Des" property="option14des" jdbcType="VARCHAR" />
+    <result column="option14Link" property="option14link" jdbcType="INTEGER" />
+    <result column="option14Feedback" property="option14feedback" jdbcType="VARCHAR" />
+    <result column="option14TagId" property="option14tagid" jdbcType="INTEGER" />
+    <result column="option14Score" property="option14score" jdbcType="INTEGER" />
+    <result column="option15Des" property="option15des" jdbcType="VARCHAR" />
+    <result column="option15Link" property="option15link" jdbcType="INTEGER" />
+    <result column="option15Feedback" property="option15feedback" jdbcType="VARCHAR" />
+    <result column="option15TagId" property="option15tagid" jdbcType="INTEGER" />
+    <result column="option15Score" property="option15score" jdbcType="INTEGER" />
+    <result column="option16Des" property="option16des" jdbcType="VARCHAR" />
+    <result column="option16Link" property="option16link" jdbcType="INTEGER" />
+    <result column="option16Feedback" property="option16feedback" jdbcType="VARCHAR" />
+    <result column="option16TagId" property="option16tagid" jdbcType="INTEGER" />
+    <result column="option16Score" property="option16score" jdbcType="INTEGER" />
+    <result column="option17Des" property="option17des" jdbcType="VARCHAR" />
+    <result column="option17Link" property="option17link" jdbcType="INTEGER" />
+    <result column="option17Feedback" property="option17feedback" jdbcType="VARCHAR" />
+    <result column="option17TagId" property="option17tagid" jdbcType="INTEGER" />
+    <result column="option17Score" property="option17score" jdbcType="INTEGER" />
+    <result column="option18Des" property="option18des" jdbcType="VARCHAR" />
+    <result column="option18Link" property="option18link" jdbcType="INTEGER" />
+    <result column="option18Feedback" property="option18feedback" jdbcType="VARCHAR" />
+    <result column="option18TagId" property="option18tagid" jdbcType="INTEGER" />
+    <result column="option18Score" property="option18score" jdbcType="INTEGER" />
+    <result column="option19Des" property="option19des" jdbcType="VARCHAR" />
+    <result column="option19Link" property="option19link" jdbcType="INTEGER" />
+    <result column="option19Feedback" property="option19feedback" jdbcType="VARCHAR" />
+    <result column="option19TagId" property="option19tagid" jdbcType="INTEGER" />
+    <result column="option19Score" property="option19score" jdbcType="INTEGER" />
+    <result column="option20Des" property="option20des" jdbcType="VARCHAR" />
+    <result column="option20Link" property="option20link" jdbcType="INTEGER" />
+    <result column="option20Feedback" property="option20feedback" jdbcType="VARCHAR" />
+    <result column="option20TagId" property="option20tagid" jdbcType="INTEGER" />
+    <result column="option20Score" property="option20score" jdbcType="INTEGER" />
+    <result column="option21Des" property="option21des" jdbcType="VARCHAR" />
+    <result column="option21Link" property="option21link" jdbcType="INTEGER" />
+    <result column="option21Feedback" property="option21feedback" jdbcType="VARCHAR" />
+    <result column="option21TagId" property="option21tagid" jdbcType="INTEGER" />
+    <result column="option21Score" property="option21score" jdbcType="INTEGER" />
+    <result column="option22Des" property="option22des" jdbcType="VARCHAR" />
+    <result column="option22Link" property="option22link" jdbcType="INTEGER" />
+    <result column="option22Feedback" property="option22feedback" jdbcType="VARCHAR" />
+    <result column="option22TagId" property="option22tagid" jdbcType="INTEGER" />
+    <result column="option22Score" property="option22score" jdbcType="INTEGER" />
+    <result column="option23Des" property="option23des" jdbcType="VARCHAR" />
+    <result column="option23Link" property="option23link" jdbcType="INTEGER" />
+    <result column="option23Feedback" property="option23feedback" jdbcType="VARCHAR" />
+    <result column="option23TagId" property="option23tagid" jdbcType="INTEGER" />
+    <result column="option23Score" property="option23score" jdbcType="INTEGER" />
+    <result column="option24Des" property="option24des" jdbcType="VARCHAR" />
+    <result column="option24Link" property="option24link" jdbcType="INTEGER" />
+    <result column="option24Feedback" property="option24feedback" jdbcType="VARCHAR" />
+    <result column="option24TagId" property="option24tagid" jdbcType="INTEGER" />
+    <result column="option24Score" property="option24score" jdbcType="INTEGER" />
+    <result column="option25Des" property="option25des" jdbcType="VARCHAR" />
+    <result column="option25Link" property="option25link" jdbcType="INTEGER" />
+    <result column="option25Feedback" property="option25feedback" jdbcType="VARCHAR" />
+    <result column="option25TagId" property="option25tagid" jdbcType="INTEGER" />
+    <result column="option25Score" property="option25score" jdbcType="INTEGER" />
+    <result column="option26Des" property="option26des" jdbcType="VARCHAR" />
+    <result column="option26Link" property="option26link" jdbcType="INTEGER" />
+    <result column="option26Feedback" property="option26feedback" jdbcType="VARCHAR" />
+    <result column="option26TagId" property="option26tagid" jdbcType="INTEGER" />
+    <result column="option26Score" property="option26score" jdbcType="INTEGER" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    aqId, aqTitle, aqnId, titleImgUrl, questionNum, viewOrder, questionType, required, 
+    optionNum, isSelfDefine, correctAnswer, option1Des, option1Link, option1Feedback, 
+    option1TagId, option1Score, option2Des, option2Link, option2Feedback, option2TagId, 
+    option2Score, option3Des, option3Link, option3Feedback, option3TagId, option3Score, 
+    option4Des, option4Link, option4Feedback, option4TagId, option4Score, option5Des, 
+    option5Link, option5Feedback, option5TagId, option5Score, option6Des, option6Link, 
+    option6Feedback, option6TagId, option6Score, option7Des, option7Link, option7Feedback, 
+    option7TagId, option7Score, option8Des, option8Link, option8Feedback, option8TagId, 
+    option8Score, option9Des, option9Link, option9Feedback, option9TagId, option9Score, 
+    option10Des, option10Link, option10Feedback, option10TagId, option10Score, option11Des, 
+    option11Link, option11Feedback, option11TagId, option11Score, option12Des, option12Link, 
+    option12Feedback, option12TagId, option12Score, option13Des, option13Link, option13Feedback, 
+    option13TagId, option13Score, option14Des, option14Link, option14Feedback, option14TagId, 
+    option14Score, option15Des, option15Link, option15Feedback, option15TagId, option15Score, 
+    option16Des, option16Link, option16Feedback, option16TagId, option16Score, option17Des, 
+    option17Link, option17Feedback, option17TagId, option17Score, option18Des, option18Link, 
+    option18Feedback, option18TagId, option18Score, option19Des, option19Link, option19Feedback, 
+    option19TagId, option19Score, option20Des, option20Link, option20Feedback, option20TagId, 
+    option20Score, option21Des, option21Link, option21Feedback, option21TagId, option21Score, 
+    option22Des, option22Link, option22Feedback, option22TagId, option22Score, option23Des, 
+    option23Link, option23Feedback, option23TagId, option23Score, option24Des, option24Link, 
+    option24Feedback, option24TagId, option24Score, option25Des, option25Link, option25Feedback, 
+    option25TagId, option25Score, option26Des, option26Link, option26Feedback, option26TagId, 
+    option26Score, comment
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.newins.model.NiAssessQuestionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ni_assess_question
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ni_assess_question
+    where aqId = #{aqid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ni_assess_question
+    where aqId = #{aqid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.newins.model.NiAssessQuestionExample" >
+    delete from ni_assess_question
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.newins.model.NiAssessQuestion" >
+    insert into ni_assess_question (aqId, aqTitle, aqnId, 
+      titleImgUrl, questionNum, viewOrder, 
+      questionType, required, optionNum, 
+      isSelfDefine, correctAnswer, option1Des, 
+      option1Link, option1Feedback, option1TagId, 
+      option1Score, option2Des, option2Link, 
+      option2Feedback, option2TagId, option2Score, 
+      option3Des, option3Link, option3Feedback, 
+      option3TagId, option3Score, option4Des, 
+      option4Link, option4Feedback, option4TagId, 
+      option4Score, option5Des, option5Link, 
+      option5Feedback, option5TagId, option5Score, 
+      option6Des, option6Link, option6Feedback, 
+      option6TagId, option6Score, option7Des, 
+      option7Link, option7Feedback, option7TagId, 
+      option7Score, option8Des, option8Link, 
+      option8Feedback, option8TagId, option8Score, 
+      option9Des, option9Link, option9Feedback, 
+      option9TagId, option9Score, option10Des, 
+      option10Link, option10Feedback, option10TagId, 
+      option10Score, option11Des, option11Link, 
+      option11Feedback, option11TagId, option11Score, 
+      option12Des, option12Link, option12Feedback, 
+      option12TagId, option12Score, option13Des, 
+      option13Link, option13Feedback, option13TagId, 
+      option13Score, option14Des, option14Link, 
+      option14Feedback, option14TagId, option14Score, 
+      option15Des, option15Link, option15Feedback, 
+      option15TagId, option15Score, option16Des, 
+      option16Link, option16Feedback, option16TagId, 
+      option16Score, option17Des, option17Link, 
+      option17Feedback, option17TagId, option17Score, 
+      option18Des, option18Link, option18Feedback, 
+      option18TagId, option18Score, option19Des, 
+      option19Link, option19Feedback, option19TagId, 
+      option19Score, option20Des, option20Link, 
+      option20Feedback, option20TagId, option20Score, 
+      option21Des, option21Link, option21Feedback, 
+      option21TagId, option21Score, option22Des, 
+      option22Link, option22Feedback, option22TagId, 
+      option22Score, option23Des, option23Link, 
+      option23Feedback, option23TagId, option23Score, 
+      option24Des, option24Link, option24Feedback, 
+      option24TagId, option24Score, option25Des, 
+      option25Link, option25Feedback, option25TagId, 
+      option25Score, option26Des, option26Link, 
+      option26Feedback, option26TagId, option26Score, 
+      comment)
+    values (#{aqid,jdbcType=INTEGER}, #{aqtitle,jdbcType=VARCHAR}, #{aqnid,jdbcType=INTEGER}, 
+      #{titleimgurl,jdbcType=VARCHAR}, #{questionnum,jdbcType=TINYINT}, #{vieworder,jdbcType=TINYINT}, 
+      #{questiontype,jdbcType=TINYINT}, #{required,jdbcType=BIT}, #{optionnum,jdbcType=TINYINT}, 
+      #{isselfdefine,jdbcType=BIT}, #{correctanswer,jdbcType=VARCHAR}, #{option1des,jdbcType=VARCHAR}, 
+      #{option1link,jdbcType=INTEGER}, #{option1feedback,jdbcType=VARCHAR}, #{option1tagid,jdbcType=INTEGER}, 
+      #{option1score,jdbcType=INTEGER}, #{option2des,jdbcType=VARCHAR}, #{option2link,jdbcType=INTEGER}, 
+      #{option2feedback,jdbcType=VARCHAR}, #{option2tagid,jdbcType=INTEGER}, #{option2score,jdbcType=INTEGER}, 
+      #{option3des,jdbcType=VARCHAR}, #{option3link,jdbcType=INTEGER}, #{option3feedback,jdbcType=VARCHAR}, 
+      #{option3tagid,jdbcType=INTEGER}, #{option3score,jdbcType=INTEGER}, #{option4des,jdbcType=VARCHAR}, 
+      #{option4link,jdbcType=INTEGER}, #{option4feedback,jdbcType=VARCHAR}, #{option4tagid,jdbcType=INTEGER}, 
+      #{option4score,jdbcType=INTEGER}, #{option5des,jdbcType=VARCHAR}, #{option5link,jdbcType=INTEGER}, 
+      #{option5feedback,jdbcType=VARCHAR}, #{option5tagid,jdbcType=INTEGER}, #{option5score,jdbcType=INTEGER}, 
+      #{option6des,jdbcType=VARCHAR}, #{option6link,jdbcType=INTEGER}, #{option6feedback,jdbcType=VARCHAR}, 
+      #{option6tagid,jdbcType=INTEGER}, #{option6score,jdbcType=INTEGER}, #{option7des,jdbcType=VARCHAR}, 
+      #{option7link,jdbcType=INTEGER}, #{option7feedback,jdbcType=VARCHAR}, #{option7tagid,jdbcType=INTEGER}, 
+      #{option7score,jdbcType=INTEGER}, #{option8des,jdbcType=VARCHAR}, #{option8link,jdbcType=INTEGER}, 
+      #{option8feedback,jdbcType=VARCHAR}, #{option8tagid,jdbcType=INTEGER}, #{option8score,jdbcType=INTEGER}, 
+      #{option9des,jdbcType=VARCHAR}, #{option9link,jdbcType=INTEGER}, #{option9feedback,jdbcType=VARCHAR}, 
+      #{option9tagid,jdbcType=INTEGER}, #{option9score,jdbcType=INTEGER}, #{option10des,jdbcType=VARCHAR}, 
+      #{option10link,jdbcType=INTEGER}, #{option10feedback,jdbcType=VARCHAR}, #{option10tagid,jdbcType=INTEGER}, 
+      #{option10score,jdbcType=INTEGER}, #{option11des,jdbcType=VARCHAR}, #{option11link,jdbcType=INTEGER}, 
+      #{option11feedback,jdbcType=VARCHAR}, #{option11tagid,jdbcType=INTEGER}, #{option11score,jdbcType=INTEGER}, 
+      #{option12des,jdbcType=VARCHAR}, #{option12link,jdbcType=INTEGER}, #{option12feedback,jdbcType=VARCHAR}, 
+      #{option12tagid,jdbcType=INTEGER}, #{option12score,jdbcType=INTEGER}, #{option13des,jdbcType=VARCHAR}, 
+      #{option13link,jdbcType=INTEGER}, #{option13feedback,jdbcType=VARCHAR}, #{option13tagid,jdbcType=INTEGER}, 
+      #{option13score,jdbcType=INTEGER}, #{option14des,jdbcType=VARCHAR}, #{option14link,jdbcType=INTEGER}, 
+      #{option14feedback,jdbcType=VARCHAR}, #{option14tagid,jdbcType=INTEGER}, #{option14score,jdbcType=INTEGER}, 
+      #{option15des,jdbcType=VARCHAR}, #{option15link,jdbcType=INTEGER}, #{option15feedback,jdbcType=VARCHAR}, 
+      #{option15tagid,jdbcType=INTEGER}, #{option15score,jdbcType=INTEGER}, #{option16des,jdbcType=VARCHAR}, 
+      #{option16link,jdbcType=INTEGER}, #{option16feedback,jdbcType=VARCHAR}, #{option16tagid,jdbcType=INTEGER}, 
+      #{option16score,jdbcType=INTEGER}, #{option17des,jdbcType=VARCHAR}, #{option17link,jdbcType=INTEGER}, 
+      #{option17feedback,jdbcType=VARCHAR}, #{option17tagid,jdbcType=INTEGER}, #{option17score,jdbcType=INTEGER}, 
+      #{option18des,jdbcType=VARCHAR}, #{option18link,jdbcType=INTEGER}, #{option18feedback,jdbcType=VARCHAR}, 
+      #{option18tagid,jdbcType=INTEGER}, #{option18score,jdbcType=INTEGER}, #{option19des,jdbcType=VARCHAR}, 
+      #{option19link,jdbcType=INTEGER}, #{option19feedback,jdbcType=VARCHAR}, #{option19tagid,jdbcType=INTEGER}, 
+      #{option19score,jdbcType=INTEGER}, #{option20des,jdbcType=VARCHAR}, #{option20link,jdbcType=INTEGER}, 
+      #{option20feedback,jdbcType=VARCHAR}, #{option20tagid,jdbcType=INTEGER}, #{option20score,jdbcType=INTEGER}, 
+      #{option21des,jdbcType=VARCHAR}, #{option21link,jdbcType=INTEGER}, #{option21feedback,jdbcType=VARCHAR}, 
+      #{option21tagid,jdbcType=INTEGER}, #{option21score,jdbcType=INTEGER}, #{option22des,jdbcType=VARCHAR}, 
+      #{option22link,jdbcType=INTEGER}, #{option22feedback,jdbcType=VARCHAR}, #{option22tagid,jdbcType=INTEGER}, 
+      #{option22score,jdbcType=INTEGER}, #{option23des,jdbcType=VARCHAR}, #{option23link,jdbcType=INTEGER}, 
+      #{option23feedback,jdbcType=VARCHAR}, #{option23tagid,jdbcType=INTEGER}, #{option23score,jdbcType=INTEGER}, 
+      #{option24des,jdbcType=VARCHAR}, #{option24link,jdbcType=INTEGER}, #{option24feedback,jdbcType=VARCHAR}, 
+      #{option24tagid,jdbcType=INTEGER}, #{option24score,jdbcType=INTEGER}, #{option25des,jdbcType=VARCHAR}, 
+      #{option25link,jdbcType=INTEGER}, #{option25feedback,jdbcType=VARCHAR}, #{option25tagid,jdbcType=INTEGER}, 
+      #{option25score,jdbcType=INTEGER}, #{option26des,jdbcType=VARCHAR}, #{option26link,jdbcType=INTEGER}, 
+      #{option26feedback,jdbcType=VARCHAR}, #{option26tagid,jdbcType=INTEGER}, #{option26score,jdbcType=INTEGER}, 
+      #{comment,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.newins.model.NiAssessQuestion" >
+    insert into ni_assess_question
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="aqid != null" >
+        aqId,
+      </if>
+      <if test="aqtitle != null" >
+        aqTitle,
+      </if>
+      <if test="aqnid != null" >
+        aqnId,
+      </if>
+      <if test="titleimgurl != null" >
+        titleImgUrl,
+      </if>
+      <if test="questionnum != null" >
+        questionNum,
+      </if>
+      <if test="vieworder != null" >
+        viewOrder,
+      </if>
+      <if test="questiontype != null" >
+        questionType,
+      </if>
+      <if test="required != null" >
+        required,
+      </if>
+      <if test="optionnum != null" >
+        optionNum,
+      </if>
+      <if test="isselfdefine != null" >
+        isSelfDefine,
+      </if>
+      <if test="correctanswer != null" >
+        correctAnswer,
+      </if>
+      <if test="option1des != null" >
+        option1Des,
+      </if>
+      <if test="option1link != null" >
+        option1Link,
+      </if>
+      <if test="option1feedback != null" >
+        option1Feedback,
+      </if>
+      <if test="option1tagid != null" >
+        option1TagId,
+      </if>
+      <if test="option1score != null" >
+        option1Score,
+      </if>
+      <if test="option2des != null" >
+        option2Des,
+      </if>
+      <if test="option2link != null" >
+        option2Link,
+      </if>
+      <if test="option2feedback != null" >
+        option2Feedback,
+      </if>
+      <if test="option2tagid != null" >
+        option2TagId,
+      </if>
+      <if test="option2score != null" >
+        option2Score,
+      </if>
+      <if test="option3des != null" >
+        option3Des,
+      </if>
+      <if test="option3link != null" >
+        option3Link,
+      </if>
+      <if test="option3feedback != null" >
+        option3Feedback,
+      </if>
+      <if test="option3tagid != null" >
+        option3TagId,
+      </if>
+      <if test="option3score != null" >
+        option3Score,
+      </if>
+      <if test="option4des != null" >
+        option4Des,
+      </if>
+      <if test="option4link != null" >
+        option4Link,
+      </if>
+      <if test="option4feedback != null" >
+        option4Feedback,
+      </if>
+      <if test="option4tagid != null" >
+        option4TagId,
+      </if>
+      <if test="option4score != null" >
+        option4Score,
+      </if>
+      <if test="option5des != null" >
+        option5Des,
+      </if>
+      <if test="option5link != null" >
+        option5Link,
+      </if>
+      <if test="option5feedback != null" >
+        option5Feedback,
+      </if>
+      <if test="option5tagid != null" >
+        option5TagId,
+      </if>
+      <if test="option5score != null" >
+        option5Score,
+      </if>
+      <if test="option6des != null" >
+        option6Des,
+      </if>
+      <if test="option6link != null" >
+        option6Link,
+      </if>
+      <if test="option6feedback != null" >
+        option6Feedback,
+      </if>
+      <if test="option6tagid != null" >
+        option6TagId,
+      </if>
+      <if test="option6score != null" >
+        option6Score,
+      </if>
+      <if test="option7des != null" >
+        option7Des,
+      </if>
+      <if test="option7link != null" >
+        option7Link,
+      </if>
+      <if test="option7feedback != null" >
+        option7Feedback,
+      </if>
+      <if test="option7tagid != null" >
+        option7TagId,
+      </if>
+      <if test="option7score != null" >
+        option7Score,
+      </if>
+      <if test="option8des != null" >
+        option8Des,
+      </if>
+      <if test="option8link != null" >
+        option8Link,
+      </if>
+      <if test="option8feedback != null" >
+        option8Feedback,
+      </if>
+      <if test="option8tagid != null" >
+        option8TagId,
+      </if>
+      <if test="option8score != null" >
+        option8Score,
+      </if>
+      <if test="option9des != null" >
+        option9Des,
+      </if>
+      <if test="option9link != null" >
+        option9Link,
+      </if>
+      <if test="option9feedback != null" >
+        option9Feedback,
+      </if>
+      <if test="option9tagid != null" >
+        option9TagId,
+      </if>
+      <if test="option9score != null" >
+        option9Score,
+      </if>
+      <if test="option10des != null" >
+        option10Des,
+      </if>
+      <if test="option10link != null" >
+        option10Link,
+      </if>
+      <if test="option10feedback != null" >
+        option10Feedback,
+      </if>
+      <if test="option10tagid != null" >
+        option10TagId,
+      </if>
+      <if test="option10score != null" >
+        option10Score,
+      </if>
+      <if test="option11des != null" >
+        option11Des,
+      </if>
+      <if test="option11link != null" >
+        option11Link,
+      </if>
+      <if test="option11feedback != null" >
+        option11Feedback,
+      </if>
+      <if test="option11tagid != null" >
+        option11TagId,
+      </if>
+      <if test="option11score != null" >
+        option11Score,
+      </if>
+      <if test="option12des != null" >
+        option12Des,
+      </if>
+      <if test="option12link != null" >
+        option12Link,
+      </if>
+      <if test="option12feedback != null" >
+        option12Feedback,
+      </if>
+      <if test="option12tagid != null" >
+        option12TagId,
+      </if>
+      <if test="option12score != null" >
+        option12Score,
+      </if>
+      <if test="option13des != null" >
+        option13Des,
+      </if>
+      <if test="option13link != null" >
+        option13Link,
+      </if>
+      <if test="option13feedback != null" >
+        option13Feedback,
+      </if>
+      <if test="option13tagid != null" >
+        option13TagId,
+      </if>
+      <if test="option13score != null" >
+        option13Score,
+      </if>
+      <if test="option14des != null" >
+        option14Des,
+      </if>
+      <if test="option14link != null" >
+        option14Link,
+      </if>
+      <if test="option14feedback != null" >
+        option14Feedback,
+      </if>
+      <if test="option14tagid != null" >
+        option14TagId,
+      </if>
+      <if test="option14score != null" >
+        option14Score,
+      </if>
+      <if test="option15des != null" >
+        option15Des,
+      </if>
+      <if test="option15link != null" >
+        option15Link,
+      </if>
+      <if test="option15feedback != null" >
+        option15Feedback,
+      </if>
+      <if test="option15tagid != null" >
+        option15TagId,
+      </if>
+      <if test="option15score != null" >
+        option15Score,
+      </if>
+      <if test="option16des != null" >
+        option16Des,
+      </if>
+      <if test="option16link != null" >
+        option16Link,
+      </if>
+      <if test="option16feedback != null" >
+        option16Feedback,
+      </if>
+      <if test="option16tagid != null" >
+        option16TagId,
+      </if>
+      <if test="option16score != null" >
+        option16Score,
+      </if>
+      <if test="option17des != null" >
+        option17Des,
+      </if>
+      <if test="option17link != null" >
+        option17Link,
+      </if>
+      <if test="option17feedback != null" >
+        option17Feedback,
+      </if>
+      <if test="option17tagid != null" >
+        option17TagId,
+      </if>
+      <if test="option17score != null" >
+        option17Score,
+      </if>
+      <if test="option18des != null" >
+        option18Des,
+      </if>
+      <if test="option18link != null" >
+        option18Link,
+      </if>
+      <if test="option18feedback != null" >
+        option18Feedback,
+      </if>
+      <if test="option18tagid != null" >
+        option18TagId,
+      </if>
+      <if test="option18score != null" >
+        option18Score,
+      </if>
+      <if test="option19des != null" >
+        option19Des,
+      </if>
+      <if test="option19link != null" >
+        option19Link,
+      </if>
+      <if test="option19feedback != null" >
+        option19Feedback,
+      </if>
+      <if test="option19tagid != null" >
+        option19TagId,
+      </if>
+      <if test="option19score != null" >
+        option19Score,
+      </if>
+      <if test="option20des != null" >
+        option20Des,
+      </if>
+      <if test="option20link != null" >
+        option20Link,
+      </if>
+      <if test="option20feedback != null" >
+        option20Feedback,
+      </if>
+      <if test="option20tagid != null" >
+        option20TagId,
+      </if>
+      <if test="option20score != null" >
+        option20Score,
+      </if>
+      <if test="option21des != null" >
+        option21Des,
+      </if>
+      <if test="option21link != null" >
+        option21Link,
+      </if>
+      <if test="option21feedback != null" >
+        option21Feedback,
+      </if>
+      <if test="option21tagid != null" >
+        option21TagId,
+      </if>
+      <if test="option21score != null" >
+        option21Score,
+      </if>
+      <if test="option22des != null" >
+        option22Des,
+      </if>
+      <if test="option22link != null" >
+        option22Link,
+      </if>
+      <if test="option22feedback != null" >
+        option22Feedback,
+      </if>
+      <if test="option22tagid != null" >
+        option22TagId,
+      </if>
+      <if test="option22score != null" >
+        option22Score,
+      </if>
+      <if test="option23des != null" >
+        option23Des,
+      </if>
+      <if test="option23link != null" >
+        option23Link,
+      </if>
+      <if test="option23feedback != null" >
+        option23Feedback,
+      </if>
+      <if test="option23tagid != null" >
+        option23TagId,
+      </if>
+      <if test="option23score != null" >
+        option23Score,
+      </if>
+      <if test="option24des != null" >
+        option24Des,
+      </if>
+      <if test="option24link != null" >
+        option24Link,
+      </if>
+      <if test="option24feedback != null" >
+        option24Feedback,
+      </if>
+      <if test="option24tagid != null" >
+        option24TagId,
+      </if>
+      <if test="option24score != null" >
+        option24Score,
+      </if>
+      <if test="option25des != null" >
+        option25Des,
+      </if>
+      <if test="option25link != null" >
+        option25Link,
+      </if>
+      <if test="option25feedback != null" >
+        option25Feedback,
+      </if>
+      <if test="option25tagid != null" >
+        option25TagId,
+      </if>
+      <if test="option25score != null" >
+        option25Score,
+      </if>
+      <if test="option26des != null" >
+        option26Des,
+      </if>
+      <if test="option26link != null" >
+        option26Link,
+      </if>
+      <if test="option26feedback != null" >
+        option26Feedback,
+      </if>
+      <if test="option26tagid != null" >
+        option26TagId,
+      </if>
+      <if test="option26score != null" >
+        option26Score,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="aqid != null" >
+        #{aqid,jdbcType=INTEGER},
+      </if>
+      <if test="aqtitle != null" >
+        #{aqtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="aqnid != null" >
+        #{aqnid,jdbcType=INTEGER},
+      </if>
+      <if test="titleimgurl != null" >
+        #{titleimgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="questionnum != null" >
+        #{questionnum,jdbcType=TINYINT},
+      </if>
+      <if test="vieworder != null" >
+        #{vieworder,jdbcType=TINYINT},
+      </if>
+      <if test="questiontype != null" >
+        #{questiontype,jdbcType=TINYINT},
+      </if>
+      <if test="required != null" >
+        #{required,jdbcType=BIT},
+      </if>
+      <if test="optionnum != null" >
+        #{optionnum,jdbcType=TINYINT},
+      </if>
+      <if test="isselfdefine != null" >
+        #{isselfdefine,jdbcType=BIT},
+      </if>
+      <if test="correctanswer != null" >
+        #{correctanswer,jdbcType=VARCHAR},
+      </if>
+      <if test="option1des != null" >
+        #{option1des,jdbcType=VARCHAR},
+      </if>
+      <if test="option1link != null" >
+        #{option1link,jdbcType=INTEGER},
+      </if>
+      <if test="option1feedback != null" >
+        #{option1feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option1tagid != null" >
+        #{option1tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option1score != null" >
+        #{option1score,jdbcType=INTEGER},
+      </if>
+      <if test="option2des != null" >
+        #{option2des,jdbcType=VARCHAR},
+      </if>
+      <if test="option2link != null" >
+        #{option2link,jdbcType=INTEGER},
+      </if>
+      <if test="option2feedback != null" >
+        #{option2feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option2tagid != null" >
+        #{option2tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option2score != null" >
+        #{option2score,jdbcType=INTEGER},
+      </if>
+      <if test="option3des != null" >
+        #{option3des,jdbcType=VARCHAR},
+      </if>
+      <if test="option3link != null" >
+        #{option3link,jdbcType=INTEGER},
+      </if>
+      <if test="option3feedback != null" >
+        #{option3feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option3tagid != null" >
+        #{option3tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option3score != null" >
+        #{option3score,jdbcType=INTEGER},
+      </if>
+      <if test="option4des != null" >
+        #{option4des,jdbcType=VARCHAR},
+      </if>
+      <if test="option4link != null" >
+        #{option4link,jdbcType=INTEGER},
+      </if>
+      <if test="option4feedback != null" >
+        #{option4feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option4tagid != null" >
+        #{option4tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option4score != null" >
+        #{option4score,jdbcType=INTEGER},
+      </if>
+      <if test="option5des != null" >
+        #{option5des,jdbcType=VARCHAR},
+      </if>
+      <if test="option5link != null" >
+        #{option5link,jdbcType=INTEGER},
+      </if>
+      <if test="option5feedback != null" >
+        #{option5feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option5tagid != null" >
+        #{option5tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option5score != null" >
+        #{option5score,jdbcType=INTEGER},
+      </if>
+      <if test="option6des != null" >
+        #{option6des,jdbcType=VARCHAR},
+      </if>
+      <if test="option6link != null" >
+        #{option6link,jdbcType=INTEGER},
+      </if>
+      <if test="option6feedback != null" >
+        #{option6feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option6tagid != null" >
+        #{option6tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option6score != null" >
+        #{option6score,jdbcType=INTEGER},
+      </if>
+      <if test="option7des != null" >
+        #{option7des,jdbcType=VARCHAR},
+      </if>
+      <if test="option7link != null" >
+        #{option7link,jdbcType=INTEGER},
+      </if>
+      <if test="option7feedback != null" >
+        #{option7feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option7tagid != null" >
+        #{option7tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option7score != null" >
+        #{option7score,jdbcType=INTEGER},
+      </if>
+      <if test="option8des != null" >
+        #{option8des,jdbcType=VARCHAR},
+      </if>
+      <if test="option8link != null" >
+        #{option8link,jdbcType=INTEGER},
+      </if>
+      <if test="option8feedback != null" >
+        #{option8feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option8tagid != null" >
+        #{option8tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option8score != null" >
+        #{option8score,jdbcType=INTEGER},
+      </if>
+      <if test="option9des != null" >
+        #{option9des,jdbcType=VARCHAR},
+      </if>
+      <if test="option9link != null" >
+        #{option9link,jdbcType=INTEGER},
+      </if>
+      <if test="option9feedback != null" >
+        #{option9feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option9tagid != null" >
+        #{option9tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option9score != null" >
+        #{option9score,jdbcType=INTEGER},
+      </if>
+      <if test="option10des != null" >
+        #{option10des,jdbcType=VARCHAR},
+      </if>
+      <if test="option10link != null" >
+        #{option10link,jdbcType=INTEGER},
+      </if>
+      <if test="option10feedback != null" >
+        #{option10feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option10tagid != null" >
+        #{option10tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option10score != null" >
+        #{option10score,jdbcType=INTEGER},
+      </if>
+      <if test="option11des != null" >
+        #{option11des,jdbcType=VARCHAR},
+      </if>
+      <if test="option11link != null" >
+        #{option11link,jdbcType=INTEGER},
+      </if>
+      <if test="option11feedback != null" >
+        #{option11feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option11tagid != null" >
+        #{option11tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option11score != null" >
+        #{option11score,jdbcType=INTEGER},
+      </if>
+      <if test="option12des != null" >
+        #{option12des,jdbcType=VARCHAR},
+      </if>
+      <if test="option12link != null" >
+        #{option12link,jdbcType=INTEGER},
+      </if>
+      <if test="option12feedback != null" >
+        #{option12feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option12tagid != null" >
+        #{option12tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option12score != null" >
+        #{option12score,jdbcType=INTEGER},
+      </if>
+      <if test="option13des != null" >
+        #{option13des,jdbcType=VARCHAR},
+      </if>
+      <if test="option13link != null" >
+        #{option13link,jdbcType=INTEGER},
+      </if>
+      <if test="option13feedback != null" >
+        #{option13feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option13tagid != null" >
+        #{option13tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option13score != null" >
+        #{option13score,jdbcType=INTEGER},
+      </if>
+      <if test="option14des != null" >
+        #{option14des,jdbcType=VARCHAR},
+      </if>
+      <if test="option14link != null" >
+        #{option14link,jdbcType=INTEGER},
+      </if>
+      <if test="option14feedback != null" >
+        #{option14feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option14tagid != null" >
+        #{option14tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option14score != null" >
+        #{option14score,jdbcType=INTEGER},
+      </if>
+      <if test="option15des != null" >
+        #{option15des,jdbcType=VARCHAR},
+      </if>
+      <if test="option15link != null" >
+        #{option15link,jdbcType=INTEGER},
+      </if>
+      <if test="option15feedback != null" >
+        #{option15feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option15tagid != null" >
+        #{option15tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option15score != null" >
+        #{option15score,jdbcType=INTEGER},
+      </if>
+      <if test="option16des != null" >
+        #{option16des,jdbcType=VARCHAR},
+      </if>
+      <if test="option16link != null" >
+        #{option16link,jdbcType=INTEGER},
+      </if>
+      <if test="option16feedback != null" >
+        #{option16feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option16tagid != null" >
+        #{option16tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option16score != null" >
+        #{option16score,jdbcType=INTEGER},
+      </if>
+      <if test="option17des != null" >
+        #{option17des,jdbcType=VARCHAR},
+      </if>
+      <if test="option17link != null" >
+        #{option17link,jdbcType=INTEGER},
+      </if>
+      <if test="option17feedback != null" >
+        #{option17feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option17tagid != null" >
+        #{option17tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option17score != null" >
+        #{option17score,jdbcType=INTEGER},
+      </if>
+      <if test="option18des != null" >
+        #{option18des,jdbcType=VARCHAR},
+      </if>
+      <if test="option18link != null" >
+        #{option18link,jdbcType=INTEGER},
+      </if>
+      <if test="option18feedback != null" >
+        #{option18feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option18tagid != null" >
+        #{option18tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option18score != null" >
+        #{option18score,jdbcType=INTEGER},
+      </if>
+      <if test="option19des != null" >
+        #{option19des,jdbcType=VARCHAR},
+      </if>
+      <if test="option19link != null" >
+        #{option19link,jdbcType=INTEGER},
+      </if>
+      <if test="option19feedback != null" >
+        #{option19feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option19tagid != null" >
+        #{option19tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option19score != null" >
+        #{option19score,jdbcType=INTEGER},
+      </if>
+      <if test="option20des != null" >
+        #{option20des,jdbcType=VARCHAR},
+      </if>
+      <if test="option20link != null" >
+        #{option20link,jdbcType=INTEGER},
+      </if>
+      <if test="option20feedback != null" >
+        #{option20feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option20tagid != null" >
+        #{option20tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option20score != null" >
+        #{option20score,jdbcType=INTEGER},
+      </if>
+      <if test="option21des != null" >
+        #{option21des,jdbcType=VARCHAR},
+      </if>
+      <if test="option21link != null" >
+        #{option21link,jdbcType=INTEGER},
+      </if>
+      <if test="option21feedback != null" >
+        #{option21feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option21tagid != null" >
+        #{option21tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option21score != null" >
+        #{option21score,jdbcType=INTEGER},
+      </if>
+      <if test="option22des != null" >
+        #{option22des,jdbcType=VARCHAR},
+      </if>
+      <if test="option22link != null" >
+        #{option22link,jdbcType=INTEGER},
+      </if>
+      <if test="option22feedback != null" >
+        #{option22feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option22tagid != null" >
+        #{option22tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option22score != null" >
+        #{option22score,jdbcType=INTEGER},
+      </if>
+      <if test="option23des != null" >
+        #{option23des,jdbcType=VARCHAR},
+      </if>
+      <if test="option23link != null" >
+        #{option23link,jdbcType=INTEGER},
+      </if>
+      <if test="option23feedback != null" >
+        #{option23feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option23tagid != null" >
+        #{option23tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option23score != null" >
+        #{option23score,jdbcType=INTEGER},
+      </if>
+      <if test="option24des != null" >
+        #{option24des,jdbcType=VARCHAR},
+      </if>
+      <if test="option24link != null" >
+        #{option24link,jdbcType=INTEGER},
+      </if>
+      <if test="option24feedback != null" >
+        #{option24feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option24tagid != null" >
+        #{option24tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option24score != null" >
+        #{option24score,jdbcType=INTEGER},
+      </if>
+      <if test="option25des != null" >
+        #{option25des,jdbcType=VARCHAR},
+      </if>
+      <if test="option25link != null" >
+        #{option25link,jdbcType=INTEGER},
+      </if>
+      <if test="option25feedback != null" >
+        #{option25feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option25tagid != null" >
+        #{option25tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option25score != null" >
+        #{option25score,jdbcType=INTEGER},
+      </if>
+      <if test="option26des != null" >
+        #{option26des,jdbcType=VARCHAR},
+      </if>
+      <if test="option26link != null" >
+        #{option26link,jdbcType=INTEGER},
+      </if>
+      <if test="option26feedback != null" >
+        #{option26feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option26tagid != null" >
+        #{option26tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option26score != null" >
+        #{option26score,jdbcType=INTEGER},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.newins.model.NiAssessQuestionExample" resultType="java.lang.Integer" >
+    select count(*) from ni_assess_question
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ni_assess_question
+    <set >
+      <if test="record.aqid != null" >
+        aqId = #{record.aqid,jdbcType=INTEGER},
+      </if>
+      <if test="record.aqtitle != null" >
+        aqTitle = #{record.aqtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.aqnid != null" >
+        aqnId = #{record.aqnid,jdbcType=INTEGER},
+      </if>
+      <if test="record.titleimgurl != null" >
+        titleImgUrl = #{record.titleimgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.questionnum != null" >
+        questionNum = #{record.questionnum,jdbcType=TINYINT},
+      </if>
+      <if test="record.vieworder != null" >
+        viewOrder = #{record.vieworder,jdbcType=TINYINT},
+      </if>
+      <if test="record.questiontype != null" >
+        questionType = #{record.questiontype,jdbcType=TINYINT},
+      </if>
+      <if test="record.required != null" >
+        required = #{record.required,jdbcType=BIT},
+      </if>
+      <if test="record.optionnum != null" >
+        optionNum = #{record.optionnum,jdbcType=TINYINT},
+      </if>
+      <if test="record.isselfdefine != null" >
+        isSelfDefine = #{record.isselfdefine,jdbcType=BIT},
+      </if>
+      <if test="record.correctanswer != null" >
+        correctAnswer = #{record.correctanswer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option1des != null" >
+        option1Des = #{record.option1des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option1link != null" >
+        option1Link = #{record.option1link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option1feedback != null" >
+        option1Feedback = #{record.option1feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option1tagid != null" >
+        option1TagId = #{record.option1tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option1score != null" >
+        option1Score = #{record.option1score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option2des != null" >
+        option2Des = #{record.option2des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option2link != null" >
+        option2Link = #{record.option2link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option2feedback != null" >
+        option2Feedback = #{record.option2feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option2tagid != null" >
+        option2TagId = #{record.option2tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option2score != null" >
+        option2Score = #{record.option2score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option3des != null" >
+        option3Des = #{record.option3des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option3link != null" >
+        option3Link = #{record.option3link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option3feedback != null" >
+        option3Feedback = #{record.option3feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option3tagid != null" >
+        option3TagId = #{record.option3tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option3score != null" >
+        option3Score = #{record.option3score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option4des != null" >
+        option4Des = #{record.option4des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option4link != null" >
+        option4Link = #{record.option4link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option4feedback != null" >
+        option4Feedback = #{record.option4feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option4tagid != null" >
+        option4TagId = #{record.option4tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option4score != null" >
+        option4Score = #{record.option4score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option5des != null" >
+        option5Des = #{record.option5des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option5link != null" >
+        option5Link = #{record.option5link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option5feedback != null" >
+        option5Feedback = #{record.option5feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option5tagid != null" >
+        option5TagId = #{record.option5tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option5score != null" >
+        option5Score = #{record.option5score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option6des != null" >
+        option6Des = #{record.option6des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option6link != null" >
+        option6Link = #{record.option6link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option6feedback != null" >
+        option6Feedback = #{record.option6feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option6tagid != null" >
+        option6TagId = #{record.option6tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option6score != null" >
+        option6Score = #{record.option6score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option7des != null" >
+        option7Des = #{record.option7des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option7link != null" >
+        option7Link = #{record.option7link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option7feedback != null" >
+        option7Feedback = #{record.option7feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option7tagid != null" >
+        option7TagId = #{record.option7tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option7score != null" >
+        option7Score = #{record.option7score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option8des != null" >
+        option8Des = #{record.option8des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option8link != null" >
+        option8Link = #{record.option8link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option8feedback != null" >
+        option8Feedback = #{record.option8feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option8tagid != null" >
+        option8TagId = #{record.option8tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option8score != null" >
+        option8Score = #{record.option8score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option9des != null" >
+        option9Des = #{record.option9des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option9link != null" >
+        option9Link = #{record.option9link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option9feedback != null" >
+        option9Feedback = #{record.option9feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option9tagid != null" >
+        option9TagId = #{record.option9tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option9score != null" >
+        option9Score = #{record.option9score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option10des != null" >
+        option10Des = #{record.option10des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option10link != null" >
+        option10Link = #{record.option10link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option10feedback != null" >
+        option10Feedback = #{record.option10feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option10tagid != null" >
+        option10TagId = #{record.option10tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option10score != null" >
+        option10Score = #{record.option10score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option11des != null" >
+        option11Des = #{record.option11des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option11link != null" >
+        option11Link = #{record.option11link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option11feedback != null" >
+        option11Feedback = #{record.option11feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option11tagid != null" >
+        option11TagId = #{record.option11tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option11score != null" >
+        option11Score = #{record.option11score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option12des != null" >
+        option12Des = #{record.option12des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option12link != null" >
+        option12Link = #{record.option12link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option12feedback != null" >
+        option12Feedback = #{record.option12feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option12tagid != null" >
+        option12TagId = #{record.option12tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option12score != null" >
+        option12Score = #{record.option12score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option13des != null" >
+        option13Des = #{record.option13des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option13link != null" >
+        option13Link = #{record.option13link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option13feedback != null" >
+        option13Feedback = #{record.option13feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option13tagid != null" >
+        option13TagId = #{record.option13tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option13score != null" >
+        option13Score = #{record.option13score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option14des != null" >
+        option14Des = #{record.option14des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option14link != null" >
+        option14Link = #{record.option14link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option14feedback != null" >
+        option14Feedback = #{record.option14feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option14tagid != null" >
+        option14TagId = #{record.option14tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option14score != null" >
+        option14Score = #{record.option14score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option15des != null" >
+        option15Des = #{record.option15des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option15link != null" >
+        option15Link = #{record.option15link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option15feedback != null" >
+        option15Feedback = #{record.option15feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option15tagid != null" >
+        option15TagId = #{record.option15tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option15score != null" >
+        option15Score = #{record.option15score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option16des != null" >
+        option16Des = #{record.option16des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option16link != null" >
+        option16Link = #{record.option16link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option16feedback != null" >
+        option16Feedback = #{record.option16feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option16tagid != null" >
+        option16TagId = #{record.option16tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option16score != null" >
+        option16Score = #{record.option16score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option17des != null" >
+        option17Des = #{record.option17des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option17link != null" >
+        option17Link = #{record.option17link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option17feedback != null" >
+        option17Feedback = #{record.option17feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option17tagid != null" >
+        option17TagId = #{record.option17tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option17score != null" >
+        option17Score = #{record.option17score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option18des != null" >
+        option18Des = #{record.option18des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option18link != null" >
+        option18Link = #{record.option18link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option18feedback != null" >
+        option18Feedback = #{record.option18feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option18tagid != null" >
+        option18TagId = #{record.option18tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option18score != null" >
+        option18Score = #{record.option18score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option19des != null" >
+        option19Des = #{record.option19des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option19link != null" >
+        option19Link = #{record.option19link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option19feedback != null" >
+        option19Feedback = #{record.option19feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option19tagid != null" >
+        option19TagId = #{record.option19tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option19score != null" >
+        option19Score = #{record.option19score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option20des != null" >
+        option20Des = #{record.option20des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option20link != null" >
+        option20Link = #{record.option20link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option20feedback != null" >
+        option20Feedback = #{record.option20feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option20tagid != null" >
+        option20TagId = #{record.option20tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option20score != null" >
+        option20Score = #{record.option20score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option21des != null" >
+        option21Des = #{record.option21des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option21link != null" >
+        option21Link = #{record.option21link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option21feedback != null" >
+        option21Feedback = #{record.option21feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option21tagid != null" >
+        option21TagId = #{record.option21tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option21score != null" >
+        option21Score = #{record.option21score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option22des != null" >
+        option22Des = #{record.option22des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option22link != null" >
+        option22Link = #{record.option22link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option22feedback != null" >
+        option22Feedback = #{record.option22feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option22tagid != null" >
+        option22TagId = #{record.option22tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option22score != null" >
+        option22Score = #{record.option22score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option23des != null" >
+        option23Des = #{record.option23des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option23link != null" >
+        option23Link = #{record.option23link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option23feedback != null" >
+        option23Feedback = #{record.option23feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option23tagid != null" >
+        option23TagId = #{record.option23tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option23score != null" >
+        option23Score = #{record.option23score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option24des != null" >
+        option24Des = #{record.option24des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option24link != null" >
+        option24Link = #{record.option24link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option24feedback != null" >
+        option24Feedback = #{record.option24feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option24tagid != null" >
+        option24TagId = #{record.option24tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option24score != null" >
+        option24Score = #{record.option24score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option25des != null" >
+        option25Des = #{record.option25des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option25link != null" >
+        option25Link = #{record.option25link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option25feedback != null" >
+        option25Feedback = #{record.option25feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option25tagid != null" >
+        option25TagId = #{record.option25tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option25score != null" >
+        option25Score = #{record.option25score,jdbcType=INTEGER},
+      </if>
+      <if test="record.option26des != null" >
+        option26Des = #{record.option26des,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option26link != null" >
+        option26Link = #{record.option26link,jdbcType=INTEGER},
+      </if>
+      <if test="record.option26feedback != null" >
+        option26Feedback = #{record.option26feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.option26tagid != null" >
+        option26TagId = #{record.option26tagid,jdbcType=INTEGER},
+      </if>
+      <if test="record.option26score != null" >
+        option26Score = #{record.option26score,jdbcType=INTEGER},
+      </if>
+      <if test="record.comment != null" >
+        comment = #{record.comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ni_assess_question
+    set aqId = #{record.aqid,jdbcType=INTEGER},
+      aqTitle = #{record.aqtitle,jdbcType=VARCHAR},
+      aqnId = #{record.aqnid,jdbcType=INTEGER},
+      titleImgUrl = #{record.titleimgurl,jdbcType=VARCHAR},
+      questionNum = #{record.questionnum,jdbcType=TINYINT},
+      viewOrder = #{record.vieworder,jdbcType=TINYINT},
+      questionType = #{record.questiontype,jdbcType=TINYINT},
+      required = #{record.required,jdbcType=BIT},
+      optionNum = #{record.optionnum,jdbcType=TINYINT},
+      isSelfDefine = #{record.isselfdefine,jdbcType=BIT},
+      correctAnswer = #{record.correctanswer,jdbcType=VARCHAR},
+      option1Des = #{record.option1des,jdbcType=VARCHAR},
+      option1Link = #{record.option1link,jdbcType=INTEGER},
+      option1Feedback = #{record.option1feedback,jdbcType=VARCHAR},
+      option1TagId = #{record.option1tagid,jdbcType=INTEGER},
+      option1Score = #{record.option1score,jdbcType=INTEGER},
+      option2Des = #{record.option2des,jdbcType=VARCHAR},
+      option2Link = #{record.option2link,jdbcType=INTEGER},
+      option2Feedback = #{record.option2feedback,jdbcType=VARCHAR},
+      option2TagId = #{record.option2tagid,jdbcType=INTEGER},
+      option2Score = #{record.option2score,jdbcType=INTEGER},
+      option3Des = #{record.option3des,jdbcType=VARCHAR},
+      option3Link = #{record.option3link,jdbcType=INTEGER},
+      option3Feedback = #{record.option3feedback,jdbcType=VARCHAR},
+      option3TagId = #{record.option3tagid,jdbcType=INTEGER},
+      option3Score = #{record.option3score,jdbcType=INTEGER},
+      option4Des = #{record.option4des,jdbcType=VARCHAR},
+      option4Link = #{record.option4link,jdbcType=INTEGER},
+      option4Feedback = #{record.option4feedback,jdbcType=VARCHAR},
+      option4TagId = #{record.option4tagid,jdbcType=INTEGER},
+      option4Score = #{record.option4score,jdbcType=INTEGER},
+      option5Des = #{record.option5des,jdbcType=VARCHAR},
+      option5Link = #{record.option5link,jdbcType=INTEGER},
+      option5Feedback = #{record.option5feedback,jdbcType=VARCHAR},
+      option5TagId = #{record.option5tagid,jdbcType=INTEGER},
+      option5Score = #{record.option5score,jdbcType=INTEGER},
+      option6Des = #{record.option6des,jdbcType=VARCHAR},
+      option6Link = #{record.option6link,jdbcType=INTEGER},
+      option6Feedback = #{record.option6feedback,jdbcType=VARCHAR},
+      option6TagId = #{record.option6tagid,jdbcType=INTEGER},
+      option6Score = #{record.option6score,jdbcType=INTEGER},
+      option7Des = #{record.option7des,jdbcType=VARCHAR},
+      option7Link = #{record.option7link,jdbcType=INTEGER},
+      option7Feedback = #{record.option7feedback,jdbcType=VARCHAR},
+      option7TagId = #{record.option7tagid,jdbcType=INTEGER},
+      option7Score = #{record.option7score,jdbcType=INTEGER},
+      option8Des = #{record.option8des,jdbcType=VARCHAR},
+      option8Link = #{record.option8link,jdbcType=INTEGER},
+      option8Feedback = #{record.option8feedback,jdbcType=VARCHAR},
+      option8TagId = #{record.option8tagid,jdbcType=INTEGER},
+      option8Score = #{record.option8score,jdbcType=INTEGER},
+      option9Des = #{record.option9des,jdbcType=VARCHAR},
+      option9Link = #{record.option9link,jdbcType=INTEGER},
+      option9Feedback = #{record.option9feedback,jdbcType=VARCHAR},
+      option9TagId = #{record.option9tagid,jdbcType=INTEGER},
+      option9Score = #{record.option9score,jdbcType=INTEGER},
+      option10Des = #{record.option10des,jdbcType=VARCHAR},
+      option10Link = #{record.option10link,jdbcType=INTEGER},
+      option10Feedback = #{record.option10feedback,jdbcType=VARCHAR},
+      option10TagId = #{record.option10tagid,jdbcType=INTEGER},
+      option10Score = #{record.option10score,jdbcType=INTEGER},
+      option11Des = #{record.option11des,jdbcType=VARCHAR},
+      option11Link = #{record.option11link,jdbcType=INTEGER},
+      option11Feedback = #{record.option11feedback,jdbcType=VARCHAR},
+      option11TagId = #{record.option11tagid,jdbcType=INTEGER},
+      option11Score = #{record.option11score,jdbcType=INTEGER},
+      option12Des = #{record.option12des,jdbcType=VARCHAR},
+      option12Link = #{record.option12link,jdbcType=INTEGER},
+      option12Feedback = #{record.option12feedback,jdbcType=VARCHAR},
+      option12TagId = #{record.option12tagid,jdbcType=INTEGER},
+      option12Score = #{record.option12score,jdbcType=INTEGER},
+      option13Des = #{record.option13des,jdbcType=VARCHAR},
+      option13Link = #{record.option13link,jdbcType=INTEGER},
+      option13Feedback = #{record.option13feedback,jdbcType=VARCHAR},
+      option13TagId = #{record.option13tagid,jdbcType=INTEGER},
+      option13Score = #{record.option13score,jdbcType=INTEGER},
+      option14Des = #{record.option14des,jdbcType=VARCHAR},
+      option14Link = #{record.option14link,jdbcType=INTEGER},
+      option14Feedback = #{record.option14feedback,jdbcType=VARCHAR},
+      option14TagId = #{record.option14tagid,jdbcType=INTEGER},
+      option14Score = #{record.option14score,jdbcType=INTEGER},
+      option15Des = #{record.option15des,jdbcType=VARCHAR},
+      option15Link = #{record.option15link,jdbcType=INTEGER},
+      option15Feedback = #{record.option15feedback,jdbcType=VARCHAR},
+      option15TagId = #{record.option15tagid,jdbcType=INTEGER},
+      option15Score = #{record.option15score,jdbcType=INTEGER},
+      option16Des = #{record.option16des,jdbcType=VARCHAR},
+      option16Link = #{record.option16link,jdbcType=INTEGER},
+      option16Feedback = #{record.option16feedback,jdbcType=VARCHAR},
+      option16TagId = #{record.option16tagid,jdbcType=INTEGER},
+      option16Score = #{record.option16score,jdbcType=INTEGER},
+      option17Des = #{record.option17des,jdbcType=VARCHAR},
+      option17Link = #{record.option17link,jdbcType=INTEGER},
+      option17Feedback = #{record.option17feedback,jdbcType=VARCHAR},
+      option17TagId = #{record.option17tagid,jdbcType=INTEGER},
+      option17Score = #{record.option17score,jdbcType=INTEGER},
+      option18Des = #{record.option18des,jdbcType=VARCHAR},
+      option18Link = #{record.option18link,jdbcType=INTEGER},
+      option18Feedback = #{record.option18feedback,jdbcType=VARCHAR},
+      option18TagId = #{record.option18tagid,jdbcType=INTEGER},
+      option18Score = #{record.option18score,jdbcType=INTEGER},
+      option19Des = #{record.option19des,jdbcType=VARCHAR},
+      option19Link = #{record.option19link,jdbcType=INTEGER},
+      option19Feedback = #{record.option19feedback,jdbcType=VARCHAR},
+      option19TagId = #{record.option19tagid,jdbcType=INTEGER},
+      option19Score = #{record.option19score,jdbcType=INTEGER},
+      option20Des = #{record.option20des,jdbcType=VARCHAR},
+      option20Link = #{record.option20link,jdbcType=INTEGER},
+      option20Feedback = #{record.option20feedback,jdbcType=VARCHAR},
+      option20TagId = #{record.option20tagid,jdbcType=INTEGER},
+      option20Score = #{record.option20score,jdbcType=INTEGER},
+      option21Des = #{record.option21des,jdbcType=VARCHAR},
+      option21Link = #{record.option21link,jdbcType=INTEGER},
+      option21Feedback = #{record.option21feedback,jdbcType=VARCHAR},
+      option21TagId = #{record.option21tagid,jdbcType=INTEGER},
+      option21Score = #{record.option21score,jdbcType=INTEGER},
+      option22Des = #{record.option22des,jdbcType=VARCHAR},
+      option22Link = #{record.option22link,jdbcType=INTEGER},
+      option22Feedback = #{record.option22feedback,jdbcType=VARCHAR},
+      option22TagId = #{record.option22tagid,jdbcType=INTEGER},
+      option22Score = #{record.option22score,jdbcType=INTEGER},
+      option23Des = #{record.option23des,jdbcType=VARCHAR},
+      option23Link = #{record.option23link,jdbcType=INTEGER},
+      option23Feedback = #{record.option23feedback,jdbcType=VARCHAR},
+      option23TagId = #{record.option23tagid,jdbcType=INTEGER},
+      option23Score = #{record.option23score,jdbcType=INTEGER},
+      option24Des = #{record.option24des,jdbcType=VARCHAR},
+      option24Link = #{record.option24link,jdbcType=INTEGER},
+      option24Feedback = #{record.option24feedback,jdbcType=VARCHAR},
+      option24TagId = #{record.option24tagid,jdbcType=INTEGER},
+      option24Score = #{record.option24score,jdbcType=INTEGER},
+      option25Des = #{record.option25des,jdbcType=VARCHAR},
+      option25Link = #{record.option25link,jdbcType=INTEGER},
+      option25Feedback = #{record.option25feedback,jdbcType=VARCHAR},
+      option25TagId = #{record.option25tagid,jdbcType=INTEGER},
+      option25Score = #{record.option25score,jdbcType=INTEGER},
+      option26Des = #{record.option26des,jdbcType=VARCHAR},
+      option26Link = #{record.option26link,jdbcType=INTEGER},
+      option26Feedback = #{record.option26feedback,jdbcType=VARCHAR},
+      option26TagId = #{record.option26tagid,jdbcType=INTEGER},
+      option26Score = #{record.option26score,jdbcType=INTEGER},
+      comment = #{record.comment,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.newins.model.NiAssessQuestion" >
+    update ni_assess_question
+    <set >
+      <if test="aqtitle != null" >
+        aqTitle = #{aqtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="aqnid != null" >
+        aqnId = #{aqnid,jdbcType=INTEGER},
+      </if>
+      <if test="titleimgurl != null" >
+        titleImgUrl = #{titleimgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="questionnum != null" >
+        questionNum = #{questionnum,jdbcType=TINYINT},
+      </if>
+      <if test="vieworder != null" >
+        viewOrder = #{vieworder,jdbcType=TINYINT},
+      </if>
+      <if test="questiontype != null" >
+        questionType = #{questiontype,jdbcType=TINYINT},
+      </if>
+      <if test="required != null" >
+        required = #{required,jdbcType=BIT},
+      </if>
+      <if test="optionnum != null" >
+        optionNum = #{optionnum,jdbcType=TINYINT},
+      </if>
+      <if test="isselfdefine != null" >
+        isSelfDefine = #{isselfdefine,jdbcType=BIT},
+      </if>
+      <if test="correctanswer != null" >
+        correctAnswer = #{correctanswer,jdbcType=VARCHAR},
+      </if>
+      <if test="option1des != null" >
+        option1Des = #{option1des,jdbcType=VARCHAR},
+      </if>
+      <if test="option1link != null" >
+        option1Link = #{option1link,jdbcType=INTEGER},
+      </if>
+      <if test="option1feedback != null" >
+        option1Feedback = #{option1feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option1tagid != null" >
+        option1TagId = #{option1tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option1score != null" >
+        option1Score = #{option1score,jdbcType=INTEGER},
+      </if>
+      <if test="option2des != null" >
+        option2Des = #{option2des,jdbcType=VARCHAR},
+      </if>
+      <if test="option2link != null" >
+        option2Link = #{option2link,jdbcType=INTEGER},
+      </if>
+      <if test="option2feedback != null" >
+        option2Feedback = #{option2feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option2tagid != null" >
+        option2TagId = #{option2tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option2score != null" >
+        option2Score = #{option2score,jdbcType=INTEGER},
+      </if>
+      <if test="option3des != null" >
+        option3Des = #{option3des,jdbcType=VARCHAR},
+      </if>
+      <if test="option3link != null" >
+        option3Link = #{option3link,jdbcType=INTEGER},
+      </if>
+      <if test="option3feedback != null" >
+        option3Feedback = #{option3feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option3tagid != null" >
+        option3TagId = #{option3tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option3score != null" >
+        option3Score = #{option3score,jdbcType=INTEGER},
+      </if>
+      <if test="option4des != null" >
+        option4Des = #{option4des,jdbcType=VARCHAR},
+      </if>
+      <if test="option4link != null" >
+        option4Link = #{option4link,jdbcType=INTEGER},
+      </if>
+      <if test="option4feedback != null" >
+        option4Feedback = #{option4feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option4tagid != null" >
+        option4TagId = #{option4tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option4score != null" >
+        option4Score = #{option4score,jdbcType=INTEGER},
+      </if>
+      <if test="option5des != null" >
+        option5Des = #{option5des,jdbcType=VARCHAR},
+      </if>
+      <if test="option5link != null" >
+        option5Link = #{option5link,jdbcType=INTEGER},
+      </if>
+      <if test="option5feedback != null" >
+        option5Feedback = #{option5feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option5tagid != null" >
+        option5TagId = #{option5tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option5score != null" >
+        option5Score = #{option5score,jdbcType=INTEGER},
+      </if>
+      <if test="option6des != null" >
+        option6Des = #{option6des,jdbcType=VARCHAR},
+      </if>
+      <if test="option6link != null" >
+        option6Link = #{option6link,jdbcType=INTEGER},
+      </if>
+      <if test="option6feedback != null" >
+        option6Feedback = #{option6feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option6tagid != null" >
+        option6TagId = #{option6tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option6score != null" >
+        option6Score = #{option6score,jdbcType=INTEGER},
+      </if>
+      <if test="option7des != null" >
+        option7Des = #{option7des,jdbcType=VARCHAR},
+      </if>
+      <if test="option7link != null" >
+        option7Link = #{option7link,jdbcType=INTEGER},
+      </if>
+      <if test="option7feedback != null" >
+        option7Feedback = #{option7feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option7tagid != null" >
+        option7TagId = #{option7tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option7score != null" >
+        option7Score = #{option7score,jdbcType=INTEGER},
+      </if>
+      <if test="option8des != null" >
+        option8Des = #{option8des,jdbcType=VARCHAR},
+      </if>
+      <if test="option8link != null" >
+        option8Link = #{option8link,jdbcType=INTEGER},
+      </if>
+      <if test="option8feedback != null" >
+        option8Feedback = #{option8feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option8tagid != null" >
+        option8TagId = #{option8tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option8score != null" >
+        option8Score = #{option8score,jdbcType=INTEGER},
+      </if>
+      <if test="option9des != null" >
+        option9Des = #{option9des,jdbcType=VARCHAR},
+      </if>
+      <if test="option9link != null" >
+        option9Link = #{option9link,jdbcType=INTEGER},
+      </if>
+      <if test="option9feedback != null" >
+        option9Feedback = #{option9feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option9tagid != null" >
+        option9TagId = #{option9tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option9score != null" >
+        option9Score = #{option9score,jdbcType=INTEGER},
+      </if>
+      <if test="option10des != null" >
+        option10Des = #{option10des,jdbcType=VARCHAR},
+      </if>
+      <if test="option10link != null" >
+        option10Link = #{option10link,jdbcType=INTEGER},
+      </if>
+      <if test="option10feedback != null" >
+        option10Feedback = #{option10feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option10tagid != null" >
+        option10TagId = #{option10tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option10score != null" >
+        option10Score = #{option10score,jdbcType=INTEGER},
+      </if>
+      <if test="option11des != null" >
+        option11Des = #{option11des,jdbcType=VARCHAR},
+      </if>
+      <if test="option11link != null" >
+        option11Link = #{option11link,jdbcType=INTEGER},
+      </if>
+      <if test="option11feedback != null" >
+        option11Feedback = #{option11feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option11tagid != null" >
+        option11TagId = #{option11tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option11score != null" >
+        option11Score = #{option11score,jdbcType=INTEGER},
+      </if>
+      <if test="option12des != null" >
+        option12Des = #{option12des,jdbcType=VARCHAR},
+      </if>
+      <if test="option12link != null" >
+        option12Link = #{option12link,jdbcType=INTEGER},
+      </if>
+      <if test="option12feedback != null" >
+        option12Feedback = #{option12feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option12tagid != null" >
+        option12TagId = #{option12tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option12score != null" >
+        option12Score = #{option12score,jdbcType=INTEGER},
+      </if>
+      <if test="option13des != null" >
+        option13Des = #{option13des,jdbcType=VARCHAR},
+      </if>
+      <if test="option13link != null" >
+        option13Link = #{option13link,jdbcType=INTEGER},
+      </if>
+      <if test="option13feedback != null" >
+        option13Feedback = #{option13feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option13tagid != null" >
+        option13TagId = #{option13tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option13score != null" >
+        option13Score = #{option13score,jdbcType=INTEGER},
+      </if>
+      <if test="option14des != null" >
+        option14Des = #{option14des,jdbcType=VARCHAR},
+      </if>
+      <if test="option14link != null" >
+        option14Link = #{option14link,jdbcType=INTEGER},
+      </if>
+      <if test="option14feedback != null" >
+        option14Feedback = #{option14feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option14tagid != null" >
+        option14TagId = #{option14tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option14score != null" >
+        option14Score = #{option14score,jdbcType=INTEGER},
+      </if>
+      <if test="option15des != null" >
+        option15Des = #{option15des,jdbcType=VARCHAR},
+      </if>
+      <if test="option15link != null" >
+        option15Link = #{option15link,jdbcType=INTEGER},
+      </if>
+      <if test="option15feedback != null" >
+        option15Feedback = #{option15feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option15tagid != null" >
+        option15TagId = #{option15tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option15score != null" >
+        option15Score = #{option15score,jdbcType=INTEGER},
+      </if>
+      <if test="option16des != null" >
+        option16Des = #{option16des,jdbcType=VARCHAR},
+      </if>
+      <if test="option16link != null" >
+        option16Link = #{option16link,jdbcType=INTEGER},
+      </if>
+      <if test="option16feedback != null" >
+        option16Feedback = #{option16feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option16tagid != null" >
+        option16TagId = #{option16tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option16score != null" >
+        option16Score = #{option16score,jdbcType=INTEGER},
+      </if>
+      <if test="option17des != null" >
+        option17Des = #{option17des,jdbcType=VARCHAR},
+      </if>
+      <if test="option17link != null" >
+        option17Link = #{option17link,jdbcType=INTEGER},
+      </if>
+      <if test="option17feedback != null" >
+        option17Feedback = #{option17feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option17tagid != null" >
+        option17TagId = #{option17tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option17score != null" >
+        option17Score = #{option17score,jdbcType=INTEGER},
+      </if>
+      <if test="option18des != null" >
+        option18Des = #{option18des,jdbcType=VARCHAR},
+      </if>
+      <if test="option18link != null" >
+        option18Link = #{option18link,jdbcType=INTEGER},
+      </if>
+      <if test="option18feedback != null" >
+        option18Feedback = #{option18feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option18tagid != null" >
+        option18TagId = #{option18tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option18score != null" >
+        option18Score = #{option18score,jdbcType=INTEGER},
+      </if>
+      <if test="option19des != null" >
+        option19Des = #{option19des,jdbcType=VARCHAR},
+      </if>
+      <if test="option19link != null" >
+        option19Link = #{option19link,jdbcType=INTEGER},
+      </if>
+      <if test="option19feedback != null" >
+        option19Feedback = #{option19feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option19tagid != null" >
+        option19TagId = #{option19tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option19score != null" >
+        option19Score = #{option19score,jdbcType=INTEGER},
+      </if>
+      <if test="option20des != null" >
+        option20Des = #{option20des,jdbcType=VARCHAR},
+      </if>
+      <if test="option20link != null" >
+        option20Link = #{option20link,jdbcType=INTEGER},
+      </if>
+      <if test="option20feedback != null" >
+        option20Feedback = #{option20feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option20tagid != null" >
+        option20TagId = #{option20tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option20score != null" >
+        option20Score = #{option20score,jdbcType=INTEGER},
+      </if>
+      <if test="option21des != null" >
+        option21Des = #{option21des,jdbcType=VARCHAR},
+      </if>
+      <if test="option21link != null" >
+        option21Link = #{option21link,jdbcType=INTEGER},
+      </if>
+      <if test="option21feedback != null" >
+        option21Feedback = #{option21feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option21tagid != null" >
+        option21TagId = #{option21tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option21score != null" >
+        option21Score = #{option21score,jdbcType=INTEGER},
+      </if>
+      <if test="option22des != null" >
+        option22Des = #{option22des,jdbcType=VARCHAR},
+      </if>
+      <if test="option22link != null" >
+        option22Link = #{option22link,jdbcType=INTEGER},
+      </if>
+      <if test="option22feedback != null" >
+        option22Feedback = #{option22feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option22tagid != null" >
+        option22TagId = #{option22tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option22score != null" >
+        option22Score = #{option22score,jdbcType=INTEGER},
+      </if>
+      <if test="option23des != null" >
+        option23Des = #{option23des,jdbcType=VARCHAR},
+      </if>
+      <if test="option23link != null" >
+        option23Link = #{option23link,jdbcType=INTEGER},
+      </if>
+      <if test="option23feedback != null" >
+        option23Feedback = #{option23feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option23tagid != null" >
+        option23TagId = #{option23tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option23score != null" >
+        option23Score = #{option23score,jdbcType=INTEGER},
+      </if>
+      <if test="option24des != null" >
+        option24Des = #{option24des,jdbcType=VARCHAR},
+      </if>
+      <if test="option24link != null" >
+        option24Link = #{option24link,jdbcType=INTEGER},
+      </if>
+      <if test="option24feedback != null" >
+        option24Feedback = #{option24feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option24tagid != null" >
+        option24TagId = #{option24tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option24score != null" >
+        option24Score = #{option24score,jdbcType=INTEGER},
+      </if>
+      <if test="option25des != null" >
+        option25Des = #{option25des,jdbcType=VARCHAR},
+      </if>
+      <if test="option25link != null" >
+        option25Link = #{option25link,jdbcType=INTEGER},
+      </if>
+      <if test="option25feedback != null" >
+        option25Feedback = #{option25feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option25tagid != null" >
+        option25TagId = #{option25tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option25score != null" >
+        option25Score = #{option25score,jdbcType=INTEGER},
+      </if>
+      <if test="option26des != null" >
+        option26Des = #{option26des,jdbcType=VARCHAR},
+      </if>
+      <if test="option26link != null" >
+        option26Link = #{option26link,jdbcType=INTEGER},
+      </if>
+      <if test="option26feedback != null" >
+        option26Feedback = #{option26feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="option26tagid != null" >
+        option26TagId = #{option26tagid,jdbcType=INTEGER},
+      </if>
+      <if test="option26score != null" >
+        option26Score = #{option26score,jdbcType=INTEGER},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where aqId = #{aqid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.newins.model.NiAssessQuestion" >
+    update ni_assess_question
+    set aqTitle = #{aqtitle,jdbcType=VARCHAR},
+      aqnId = #{aqnid,jdbcType=INTEGER},
+      titleImgUrl = #{titleimgurl,jdbcType=VARCHAR},
+      questionNum = #{questionnum,jdbcType=TINYINT},
+      viewOrder = #{vieworder,jdbcType=TINYINT},
+      questionType = #{questiontype,jdbcType=TINYINT},
+      required = #{required,jdbcType=BIT},
+      optionNum = #{optionnum,jdbcType=TINYINT},
+      isSelfDefine = #{isselfdefine,jdbcType=BIT},
+      correctAnswer = #{correctanswer,jdbcType=VARCHAR},
+      option1Des = #{option1des,jdbcType=VARCHAR},
+      option1Link = #{option1link,jdbcType=INTEGER},
+      option1Feedback = #{option1feedback,jdbcType=VARCHAR},
+      option1TagId = #{option1tagid,jdbcType=INTEGER},
+      option1Score = #{option1score,jdbcType=INTEGER},
+      option2Des = #{option2des,jdbcType=VARCHAR},
+      option2Link = #{option2link,jdbcType=INTEGER},
+      option2Feedback = #{option2feedback,jdbcType=VARCHAR},
+      option2TagId = #{option2tagid,jdbcType=INTEGER},
+      option2Score = #{option2score,jdbcType=INTEGER},
+      option3Des = #{option3des,jdbcType=VARCHAR},
+      option3Link = #{option3link,jdbcType=INTEGER},
+      option3Feedback = #{option3feedback,jdbcType=VARCHAR},
+      option3TagId = #{option3tagid,jdbcType=INTEGER},
+      option3Score = #{option3score,jdbcType=INTEGER},
+      option4Des = #{option4des,jdbcType=VARCHAR},
+      option4Link = #{option4link,jdbcType=INTEGER},
+      option4Feedback = #{option4feedback,jdbcType=VARCHAR},
+      option4TagId = #{option4tagid,jdbcType=INTEGER},
+      option4Score = #{option4score,jdbcType=INTEGER},
+      option5Des = #{option5des,jdbcType=VARCHAR},
+      option5Link = #{option5link,jdbcType=INTEGER},
+      option5Feedback = #{option5feedback,jdbcType=VARCHAR},
+      option5TagId = #{option5tagid,jdbcType=INTEGER},
+      option5Score = #{option5score,jdbcType=INTEGER},
+      option6Des = #{option6des,jdbcType=VARCHAR},
+      option6Link = #{option6link,jdbcType=INTEGER},
+      option6Feedback = #{option6feedback,jdbcType=VARCHAR},
+      option6TagId = #{option6tagid,jdbcType=INTEGER},
+      option6Score = #{option6score,jdbcType=INTEGER},
+      option7Des = #{option7des,jdbcType=VARCHAR},
+      option7Link = #{option7link,jdbcType=INTEGER},
+      option7Feedback = #{option7feedback,jdbcType=VARCHAR},
+      option7TagId = #{option7tagid,jdbcType=INTEGER},
+      option7Score = #{option7score,jdbcType=INTEGER},
+      option8Des = #{option8des,jdbcType=VARCHAR},
+      option8Link = #{option8link,jdbcType=INTEGER},
+      option8Feedback = #{option8feedback,jdbcType=VARCHAR},
+      option8TagId = #{option8tagid,jdbcType=INTEGER},
+      option8Score = #{option8score,jdbcType=INTEGER},
+      option9Des = #{option9des,jdbcType=VARCHAR},
+      option9Link = #{option9link,jdbcType=INTEGER},
+      option9Feedback = #{option9feedback,jdbcType=VARCHAR},
+      option9TagId = #{option9tagid,jdbcType=INTEGER},
+      option9Score = #{option9score,jdbcType=INTEGER},
+      option10Des = #{option10des,jdbcType=VARCHAR},
+      option10Link = #{option10link,jdbcType=INTEGER},
+      option10Feedback = #{option10feedback,jdbcType=VARCHAR},
+      option10TagId = #{option10tagid,jdbcType=INTEGER},
+      option10Score = #{option10score,jdbcType=INTEGER},
+      option11Des = #{option11des,jdbcType=VARCHAR},
+      option11Link = #{option11link,jdbcType=INTEGER},
+      option11Feedback = #{option11feedback,jdbcType=VARCHAR},
+      option11TagId = #{option11tagid,jdbcType=INTEGER},
+      option11Score = #{option11score,jdbcType=INTEGER},
+      option12Des = #{option12des,jdbcType=VARCHAR},
+      option12Link = #{option12link,jdbcType=INTEGER},
+      option12Feedback = #{option12feedback,jdbcType=VARCHAR},
+      option12TagId = #{option12tagid,jdbcType=INTEGER},
+      option12Score = #{option12score,jdbcType=INTEGER},
+      option13Des = #{option13des,jdbcType=VARCHAR},
+      option13Link = #{option13link,jdbcType=INTEGER},
+      option13Feedback = #{option13feedback,jdbcType=VARCHAR},
+      option13TagId = #{option13tagid,jdbcType=INTEGER},
+      option13Score = #{option13score,jdbcType=INTEGER},
+      option14Des = #{option14des,jdbcType=VARCHAR},
+      option14Link = #{option14link,jdbcType=INTEGER},
+      option14Feedback = #{option14feedback,jdbcType=VARCHAR},
+      option14TagId = #{option14tagid,jdbcType=INTEGER},
+      option14Score = #{option14score,jdbcType=INTEGER},
+      option15Des = #{option15des,jdbcType=VARCHAR},
+      option15Link = #{option15link,jdbcType=INTEGER},
+      option15Feedback = #{option15feedback,jdbcType=VARCHAR},
+      option15TagId = #{option15tagid,jdbcType=INTEGER},
+      option15Score = #{option15score,jdbcType=INTEGER},
+      option16Des = #{option16des,jdbcType=VARCHAR},
+      option16Link = #{option16link,jdbcType=INTEGER},
+      option16Feedback = #{option16feedback,jdbcType=VARCHAR},
+      option16TagId = #{option16tagid,jdbcType=INTEGER},
+      option16Score = #{option16score,jdbcType=INTEGER},
+      option17Des = #{option17des,jdbcType=VARCHAR},
+      option17Link = #{option17link,jdbcType=INTEGER},
+      option17Feedback = #{option17feedback,jdbcType=VARCHAR},
+      option17TagId = #{option17tagid,jdbcType=INTEGER},
+      option17Score = #{option17score,jdbcType=INTEGER},
+      option18Des = #{option18des,jdbcType=VARCHAR},
+      option18Link = #{option18link,jdbcType=INTEGER},
+      option18Feedback = #{option18feedback,jdbcType=VARCHAR},
+      option18TagId = #{option18tagid,jdbcType=INTEGER},
+      option18Score = #{option18score,jdbcType=INTEGER},
+      option19Des = #{option19des,jdbcType=VARCHAR},
+      option19Link = #{option19link,jdbcType=INTEGER},
+      option19Feedback = #{option19feedback,jdbcType=VARCHAR},
+      option19TagId = #{option19tagid,jdbcType=INTEGER},
+      option19Score = #{option19score,jdbcType=INTEGER},
+      option20Des = #{option20des,jdbcType=VARCHAR},
+      option20Link = #{option20link,jdbcType=INTEGER},
+      option20Feedback = #{option20feedback,jdbcType=VARCHAR},
+      option20TagId = #{option20tagid,jdbcType=INTEGER},
+      option20Score = #{option20score,jdbcType=INTEGER},
+      option21Des = #{option21des,jdbcType=VARCHAR},
+      option21Link = #{option21link,jdbcType=INTEGER},
+      option21Feedback = #{option21feedback,jdbcType=VARCHAR},
+      option21TagId = #{option21tagid,jdbcType=INTEGER},
+      option21Score = #{option21score,jdbcType=INTEGER},
+      option22Des = #{option22des,jdbcType=VARCHAR},
+      option22Link = #{option22link,jdbcType=INTEGER},
+      option22Feedback = #{option22feedback,jdbcType=VARCHAR},
+      option22TagId = #{option22tagid,jdbcType=INTEGER},
+      option22Score = #{option22score,jdbcType=INTEGER},
+      option23Des = #{option23des,jdbcType=VARCHAR},
+      option23Link = #{option23link,jdbcType=INTEGER},
+      option23Feedback = #{option23feedback,jdbcType=VARCHAR},
+      option23TagId = #{option23tagid,jdbcType=INTEGER},
+      option23Score = #{option23score,jdbcType=INTEGER},
+      option24Des = #{option24des,jdbcType=VARCHAR},
+      option24Link = #{option24link,jdbcType=INTEGER},
+      option24Feedback = #{option24feedback,jdbcType=VARCHAR},
+      option24TagId = #{option24tagid,jdbcType=INTEGER},
+      option24Score = #{option24score,jdbcType=INTEGER},
+      option25Des = #{option25des,jdbcType=VARCHAR},
+      option25Link = #{option25link,jdbcType=INTEGER},
+      option25Feedback = #{option25feedback,jdbcType=VARCHAR},
+      option25TagId = #{option25tagid,jdbcType=INTEGER},
+      option25Score = #{option25score,jdbcType=INTEGER},
+      option26Des = #{option26des,jdbcType=VARCHAR},
+      option26Link = #{option26link,jdbcType=INTEGER},
+      option26Feedback = #{option26feedback,jdbcType=VARCHAR},
+      option26TagId = #{option26tagid,jdbcType=INTEGER},
+      option26Score = #{option26score,jdbcType=INTEGER},
+      comment = #{comment,jdbcType=VARCHAR}
+    where aqId = #{aqid,jdbcType=INTEGER}
+  </update>
+</mapper>

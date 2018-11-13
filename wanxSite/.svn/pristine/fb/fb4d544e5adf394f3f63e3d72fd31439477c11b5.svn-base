@@ -1,0 +1,253 @@
+(function($) {
+
+    // mui初始化
+    mui.init();
+
+    // 初始化单页view
+    var viewApi = mui('#app').view({
+        defaultPage: '#setting'
+    });
+
+    // 初始化单页的区域滚动
+    mui('.mui-scroll-wrapper').scroll({
+        bounce: false,
+        indicators: false //是否显示滚动条
+    });
+
+    // 关于我们--版本号
+    document.getElementById('version').innerHTML = "V" + xdcVersion;
+
+    //处理view的后退与webview后退
+    var view = viewApi.view;
+    var oldBack = $.back;
+    $.back = function() {
+        if (viewApi.canBack()) { //如果view可以后退，则执行view的后退
+            viewApi.back();
+        } else { //执行webview后退
+            oldBack();
+        }
+    };
+
+    // 加载"我的"数据
+    myCognitionIndex();
+
+    // 加载心理世界
+    tweet();
+
+    // 监听头部的编辑个人信息
+    document.getElementById('jump-to-person-detail').addEventListener('tap', function() {
+        addLog({
+            logType: 'personalPageSkip',
+            sourcePage: 'person_index',
+            targetPage: 'person_detail'
+        });
+        jumpTo('person_detail');
+    });
+
+    // 监听我的XX按钮
+    document.getElementById('person-button').addEventListener('tap', function(e) {
+        var target = e.target;
+        while (target !== this ) {
+            if (target.tagName.toLowerCase() == 'a') {
+                break;
+            }
+            target = target.parentNode;
+        }
+
+        var href = target.getAttribute('data-href');
+        addLog({
+            logType: 'personalPageSkip',
+            sourcePage: 'person_index',
+            targetPage: href
+        });
+        jumpTo(href);
+    });
+
+    // 初始化悬浮窗
+    document.getElementById('suspension').addEventListener('tap', function() {
+        addLog({
+            logType: 'personalPageSkip',
+            sourcePage: 'person_index',
+            targetPage: 'index'
+        });
+        jumpTo('index');
+    });
+
+    // 监听:关于认知-welcome、心理世界-再去测测
+    document.getElementById('welcome').addEventListener('tap', function() {
+        addLog({
+            logType: 'personalPageSkip',
+            sourcePage: 'person_index',
+            targetPage: 'professialAssessQnList'
+        });
+        jumpToQnList(3,'professialAssessQnList');
+    });
+    document.getElementById('tweet-assess-again').addEventListener('tap', function() {
+        addLog({
+            logType: 'personalPageSkip',
+            sourcePage: 'person_index',
+            targetPage: 'professialAssessQnList'
+        });
+        jumpToQnList(3,'professialAssessQnList');
+    });
+
+    // 监听留言建议的输入
+    document.getElementById('message-input').addEventListener('input', function(e) {
+        handleMessageInput(e);
+    });
+
+    // 监听留言建议的提交
+    document.getElementById('message-submit').addEventListener('tap', function() {
+        handleMessageSubmit();
+    });
+    
+})(mui)
+
+/**
+ * 加载“我的”数据
+ */
+function myCognitionIndex() {
+    mui.ajax(baseUrl+'/wanx/myCognitionIndex', {
+        data: {
+            userId: 1
+        },
+        dataType: 'json',
+        type: 'get',
+        timeout: 10000,
+        success: function(data) {
+            
+            // 如果用户没有头像，给出默认头像
+            data.wanxHeadImg = isStrValid(data.wanxHeadImg) ? data.wanxHeadImg : "./images/good.png";
+
+            // 存入本地，供其他页面调用
+            localStorage.setItem('wanxNickName', data.wanxNickName);
+            localStorage.setItem('wanxHeadImg', data.wanxHeadImg);
+            localStorage.setItem('mySuperSurvey', data.mySuperSurvey);
+            localStorage.setItem('myAssess', data.myAssess);
+            localStorage.setItem('myAwardLiangpiao', data.myAwardLiangpiao);
+            localStorage.setItem('myFavoriteReport', data.myFavoriteReport);
+
+            // 显示用户信息
+            document.getElementById('nickname').innerHTML = "我是" + data.wanxNickName;
+            document.getElementById('headImg').setAttribute("src", data.wanxHeadImg);
+            document.getElementById('mySuperSurvey').innerHTML = data.mySuperSurvey + "次";
+            document.getElementById('myAssess').innerHTML = data.myAssess + "次";
+            document.getElementById('myAwardLiangpiao').innerHTML = data.myAwardLiangpiao + "粮票";
+            document.getElementById('myFavoriteReport').innerHTML = data.myFavoriteReport + "份";
+
+            // 显示标签
+            var myTagsElem = document.getElementById('myTags');
+            var tagFragment = '';
+            data.myTags = data.myTags || [];
+            if (data.myTags.length == 0) {
+                tagFragment = "<i class=\"icon-edit\"></i>我想介绍一下自己";
+            } else {
+                mui.each(data.myTags, function(index, item) {
+                    if (isStrValid(item)) {
+                        tagFragment += "<span>" + item + "</span>";
+                    }
+                })
+            }
+            myTagsElem.innerHTML = tagFragment;
+        }
+    })
+}
+
+/**
+ * 留言输入框的处理函数
+ */
+function handleMessageInput(e) {
+    var inputVal = e.target.value;
+    var maxLength = e.target.getAttribute('maxlength');
+    var messageSubmit = document.getElementById('message-submit');
+    // 改变已输入字数
+    document.getElementById('message-already-number').innerHTML = inputVal.length;
+    document.getElementById('message-left-number').innerHTML = maxLength - inputVal.length;
+    // 改变提交按钮的状态
+    if (inputVal.length > 0 && messageSubmit) {
+        messageSubmit.classList.add('active');
+    }
+    if (inputVal.trim() == '' && messageSubmit) {
+        messageSubmit.classList.remove('active');
+    }
+    // 检测字数限制
+    if (inputVal.length >= maxLength) {
+        mui.toast("很抱歉，不能超过" + maxLength + "个字");
+    }
+}
+
+/**
+ * 留言提交按钮的点击函数
+ */
+function handleMessageSubmit() {
+
+    var messageInput = document.getElementById('message-input');
+    var inputVal = messageInput.value;
+    if (inputVal.trim() == '') {
+        mui.toast("您还没有写留言哦～");
+    } else {
+        // 统计提交留言
+        addLog({
+            logType: 'personalAction',
+            action: 'leaveMessageBoard',
+            actResult: inputVal
+        });
+        // 提交留言建议
+        mui.ajax(baseUrl+'/wanx/saveMessageBoard', {
+            data: {
+                userId: 1,
+                messageContent: inputVal
+            },
+            dataType: 'json',
+            type: 'post',
+            timeout: 10000,
+            success: function(data) {
+                if (isDataSuccess(data)) {
+                    mui.toast("提交成功!");
+                    setTimeout(function() {
+                        jumpTo('person_index');
+                    }, 800);
+                } else {
+                    mui.toast("网络错误，请重新提交...");
+                }
+            },
+            error: function() {
+                mui.toast("网络错误，请重新提交...");
+            }
+        });
+    }
+}
+
+/**
+ * 加载心理世界
+ */
+function tweet() {
+    mui.ajax(baseUrl+'/wanx/tweet', {
+        data: {},
+        dataType: 'json',
+        type: 'get',
+        timeout: 10000,
+        success: function(data) {
+            var template = [
+                "<li class=\"mui-table-view-cell mui-media\">",
+                "   <a href=\"{{tweetUrl}}\" class=\"card-intro\">",
+                "      <img class=\"mui-media-object mui-pull-left card-img\" src=\"{{picUrl}}\">",
+                "      <div class=\"mui-media-body\">",
+                "         <h4 class=\"mui-ellipsis-2 card-title\"><span class=\"card-tag card-head-tag card-tag-yellow\">{{tag}}</span>{{tweetTitle}}</h4>",
+                "         <p class=\"card-detail card-time2\">{{pTime}}</p>",
+                "         <p class=\"card-detail card-publisher2\">{{author}}</p>",
+                "      </div>",
+                "   </a>",
+                "</li>"
+            ].join("");
+
+            // 显示每个条目
+            var list = document.getElementById('tweet-list');
+            var fragment = '';
+            for (var i = 0, length = data.length; i < length; i++) {
+                fragment += Mustache.render(template, data[i]);
+            }
+            list.innerHTML = fragment;
+        }
+    });
+}

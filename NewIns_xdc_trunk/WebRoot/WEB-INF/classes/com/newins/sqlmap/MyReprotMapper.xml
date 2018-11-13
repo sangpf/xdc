@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newins.dao.MyReportDao">
+	<!-- 删除我收藏的报告记录 -->
+	<delete id="deleteMyFavorites" parameterType="java.lang.Integer">
+		DELETE FROM ni_user_favorite_report WHERE ni_user_favorite_report.userId=#{0} and ni_user_favorite_report.reportId=#{1};
+	</delete>
+	<!-- 收藏报告 -->
+	<insert id="storeup" useGeneratedKeys="true" keyProperty="favoriteId"  parameterType="com.newins.model.CollectionFunction">
+		insert into ni_user_favorite_report (userId,reportId,favoriteTime) values(#{userId},#{reportId},#{favoriteTime});
+	</insert>
+	<!-- 加载我收藏的报告记录 -->
+	<select id="loadFavorites" parameterType="java.lang.Integer" resultType="com.newins.model.MyReport">
+		select favorite.favoriteId,favorite.reportId,report.reportTitle, report.reportStatus as reportStatus,report.qnType,class.reportClassName,DATE_FORMAT(favorite.favoriteTime,'%Y-%m-%d') as favoriteTime,report.thumbUp,report.reportUrl from ni_user_favorite_report as favorite,ni_report as report,ni_reportclass_dict as class where favorite.reportId=report.reportId and report.reportClassId=class.reportClassId and favorite.userId=#{userId} order by favorite.favoriteTime desc
+	</select>
+</mapper>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html manifest="newIns.manifest">
+
+<head>
+    <meta charset="utf-8">
+    <title>超级调查</title>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/mui/mui.css">
+    <link rel="stylesheet" href="css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="css/xdc/xdc_main.css">
+    <link rel="stylesheet" href="css/xdc/kurun_lottery.css">
+
+</head>
+
+<body>
+    <section class="lottery-wrapper">
+        <img src="images/lottery-shan.png" id="shan-img" style="display:none;">
+        <img src="images/lottery-sorry.png" id="sorry-img" style="display:none;">
+        <div class="banner">
+            <div class="turnplate">
+                <canvas class="item" id="wheelcanvas" width="422px" height="422px"></canvas>
+                <img class="pointer" id="pointer" src="images/turnplate-pointer.png">
+            </div>
+        </div>
+    </section>
+    <section class="prize-wrapper">
+        <h5 class="prize-title">奖项设置</h5>
+        <nav class="prize-list">
+            <div class="prize-setting">
+                <img src="" width="100">
+                <p class="prize-des">一等奖</p>
+                <p class="prize-des prize-name"></p>
+                <p class="prize-des prize-num"></p>
+            </div>
+            <div class="prize-setting">
+                <img src="" width="100">
+                <p class="prize-des">二等奖</p>
+                <p class="prize-des prize-name"></p>
+                <p class="prize-des prize-num"></p>
+            </div>
+            <div class="prize-setting">
+                <img src="" width="100">
+                <p class="prize-des">三等奖</p>
+                <p class="prize-des prize-name"></p>
+                <p class="prize-des prize-num"></p>
+            </div>
+        </nav>
+    </section>
+    <section class="rules-wrapper">
+        <h5 class="prize-title">活动规则</h5>
+        <div class="rules-content">
+            <ul id="lotteryIntro">
+            		<li>1.如果您放弃了奖励，将不能再次抽奖，奖励也会消失。</li>
+            </ul>
+        </div>
+        <p>本次活动最终解释权心发现所有</p>
+    </section>
+    <!-- JS -->
+    <script src="js/mui/mui.min.js"></script>
+    <script src="js/lib/mustache.min.js"></script>
+    <script src="js/lib/jquery-1.10.2.js"></script>
+    <script src="js/lib/jQueryRotate.2.2.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/xdc/usefulFun.js"></script>
+    <script src="js/xdc/validate.js"></script>
+    <script src="js/xdc/kurun_lottery.js"></script>
+    <script type="text/javascript" src="http://pingjs.qq.com/h5/stats.js" name="MTAH5" sid="500158849" cid="500158852"></script>
+    <script>
+    if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+        window.applicationCache.update();
+    }
+    </script>
+</body>
+
+</html>

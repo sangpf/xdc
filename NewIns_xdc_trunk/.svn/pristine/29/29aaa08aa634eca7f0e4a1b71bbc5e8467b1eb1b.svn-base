@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newins.payment.dao.Paid_orderDao">
+	
+	<insert id="insert" parameterType="com.newins.payment.model.Paid_order">
+		INSERT INTO ni_paid_order (
+			contentId,contentType,time,money,userId,channelId,
+			paidmethodId,state,out_trade_no,transactionId
+		)	
+		values (
+			#{contentId},#{contentType},#{time},#{money},#{userId},#{channelId},
+			#{paidmethodId},#{state},#{out_trade_no},#{transactionId}
+		)
+		
+	</insert>
+	
+	<update id="update" parameterType="com.newins.payment.model.Paid_order">
+		update ni_paid_order
+		<set>
+			<if test="state != null">
+				state = #{state},
+			</if>
+			<if test="transactionId != null">
+				transactionId = #{transactionId},
+			</if>
+		</set>
+		where out_trade_no = #{out_trade_no}
+	</update>
+	
+	<select id="select_out_trade_no" parameterType="java.lang.String" resultType="com.newins.payment.model.Paid_order">
+	SELECT *
+		FROM ni_paid_order 
+		WHERE 
+		out_trade_no = #{out_trade_no}
+	</select>
+
+</mapper>

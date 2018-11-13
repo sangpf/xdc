@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newins.dao.LotteryPreferDao">
+	<resultMap type="com.newins.model.SurveyOrder" id="OrderMap">
+	</resultMap>
+
+	<resultMap type="com.newins.model.LotteryPreferBasicInfo" id="LotteryPreferBasicInfoMap">
+	</resultMap>
+
+	<resultMap type="com.newins.model.LotteryDetailInfo" id="LotteryDetailMap">
+	</resultMap>
+
+	<select id="getLotteryRank" resultMap="OrderMap" parameterType="java.util.Map">
+		select lotteryRank
+		from ni_survey_order
+		where
+		userId=#{userId} and
+		deliveryId=#{deliveryId}
+	</select>
+
+	<select id="getLotteryPreferBasicInfoByDeliveryId" resultMap="LotteryPreferBasicInfoMap"
+		parameterType="java.util.Map">
+		select evaluateId, highBegin, highEnd, highAwardId,
+		highAwardName,
+		highAwardTotal, highAwardLeft, midBegin, midEnd,
+		midAwardTotal,
+		midAwardLeft, midAwardId, midAwardName, lowBegin,
+		lowEnd, lowAwardId, lowAwardName, lowAwardTotal,
+		lowAwardLeft,ruleName, comment,highRate, midRate,lowRate
+		from
+		ni_lottery_prefer_dict
+		where
+		evaluateId = (select evaluateId from
+		ni_survey_delivery where deliveryId = #{deliveryId})
+	</select>
+
+	<select id="getTotalPreferValue" resultType="java.lang.Integer"
+		parameterType="java.util.Map">
+		select SUM(preferValue) as preferVaule from
+		ni_survey_answer WHERE userId= #{userId} AND
+		sqnId= #{qnId}
+	</select>
+
+	<select id="getAwardDetailById" resultMap="LotteryDetailMap" parameterType = "java.lang.Integer"> 
+		select
+		ni_award.awardNum,ni_award.awardId,ni_award.comment,awardType,awardLink
+		from ni_award,ni_award_pool
+		where
+		ni_award.awardPoolId=ni_award_pool.awardPoolId
+		and ni_award.awardId = #{awardId}
+
+	</select>
+	
+	<update id="updateAwardLeft">
+		update ni_lottery_prefer_dict set
+		<if test="lotteryRank == '1'.toString()"> highAwardLeft = #{awardLeft}</if>
+		<if test="lotteryRank == '2'.toString()"> midAwardLeft = #{awardLeft}</if>
+		<if test="lotteryRank == '3'.toString()"> lowAwardLeft = #{awardLeft}</if>
+		where evaluateId = (select evaluateId from ni_survey_delivery where deliveryId = #{deliveryId})
+	</update>
+	
+	<update id="updateOrderAwardId">
+	update  ni_survey_order 
+	set awardId = #{awardId},awardMethod=#{awardMethod},lotteryRank=#{lotteryRank}
+	where userId=#{userId} and  deliveryId=#{deliveryId}
+	</update>
+
+</mapper>

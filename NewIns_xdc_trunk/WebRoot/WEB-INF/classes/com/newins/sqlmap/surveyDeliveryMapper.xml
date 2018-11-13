@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.SurveyDeliveryMapper">
+	<resultMap type="com.newins.model.SurveyDelivery" id="surveyDeliveryMap">
+		<result property="deliveryId" column="deliveryId" />
+		<result property="status" column="status" />
+	</resultMap>
+
+	<select id="getDeliveryStatusById" resultMap="surveyDeliveryMap"
+		parameterType="int">
+		SELECT status from ni_survey_delivery WHERE
+		deliveryId=#{deliveryId} AND ni_survey_delivery.channelId=1
+	</select>
+
+	<select id="getCollectedNumById" resultMap="surveyDeliveryMap"
+		parameterType="int">
+		select ni_survey_delivery.collectNum,sum(case when
+		orderId is not NULL then 1 else 0
+		end) + IFNULL(collectedNum,0)
+		as
+		collectedNum
+		from
+		ni_survey_order,ni_survey_delivery
+		where ni_survey_order.deliveryId=#{deliveryId} and ni_survey_delivery.deliveryId=#{deliveryId} AND ni_survey_delivery.channelId=1
+	</select>
+</mapper>

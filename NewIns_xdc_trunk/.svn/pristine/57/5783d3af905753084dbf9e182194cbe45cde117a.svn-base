@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.CheckAwardGetStatusMapper">
+	<resultMap type="com.newins.model.SurveyOrder" id="CheckAwardGetStatusMap">
+		<result property="awardGetStatus" column="awardGetStatus" />
+	</resultMap>
+	<select id="checkAwardGetStatus" resultMap="CheckAwardGetStatusMap">
+		SELECT awardGetStatus FROM ni_survey_order WHERE userId=#{userId} AND
+		sqnId=#{sqnId}
+	</select>
+</mapper>

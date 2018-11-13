@@ -1,0 +1,39 @@
+package com.newins.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+/**
+ * 查询用户是否是临时用户Controller
+ * 
+ * @author Zhangwenhao
+ *
+ */
+@Controller
+@RequestMapping("/wanx")
+public class CheckUserIdTemporary {
+	@RequestMapping(value = "/checkUser", method = RequestMethod.GET)
+	@ResponseBody
+	public Object checkUser(HttpServletRequest request){
+		boolean result=false;
+		//得到session
+		HttpSession session=request.getSession();
+		//获取comment来判断当前用户是否为临时用户
+		Object userType=session.getAttribute("userType");
+		
+		if(userType==null||userType==""){
+			//进入这里表示用户不是临时用户
+			result=false;
+			
+		}else if(userType.toString()=="tmpUser"||userType.toString().equals("userType")){
+			//进入这一步表示用户是临时用户
+			result=true;
+		}
+		return result;
+	}
+}

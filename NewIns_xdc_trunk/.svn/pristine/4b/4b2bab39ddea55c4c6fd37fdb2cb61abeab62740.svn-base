@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.ProductDao">
+	<!-- 查询产品包引导页信息 -->
+	<select id="getPageInfo" parameterType="java.lang.Integer" resultType="com.newins.model.ProductPageInfo">
+		SELECT 
+			ni_product_package.picurl, 
+			ni_product_package.title, 
+			ni_product_package.subtitle, 
+			ni_product_package.price, 
+			ni_product_package.discount, 
+			ni_product_package.tag1, 
+			ni_product_package.tag2, 
+			ni_product_package.tag3, 
+			ni_product_package.introduce
+		FROM ni_product_package where ni_product_package.id=#{productId}
+	</select>
+	
+	<!-- 获取产品包列表数据 -->
+	<select id="getProductList" resultType="com.newins.model.ProductList" parameterType="java.lang.Integer">
+		SELECT ni_product_package.id, 
+			ni_product_package.unlockpic, 
+			ni_product_package.unlockedpic,
+			ni_product_package.`status` as packState,
+			ni_product_package.pendingOpenPic
+		FROM ni_product_package
+		where ni_product_package.`status` !=2 and ni_product_package.channelId=#{channelId}
+	</select>
+	
+	<!-- 查询当前用户是否个人购买了指定产品包 -->
+	<select id="isBuyPersonalProduct" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+		select count(*) from ni_personal_product where userId=#{0} and packageId=#{1} and `status`=1
+	</select>
+	
+	<!-- 查询当前用户学校是否购买了指定产品包 -->
+	<select id="isBuySchoolProduct" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+		select count(*) from ni_school_product where schoolId=#{0} and packagetId=#{1} and `status`=1
+	</select>
+	
+	<!-- 查询指定产品包内容列表头部信息 -->
+	<select id="getPackageHead" resultType="com.newins.model.PackageListHead" parameterType="java.lang.Integer">
+		 select 	
+		 	ni_ad_info.adImg,
+			ni_product_package.column1Name as column1Name,
+			ni_product_package.column2Name as column2Name
+			from
+			ni_product_package,
+			ni_ad_info
+		where 
+			ni_product_package.adId=ni_ad_info.adId and
+			ni_product_package.id=#{packageId}
+	</select>
+	
+	<!-- 查询产品包首页推文列表 -->
+	<select id="getPackageTweet" resultType="com.newins.model.PackageList" parameterType="java.lang.Integer">
+		select 
+				ni_tweet.picUrl,
+				ni_tweet.tweetTitle as title,
+				ni_product_manage.showOrder,
+				ni_tweet.author,
+				ni_tweet.tweetUrl,
+				4 as qnType
+		from 
+				ni_product_manage,ni_tweet
+		where 
+				ni_tweet.tweetId=ni_product_manage.itemId and
+				ni_product_manage.state=1 and
+				ni_product_manage.productId=#{packageId} and
+				ni_product_manage.itemType=5 and
+				ni_product_manage.columId=1
+				order by ni_product_manage.showOrder ASC
+	</select>
+	<!-- 查询产品包首页测评列表 -->
+	<select id="getPackageAssess" resultType="com.newins.model.PackageList" parameterType="java.lang.Integer">
+		select  
+				ni_assess_delivery.deliveryId,
+				ni_assess_delivery.aqnId as qnId,
+				ni_assess_delivery.img as picUrl,
+				ni_assess_delivery.showTitle as title,
+				ni_assess_questionnaire.aqnCategory as qnCategory,
+				ni_author.userName as authorName,
+				2 as qnType,
+				ni_product_manage.showOrder
+		from ni_assess_delivery,
+				ni_assess_questionnaire,
+				ni_author,
+				ni_product_manage
+		where 
+				ni_assess_delivery.aqnId=ni_assess_questionnaire.aqnId and
+				ni_assess_questionnaire.authorId=ni_author.id and 
+				ni_product_manage.itemId=ni_assess_delivery.deliveryId and
+				ni_product_manage.itemType=2 and 
+				ni_product_manage.state=1 and
+				ni_product_manage.columId=1 and
+				ni_product_manage.productId=#{packageId} order by ni_product_manage.showOrder ASC
+
+	</select>
+	<!-- 获取产品包内容调查问卷 -->
+	<select id="getPackageSurvey"  resultType="com.newins.model.PackageList" parameterType="java.lang.Integer" >
+		select
+			ni_survey_delivery.deliveryId,
+			ni_survey_delivery.sqnId as qnId,
+			ni_survey_delivery.img as picUrl,
+			ni_survey_delivery.showTitle as title,
+			ni_survey_questionnaire.sqnCategory as qnCategory,
+			ni_survey_questionnaire.publisherName as authorName,
+			ni_product_manage.itemType as qnType,
+			ni_product_manage.showOrder
+		from
+			ni_survey_delivery,
+			ni_survey_questionnaire,
+			ni_product_manage
+		where
+			ni_survey_delivery.sqnId=ni_survey_questionnaire.sqnId and
+			ni_product_manage.itemId=ni_survey_delivery.deliveryId and
+			ni_product_manage.itemType=1 and
+			ni_product_manage.state=1 and
+			ni_product_manage.columId=1 and
+			ni_product_manage.productId=#{packageId} order by ni_product_manage.showOrder ASC
+	</select>
+	<!-- 获取指定问卷的简单测评模型结果概述 -->
+	<select id="getAssessResultSummary" resultType="java.lang.String" parameterType="java.lang.Integer">
+		select resultSummary from ni_assess_order where deliveryId=#{0} and userId=#{1}
+	</select>
+	<!-- 获取指定问卷的简单测评模型所有概述 -->
+	
+	<select id="getSimpleAllResult" resultType="String" parameterType="java.lang.Integer">
+		select resultSummary from ni_assess_model_simple where aqnId=#{qnId}
+	</select>
+	
+	<!-- 获取产品包推荐秘籍列表 -->
+	<select id="getrecommendedList" parameterType="java.lang.Integer" resultType="com.newins.model.Recommended">
+		select 
+			ni_tweet.picUrl,
+			ni_tweet.tweetTitle as title,
+			ni_tweet.author,
+			ni_tweet.pTime,
+			ni_tweet.tweetUrl as url
+		from 
+		ni_product_recommend,ni_tweet
+		where
+		ni_product_recommend.targetId=ni_tweet.tweetId and
+		ni_product_recommend.sourceId=#{sourceId}
+		order by ni_product_recommend.showOrder ASC
+	</select>
+	
+	<!-- 获取产品包内容页左侧栏目列表 -->
+	<select id="getLeftColumList" parameterType="java.lang.Integer" resultType="com.newins.model.ProductColum">
+		select 
+			ni_assess_delivery.deliveryId,
+			ni_assess_delivery.aqnId as qnId,
+			2 as qnType,
+			ni_assess_questionnaire.picPath,
+			ni_assess_questionnaire.aqnName as qnName,
+			ni_assess_delivery.showDes,
+			ni_assess_questionnaire.publisherName as author,
+			ni_assess_delivery.tag1Str,
+			ni_assess_delivery.tag2Str,
+			ni_assess_delivery.tag3Str,
+			ni_assess_delivery.tag4Str,
+			ni_assess_delivery.tag5Str
+		from 
+			ni_product_manage,
+			ni_assess_delivery,
+			ni_assess_questionnaire
+		WHERE
+			ni_product_manage.itemId=ni_assess_delivery.deliveryId and
+			ni_assess_questionnaire.aqnId=ni_assess_delivery.aqnId and
+			ni_product_manage.columId=#{0} and 
+			ni_product_manage.state=1 and
+			ni_product_manage.productId=#{1} and
+			ni_product_manage.itemType=2
+			order by ni_product_manage.showOrder ASC
+	</select>
+	
+	<!-- 查询产品包内容页右侧栏目list -->
+	<select id="getRightColumList"  parameterType="java.lang.Integer" resultType="com.newins.model.PackageList">
+		select 
+			ni_tweet.picUrl,
+			ni_tweet.tweetTitle as title,
+			ni_tweet.author as authorName,
+			ni_tweet.pTime,
+			ni_tweet.tweetUrl
+		from
+			ni_product_manage,
+			ni_tweet
+		where
+			ni_product_manage.itemId=ni_tweet.tweetId and
+			ni_product_manage.columId=#{0} AND
+			ni_product_manage.productId=#{1} and
+			ni_product_manage.state=1 and
+			ni_product_manage.itemType=5
+			ORDER BY ni_product_manage.showOrder ASC
+	</select>
+	
+	<!-- 查询当前用户是否答过当前测评问卷 -->
+	<select id="assessIsAnswered" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select count(*)
+		from 
+		ni_assess_order
+		where 
+		ni_assess_order.userId=#{0} and
+		ni_assess_order.aqnId=#{1}
+	</select>
+	<!-- 查询当前用户是否 -->
+	<select id="surveyIsAnswered" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select 
+			count(*)
+		from 
+			ni_survey_order
+		where 
+			ni_survey_order.userId=#{0} and
+			ni_survey_order.sqnId=#{1}
+	</select>
+	<!-- 查询指定问卷的参与人数 -->
+	<select id="assessAnsweredNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select count(*) from ni_assess_order where deliveryId=#{0} and aqnId=#{1}
+	</select>
+	
+	<!-- 查询指定问卷是否有推荐秘籍 -->
+	<select id="isRecommended" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select count(*) from ni_product_recommend where sourceId=#{sourceId}
+	</select>
+	
+	<!-- 获取指定问卷的大五模型全部测评结果概述 -->
+	<select id="assessBigFiveAllResult" parameterType="java.lang.Integer" resultType="java.lang.String">
+		select resultSummary from ni_assess_model_bigfive where aqnId=#{qnId}
+	</select>
+	
+	<!-- 获取指定问卷的多维度加总模型全部测评结果概述 -->
+	<select id="assessMultiSumAllResult" parameterType="java.lang.Integer" resultType="java.lang.String">
+		select resultSummary from ni_assess_model_multi_sum where aqnId=#{qnId}
+	</select>
+	
+	<!-- 获取指定问卷的MBTI模型全部测评结果概述 -->
+	<select id="assessMBTIAllResult" parameterType="java.lang.Integer" resultType="java.lang.String">
+		select resultSummary from ni_assess_model_mbti where aqnId=#{qnId}
+	</select>
+	
+	<!-- 获取指定问卷的多维加总联合输出全部测评结果概述 -->
+	<select id="assessMultiSumRelationAllResult" parameterType="java.lang.Integer" resultType="java.lang.String">
+		select resultSummary from ni_assess_model_multi_relation where aqnId=#{qnId}
+	</select>
+	
+	<!-- 获取指定问卷的MBTI组合输出全部测评结果概述 -->
+	<select id="assessMBTICombination" parameterType="java.lang.Integer" resultType="java.lang.String">
+		select resultSummary from ni_assess_model_mbti_comb where aqnId=#{qnId}
+	</select>
+	<!-- 获取当前产品的用户画像数据 -->
+	<select id="getUserPortrait" parameterType="java.lang.Integer" resultType="com.newins.model.UserPortrait">
+		select 
+				ni_assess_delivery.deliveryId,
+				ni_assess_delivery.aqnId as qnId,
+				ni_assess_questionnaire.aqnCategory,
+				ni_assess_questionnaire.keyPoint as keyPoint
+		from ni_assess_delivery,
+				ni_assess_questionnaire,
+				ni_author,
+				ni_product_manage
+		where 
+				ni_assess_delivery.aqnId=ni_assess_questionnaire.aqnId and
+				ni_assess_questionnaire.authorId=ni_author.id and 
+				ni_product_manage.itemId=ni_assess_delivery.deliveryId and
+				ni_product_manage.itemType=2 and 
+				ni_product_manage.state=1 and
+				ni_product_manage.columId=1 and
+				ni_product_manage.productId=#{packageId} order by ni_product_manage.showOrder ASC
+	</select>
+	<select id="SelectLimit1Product" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+		select id from ni_product_package LIMIT 1
+	</select>
+	<!-- 查询产品包参加测试的人数 -->
+	<select id="SelectAttendNum" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+		select attendNum from ni_product_package where id=#{packageId}
+	</select>
+	<update id="UpDateAttendNum" parameterType="java.lang.Integer">
+		update ni_product_package set attendNum=#{0} where id=#{1}
+	</update>
+	<select id="PackagePrice" parameterType="java.lang.Integer" resultType="java.lang.Double">
+		select discount from ni_product_package where id=#{packageId}
+	</select>
+</mapper>

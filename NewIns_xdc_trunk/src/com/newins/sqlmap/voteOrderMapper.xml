@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.VoteOrderDao">
+	<resultMap type="com.newins.model.VoteOrder" id="voteOrderMap">
+		<result property="orderId" column="orderId" />
+		<result property="userId" column="userId" />
+		<result property="vqnId" column="vqnId" />
+		<result property="awardId" column="awardId" />
+		<result property="sequenceNum" column="sequenceNum" />
+		<result property="orderStatus" column="orderStatus" />
+		<result property="orderCTime" column="orderCTime" />
+		<result property="answerBTime" column="answerBTime" />
+		<result property="answerETime" column="answerETime" />
+		<result property="reviewer" column="reviewer" />
+		<result property="comment" column="comment" />
+	</resultMap>
+
+	<select id="getVoteOrderById" resultMap="voteOrderMap"
+		parameterType="java.util.Map">
+		SELECT *
+		FROM ni_vote_order
+		WHERE userId=#{userId} and
+		vqnId=#{vqnId}
+	</select>
+
+	<select id="searchOrderByVqnIdList" resultMap="voteOrderMap"
+		parameterType="java.util.Map">
+		<foreach collection="vqnIdList" item="item" index="index"
+			separator="UNION">
+			SELECT ni_vote_order.vqnId,ni_vote_order.userId
+			FROM
+			ni_vote_order
+			WHERE
+			ni_vote_order.userId=#{userId} AND
+			ni_vote_order.vqnId = #{item}
+		</foreach>
+	</select>
+
+</mapper>

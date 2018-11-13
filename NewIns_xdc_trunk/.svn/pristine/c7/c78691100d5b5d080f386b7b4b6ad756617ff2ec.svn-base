@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.AssessOrderDao">
+	<resultMap type="com.newins.model.AssessOrder" id="assessOrderMap">
+		<result property="orderId" column="orderId" />
+		<result property="userId" column="userId" />
+		<result property="aqnId" column="aqnId" />
+		<result property="awardId" column="awardId" />
+		<result property="sequenceNum" column="sequenceNum" />
+	</resultMap>
+
+	<!-- 查询订单表   -->
+	<select id="getAssessOrder" resultMap="assessOrderMap" parameterType="java.util.Map">
+		SELECT
+		ni_assess_order.orderId,
+		ni_assess_order.userId,
+		ni_assess_order.aqnId,
+		ni_assess_order.sequenceNum,
+		ni_assess_order.awardId
+		FROM
+		ni_assess_order
+		WHERE
+		ni_assess_order.userId = #{userId} 
+		AND ni_assess_order.aqnId = #{aqnId}
+	</select>
+
+	<select id="searchOrderByAqnIdList" resultMap="assessOrderMap" parameterType="java.util.Map">
+	
+<!-- 		<foreach collection="aqnIdList" item="item" index="index"
+			separator="UNION">
+			SELECT ni_assess_order.aqnId,ni_assess_order.userId
+			FROM ni_assess_order
+			WHERE
+			ni_assess_order.userId=#{userId} AND
+			ni_assess_order.aqnId = #{item}
+		</foreach> -->
+		
+			SELECT ni_assess_order.aqnId,ni_assess_order.userId
+			FROM ni_assess_order
+			WHERE
+			ni_assess_order.userId=#{userId} AND
+			ni_assess_order.aqnId In 
+			<foreach collection="aqnIdList" item="aqnId" open="(" separator="," close=")">
+				#{aqnId}
+			</foreach>
+			
+	</select>
+
+
+</mapper>	
+		

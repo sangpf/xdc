@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.SurveyOrderDao">
+	<resultMap type="com.newins.model.SurveyOrder" id="surveyOrderMap">
+		<result property="orderId" column="orderId" />
+		<result property="userId" column="userId" />
+		<result property="sqnId" column="sqnId" />
+		<result property="awardId" column="awardId" />
+		<result property="sequenceNum" column="sequenceNum" />
+	</resultMap>
+
+	<select id="getSurveyOrder" resultMap="surveyOrderMap" parameterType="java.util.Map">
+		SELECT
+		ni_survey_order.orderId,
+		ni_survey_order.userId,
+		ni_survey_order.sqnId,
+		ni_survey_order.sequenceNum,
+		ni_survey_order.awardId
+		FROM
+		ni_survey_order
+		WHERE
+		ni_survey_order.userId = #{userId} AND
+		ni_survey_order.sqnId = #{sqnId}
+	</select>
+
+	<select id="searchOrderBySqnIdList" resultMap="surveyOrderMap" parameterType="java.util.Map">
+<!-- 		<foreach collection="sqnIdList" item="item" index="index"
+			separator="UNION">
+			SELECT ni_survey_order.sqnId,ni_survey_order.userId
+			FROM ni_survey_order
+			WHERE
+			ni_survey_order.userId=#{userId} AND
+			ni_survey_order.sqnId = #{item}
+		</foreach> -->
+		
+			SELECT 
+				ni_survey_order.sqnId,ni_survey_order.userId
+			FROM ni_survey_order
+			WHERE
+			ni_survey_order.userId= #{userId} AND
+			ni_survey_order.sqnId IN
+			<foreach collection="sqnIdList" item="sqnId" open="(" separator="," close=")">
+				#{sqnId}
+			</foreach>
+		
+	</select>
+
+</mapper>	
+		

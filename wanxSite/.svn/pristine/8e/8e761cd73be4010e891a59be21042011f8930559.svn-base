@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+	    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+	    <META HTTP-EQUIV="Expires" CONTENT="0">
+	    <meta name="format-detection" content="telephone=no">
+	    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+	    <meta name="apple-mobile-web-app-capable" content="yes">
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+	    	<link rel="stylesheet" href="css/mui/mui.min.css" />
+	    	<link rel="stylesheet" href="css/mui/mui.picker.min.css" />
+	    	<link rel="stylesheet" href="css/xdc/kurun_gather.css" />
+	    	<link rel="stylesheet" href="css/xdc/xdc_main.css">
+	    	<script src="js/config.js"></script>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav mui-badge-danger">
+		    <h1 class="mui-title kurun_title">投吧采集</h1>
+		</header>
+		<div class="mui-content">
+		  <!--中部内容外层包裹，用于定位中部内容-->
+		  <div id="input_box">
+			  	<div id="sub_fun" onsubmit="submit_fun()" class="mui-input-group">
+				    <div class="mui-input-row">
+				        <label>性别</label>
+				    <span id="item_sex" class="sex_text" onclick="click_sex()">请选择性别</span>
+				    </div>
+				    <div class="mui-input-row">
+				        <label>年龄</label>
+				    <input id="item_age" type="text" placeholder="请输入年龄">
+				    </div>
+				    <div class="mui-input-row">
+				        <label>省份</label>
+				    <span id="item_Province" class="Province_text" onclick="click_Province()">请选择省份</span>
+				    </div>
+				    <div class="mui-input-row">
+				        <label>城市</label>
+				     <span id="item_city" class="city_text">请选择城市</span>
+				    </div>
+				    <div class="mui-button-row">
+				        <button id="btn_click" type="button" class="mui-btn mui-btn-primary" onclick="submit_data()" >确认</button>
+				        <button onclick="reset()" id="Reset" type="button" class="mui-btn mui-btn-danger">重置</button>
+				    </div>
+				</div>
+		  </div>
+		</div>
+		 <!-- loading动画 -->
+		<div id="over" class="over">
+		  <iframe frameborder="0" scrolling="no" src="fireloading.html" width="100%" height="100%"></iframe>
+		</div>
+		<div id="layout" class="layout">
+		  <div class="loading">  
+		  </div>
+		  <p class="loading-text">Loading...</p>
+		</div>
+	</body>
+	<script src="js/mui/mui.min.js"></script>
+	<script src="js/xdc/kurun_gather.js"></script>
+	<script src="js/mui/mui.picker.min.js"></script>
+	<script src="js/xdc/usefulFun.js"></script>
+	<script src="js/xdc/validate.js"></script>
+	<script src="js/mui/city.data.js"></script>
+	<script src="js/xdc/data.city.js"></script>
+</html>

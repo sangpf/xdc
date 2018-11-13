@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newins.dao.VoteDeliveryInfoMapper">
+	<resultMap type="com.newins.model.VoteDeliveryInfo" id="deliveryInfoMap">
+	</resultMap>
+
+	<select id="getDeliveryInfo" resultMap="deliveryInfoMap">
+		SELECT
+		ni_award.awardId,ni_award.awardName,lotteryId,awardType,ni_ad_info.adType,ni_ad_info.replaceAdId,awardLink,awardNum,ni_ad_info.adId,adImg,adLink,thumbUp,thumbDown,relatedStr1,relatedStr2,relatedStr3,relatedUrl1,relatedUrl2,relatedUrl3,resultMsg,vqnId
+		as qnId,ni_vote_delivery.titleTag
+		FROM ni_award,ni_award_pool,ni_ad_info,ni_vote_delivery
+		WHERE ni_award.awardPoolId = ni_award_pool.awardPoolId
+		AND ni_award.awardId = ni_vote_delivery.award1Id
+		AND
+		ni_vote_delivery.adId = ni_ad_info.adId
+		AND
+		ni_vote_delivery.deliveryId = #{deliveryId} AND 
+		ni_vote_delivery.channelId=1
+	</select>
+</mapper>

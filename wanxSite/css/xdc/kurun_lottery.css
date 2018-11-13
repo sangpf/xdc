@@ -1,0 +1,94 @@
+/**
+ * 随机抽奖、倾向型抽奖页的CSS文件
+ */
+
+html,
+body {
+    background-color: #ca1518;
+    overflow-x: hidden;
+}
+
+
+/*奖项设置*/
+
+.prize-wrapper,
+.rules-wrapper {
+    margin: 10px 30px;
+}
+
+h5.prize-title {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.prize-wrapper nav {
+    display: table;
+    width: 100%;
+}
+
+.prize-setting {
+    display: table-cell;
+    text-align: center;
+}
+
+.prize-des {
+    margin: 0;
+    text-align: center;
+    font-size: 12px;
+    color: #fff;
+}
+
+.rules-content {
+    background-color: #fff;
+    font-size: 12px;
+    color: #fff;
+}
+
+.rules-content ul {
+    padding: 5px 15px;
+    list-style-type: none;
+    margin: 0;
+}
+
+.rules-content li {
+    color: #333;
+    line-height: 2.5;
+}
+
+.rules-wrapper p {
+    margin: 10px 0;
+    color: #fff;
+}
+
+
+/* 大转盘样式 */
+
+.banner {
+    display: block;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 50px;
+    padding-bottom: 14px;
+}
+
+.banner .turnplate {
+    display: block;
+    width: 100%;
+    position: relative;
+    background-image: url(../../images/turnplate-bg.png);
+    background-size: 100% 100%;
+}
+
+.banner .turnplate canvas.item {
+    width: 100%;
+}
+
+.banner .turnplate img.pointer {
+    position: absolute;
+    width: 31.5%;
+    height: 42.5%;
+    left: 34.6%;
+    top: 23%;
+}

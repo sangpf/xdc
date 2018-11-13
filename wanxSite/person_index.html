@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html manifest="newIns.manifest">
+
+<head>
+    <meta charset="utf-8">
+    <title>心发现</title>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="css/mui/mui.css">
+    <link rel="stylesheet" type="text/css" href="css/mui/mui.example.setting.css">
+    <link rel="stylesheet" type="text/css" href="css/lib/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/xdc/xdc_main.css">
+    <link rel="stylesheet" type="text/css" href="css/xdc/xdc_person.css">
+</head>
+
+<body class="mui-fullscreen">
+    <!--页面主结构开始-->
+    <div id="app" class="mui-views">
+        <div class="mui-view">
+            <div class="mui-pages">
+            </div>
+        </div>
+    </div>
+    <!--页面主结构结束-->
+    <!--单页面开始-->
+    <div id="setting" class="mui-page">
+        <!--页面主内容区开始-->
+        <div class="mui-page-content">
+            <div class="mui-scroll-wrapper">
+                <div class="mui-scroll">
+                    <!-- 头部 -->
+                    <div class="global-header person-header">
+                        <img class="portrait" id="headImg" src="">
+                        <div id="jump-to-person-detail">
+                            <h4 class="mui-ellipsis" id="nickname"></h4>
+                            <h5 id="myTags"></h5>
+                            <icon class="icon-angle-right icon-2x person-more"></icon>
+                        </div>
+                    </div>
+                    <!-- 我的xx链接 -->
+                    <div class="xdc-icon-button person-button" id="person-button">
+                        <div class="mui-row">
+                            <div class="mui-col-sm-6 mui-col-xs-6">
+                                <a class="link-1" data-href="my_survey">
+                                    <i class="bg-placeholder"></i>
+                                    <div class="xdc-icon-button-right">
+                                        <h4>我参与的调查</h4>
+                                        <p id="mySuperSurvey">0次</p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="mui-col-sm-6 mui-col-xs-6">
+                                <a class="link-2" data-href="my_assess">
+                                    <i class="bg-placeholder"></i>
+                                    <div class="xdc-icon-button-right">
+                                        <h4>我参与的测评</h4>
+                                        <p id="myAssess">0次</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="mui-row">
+                            <div class="mui-col-sm-6 mui-col-xs-6">
+                                <a class="link-3" data-href="my_award">
+                                    <i class="bg-placeholder"></i>
+                                    <div class="xdc-icon-button-right">
+                                        <h4>我获得的奖励</h4>
+                                        <p id="myAwardLiangpiao">0粮票</p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="mui-col-sm-6 mui-col-xs-6">
+                                <a class="link-4" data-href="my_report">
+                                    <i class="bg-placeholder"></i>
+                                    <div class="xdc-icon-button-right">
+                                        <h4>我收藏的报告</h4>
+                                        <p id="myFavoriteReport">0份</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 设置 -->
+                    <div class="person-settings">
+                        <ul class="mui-table-view mui-table-view-chevron">
+                            <li class="mui-table-view-cell">
+                                <a class="mui-navigate-right link-1" href="#about-cognitive">关于认知</a>
+                            </li>
+                            <li class="mui-table-view-cell">
+                                <a class="mui-navigate-right link-2" href="#tweet">心理世界</a>
+                            </li>
+                        </ul>
+                        <ul class="mui-table-view mui-table-view-chevron">
+                            <li class="mui-table-view-cell">
+                                <a class="mui-navigate-right link-3" href="#message">留言建议</a>
+                            </li>
+                            <li class="mui-table-view-cell">
+                                <a class="mui-navigate-right link-4" href="#about-us">关于我们</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 回首页悬浮窗 -->
+                <span class="suspension back-to-home" id="suspension"></span>
+            </div>
+        </div>
+        <!--页面主内容区结束-->
+    </div>
+    <!--单页面结束-->
+    <!--关于认知开始-->
+    <div id="about-cognitive" class="mui-page">
+        <div class="mui-page-content">
+            <div class="mui-scroll-wrapper white-bgc">
+                <div class="mui-scroll">
+                    <div class="about-cognitive-header">
+                        <p>人生是一场</p>
+                        <p>自己对自己的战争！</p>
+                        <p>认知就是你的武器</p>
+                    </div>
+                    <div class="about-cognitive-body">
+                        <div class="about-cognitive-box">
+                            <h4>认知自己是一件有逼格的事情</h4>
+                            <p>帮你了解</p>
+                            <p>我是谁！ 我从哪里来！ 要到哪里去！</p>
+                        </div>
+                        <div class="about-cognitive-box">
+                            <h4>认知自己是一件很俗气的事情</h4>
+                            <p>帮你实现</p>
+                            <p>我要幸福！ 我要成功！ 我要有人爱！</p>
+                        </div>
+                        <div class="about-cognitive-box">
+                            <h4>认知别人是一件很有趣的事情</h4>
+                            <p>帮你了解</p>
+                            <p>他是怎么想的！ 她是怎么想的！ 我呢？</p>
+                        </div>
+                        <div class="about-cognitive-box">
+                            <h4>我们是一群很牛逼的人</h4>
+                            <p>帮你开眼看世界</p>
+                            <br>
+                            <p>几个育人无数的教授</p>
+                            <p>一小挫神逼叨叨的心理学家</p>
+                            <p>一帮混社会的高学历、高智商“坏学生”</p>
+                            <p>一群美丽、勤劳、勇敢、善良的学弟、学妹</p>
+                        </div>
+                    </div>
+                    <div class="about-cognitive-footer">
+                        <p>自己对自己的战争已经开始!</p>
+                        <p>让你内心的草泥马沸腾吧</p>
+                        <a id="welcome">Welcome</a>
+                    </div>
+                </div>
+                <!-- 返回悬浮窗 -->
+                <button type="button" class="mui-action-back suspension back-to-prev"></button>
+            </div>
+        </div>
+    </div>
+    <!--关于认知结束-->
+    <!--心理世界开始-->
+    <div id="tweet" class="mui-page">
+        <div class="mui-page-content">
+            <div class="mui-scroll-wrapper">
+                <div class="mui-scroll">
+                    <div class="qn-banner tweet-banner">
+                        <h4>实践前先来点理论壮壮胆</h4>
+                        <a id="tweet-assess-again">再去测测 ></a>
+                    </div>
+                    <ul class="mui-table-view card-list" id="tweet-list" style="margin-top: 10px;"></ul>
+                </div>
+                <!-- 返回悬浮窗 -->
+                <button type="button" class="mui-action-back suspension back-to-prev"></button>
+            </div>
+        </div>
+    </div>
+    <!--心理世界结束-->
+    <!--留言建议开始-->
+    <div id="message" class="mui-page">
+        <div class="mui-page-content">
+            <div class="mui-scroll-wrapper white-bgc">
+                <div class="mui-scroll white-bgc">
+                    <!-- 留言框 -->
+                    <div class="message-area">
+                        <h4>我的留言</h4>
+                        <textarea id="message-input" placeholder="亲！请写下您对我们的意见、建议和希望，我们一定会仔细聆听的！" maxlength="500"></textarea>
+                        <div class="message-number">
+                            <span id="message-already-number">0</span>
+                            <span>/</span>
+                            <span id="message-left-number">500</span>
+                        </div>
+                    </div>
+                    <!-- 联系信息 -->
+                    <div class="message-contact">
+                        <p>客服电话：15901278202</p>
+                        <p>客服邮箱：chaojidiaocha@xindongcha.cn</p>
+                        <p>微信服务号：xindongcha</p>
+                    </div>
+                    <!-- 按钮 -->
+                    <div class="mui-row">
+                        <div class="mui-col-sm-6 mui-col-xs-6">
+                            <button type="button" class="message-button mui-action-back">返回</button>
+                        </div>
+                        <div class="mui-col-sm-6 mui-col-xs-6">
+                            <button type="button" class="message-button" id="message-submit">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--留言建议结束-->
+    <!--关于我们开始-->
+    <div id="about-us" class="mui-page">
+        <div class="mui-page-content">
+            <div class="mui-scroll-wrapper white-bgc">
+                <div class="mui-scroll white-bgc">
+                    <!-- 头部 -->
+                    <div class="about-us-header">
+                        <img src="images/logo.png" alt="chaojidiaocha">
+                        <h4>心发现</h4>
+                        <p id="version"></p>
+                    </div>
+                    <!-- 介绍 -->
+                    <div class="about-us-body">
+                        <p class="about-description">“心发现”为大学生打造一个全新认知与表达生态，充分利用大学生个性形成期中强烈的表达意愿与提高自我认知的渴望，通过“调查 + 测评 + 报告”的模式，结合自媒体传播，为当代大学生打造一个心灵家园！</p>
+                        <p class="about-phone">商务合作电话：15901278202</p>
+                    </div>
+                    <!-- 版权信息 -->
+                    <div class="about-us-footer">
+                        <p class="about-law">
+                            <!--
+                            <a class="about-law-item" href="#about-law-1">《用户许可及服务协议》</a>
+                            <span>及</span>
+                            -->
+                            <a class="about-law-item" href="#about-law-2">《隐私说明》</a>
+                        </p>
+                        <p class="about-company">北京新洞察信息服务有限责任公司</p>
+                        <p class="about-copyright">2016 版权所有</p>
+                    </div>
+                </div>
+                <!-- 返回悬浮窗 -->
+                <button type="button" class="mui-action-back suspension back-to-prev"></button>
+            </div>
+        </div>
+    </div>
+    <!--关于我们结束-->
+    <!--用户许可及服务协议开始-->
+    <div id="about-law-1" class="mui-page">
+        <div class="mui-page-content">
+            <div class="mui-scroll-wrapper white-bgc">
+                <div class="mui-scroll white-bgc">
+                    <div class="mui-content-padded about-law-text">
+                        <h4>用户许可及服务协议</h4>
+                    </div>
+                </div>
+                <!-- 返回悬浮窗 -->
+                <button type="button" class="mui-action-back suspension back-to-prev"></button>
+            </div>
+        </div>
+    </div>
+    <!--用户许可及服务协议结束-->
+    <!--隐私说明开始-->
+    <div id="about-law-2" class="mui-page">
+        <div class="mui-page-content">
+            <div class="mui-scroll-wrapper white-bgc">
+                <div class="mui-scroll white-bgc">
+                    <div class="mui-content-padded about-law-text">
+                        <h4>隐私说明</h4>
+                        <p>北京新洞察信息服务有限责任公司（下称“新洞察”）非常重视对您隐私的保护，在您使用新洞察提供的软件服务前，请您仔细阅读如下声明。</p>
+                        <p>新洞察主要提供调查服务，分为市场调查服务与用户服务性调查服务，在调查过程中收集用户对商品、服务、意识形态等方面的反馈资料，并统计处理相关资料，为企业和团体提供更好的市场信息， 从而贡献社会。新洞察另提供测评服务，收集用户的心理感知与行为感知等方面的反馈资料，并统计处理相关资料用于研究，以便更好的为用户提供精准而有效的测评服务。</p>
+                        <p>本声明对您的信息的收集和使用情况进行解释，在征得您许可的情况下，新洞察会以高度的勤勉义务对待这些信息。</p>
+                        <p>本声明适用于新洞察的所有相关服务，随着新洞察服务范围的扩大，隐私声明的内容可由新调查随时更新，且毋须另行通知。更新后的隐私声明一旦在网页上公布即有效代替原来的隐私声明。</p>
+                        <h5>1. 收集信息的内容及用途</h5>
+                        <h6>1.1信息内容</h6>
+                        <p>当您使用我们的产品时，服务器会自动通过产品系统公用的接口采集用户手机的国际移动设备身份码（IMEI），国际移动用户识别码（IMSI），网络设置地址（MAC），手机型号，手机系统版本号，系统编号，系统ID号，屏幕分辨率，上网类型，地理位置等数据，以及部分功能使用的情况数据。这些数据仅用于统计我们产品的用户数量，分析产品的使用情况。我们会根据收集到的以上数据不断改进我们的产品，其内容不涉及用户个人身份等隐私信息。</p>
+                        <p>当您参加新洞察组织的网上问卷调查，包含且不限于调查、投票、测评等问卷服务时上传的相关问卷中的答案及所提供的姓名、个人信息和联系方式等资料。</p>
+                        <h6>1.2信息用途： </h6>
+                        <p>新洞察将使用您的反馈信息进行软件的开发升级，以便于为您提供更好的服务。</p>
+                        <p>当您参加新洞察组织的网上问卷调查即表示您承认和同意将您个人信息用于新洞察或委托新洞察提供调查服务的第三方企业关于市场调查、市场研究分析、內部管理、內部培训、参加活动等行为。我们将严格管理您的信息，原则上仅作为调查统计用途，仅在您同意的情况下运用到其它的商业用途。</p>
+                        <h5>2. 信息安全</h5>
+                        <p>我们制定了严格的用户信息安全保护措施，确保不超过目的和范围收集与使用用户信息，保障您上传信息的安全，严格控制您个人上传的信息不被滥用。</p>
+                        <h5>3. 信息共享</h5>
+                        <p>新洞察将遵守国家规定的关于个人隐私权的保护法则、本公司严格遵守中国市场调查协会制定的市场调查行业个人资料保护守则，以及相关业界行为等相关规范，在脱敏后有限度的用于商业领域，绝不直接向第三方转移用户全部隐私信息。</p>
+                        <h5>4. 免责声明</h5>
+                        <p>我们不会在未经用户合法授权时，公开，编辑或透露用户的上述信息，除非有下列情况需要：</p>
+                        <ol>
+                            <li>依照国家有关法律，法规规定；</li>
+                            <li>在紧急情况下，为维护用户及公众的权益；</li>
+                            <li>为维护公司的商标权，专利权及其他任何合法权益；</li>
+                            <li>其他依法需要公开，编辑或透露上述信息的合法情况。</li>
+                        </ol>
+                        <h5>5.  不可抗力</h5>
+                        <p>发生以下不可抗力情形，新洞察公司不承担任何责任，但我们将尽最大努力维护您的权益，并在以下情况发生并新洞察公司知悉的情况及时通知您：</p>
+                        <ol>
+                            <li>黑客攻击、病毒侵袭、网络故障等；</li>
+                            <li>电信运营商政策变化导致的重大影响；</li>
+                            <li>自然灾害，战争等其他不能合理控制，不可预见或即使预见亦无法避免的事件；</li>
+                            <li>法律法规规定的其他不可抗力。</li>
+                        </ol>
+                    </div>
+                </div>
+                <!-- 返回悬浮窗 -->
+                <button type="button" class="mui-action-back suspension back-to-prev"></button>
+            </div>
+        </div>
+    </div>
+    <!-- 隐私说明结束 -->
+    <!-- JS -->
+    <script src="js/mui/mui.min.js"></script>
+    <script src="js/mui/mui.view.js"></script>
+    <script src="js/lib/mustache.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/xdc/usefulFun.js"></script>
+    <script src="js/xdc/person_index.js"></script>
+    <script>
+    if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+        window.applicationCache.update();
+    }
+    </script>
+</body>
+
+</html>

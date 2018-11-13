@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.assess.AssessModel_BigFiveDao">
+
+
+	<!-- 大五模型 查询维度得分 所在区间的 结果详情 -->
+	<select id="findAssessModel_BigFive" parameterType="hashmap" resultType="com.newins.model.assess.AssessModel_BigFive">
+		SELECT *
+		from ni_assess_model_bigfive
+		WHERE
+		ni_assess_model_bigfive.aqnId = #{aqnId}
+		AND ni_assess_model_bigfive.dimension = #{dimension}
+		AND #{totalScore} >= ni_assess_model_bigfive.lowNum
+		AND ni_assess_model_bigfive.upperNum >= #{totalScore}
+	</select>
+
+
+
+
+
+
+
+
+
+
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.assess.Assess_model_simpleDao">
+
+	<!-- 列表查询 -->
+	<select id="getAssess_model_simple_list" parameterType="hashmap" resultType="com.newins.model.assess.Assess_model_simple">
+		SELECT * FROM ni_assess_model_simple
+		WHERE aqnId = #{aqnId}
+	</select>
+	
+	<select id="get_Assess_model_simple_score_user" parameterType="hashmap" resultType="java.lang.Integer">
+		SELECT
+			sum(score)
+		FROM
+			ni_assess_answer
+		WHERE
+			userId = #{userId} and aqnId=#{aqnId}
+	</select>
+	
+</mapper>

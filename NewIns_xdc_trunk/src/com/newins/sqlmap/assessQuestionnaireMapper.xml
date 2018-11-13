@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.AssessQuestionnaireDao">
+	<resultMap type="com.newins.model.AssessQuestionnaire" id="assessQuestionnaireMap">
+		<result property="aqnId" column="aqnId" />
+		<result property="aqnName" column="aqnName" />
+		<result property="publisherName" column="publisherName" />
+		<result property="aqnClassName" column="aqnClassName" />
+		<result property="aqnSummary" column="aqnSummary" />
+		<result property="perface" column="perface" />
+		<result property="epilogue" column="epilogue" />
+		<result property="questionQty" column="questionQty" />
+		<result property="comment" column="comment" />
+		<result property="picPath" column="picPath" />
+	</resultMap>
+
+	<select id="loadAssessQuestionnaire" resultMap="assessQuestionnaireMap"
+		parameterType="int">
+		SELECT
+		ni_assess_questionnaire.aqnId,
+		ni_assess_questionnaire.aqnName,
+		ni_assess_questionnaire.publisherName,
+		ni_assess_questionnaire.epilogue,
+		ni_assess_questionnaire.perface,
+		ni_aqnclass_dict.aqnClassName,
+		ni_assess_questionnaire.questionQty,
+		ni_assess_questionnaire.picPath,
+		ni_assess_questionnaire.aqnSummary,
+		ni_assess_questionnaire.comment
+		FROM
+		ni_assess_questionnaire,ni_aqnclass_dict
+		WHERE
+		ni_assess_questionnaire.aqnId = #{aqnId} and
+		ni_aqnclass_dict.aqnClassId=ni_assess_questionnaire.aqnClassId
+	</select>
+
+	<select id="getAssessQuestionnaire_byAqnId" parameterType="java.lang.Integer" resultType="com.newins.model.AssessQuestionnaire">
+		SELECT * 
+			FROM ni_assess_questionnaire 
+		WHERE aqnId = #{aqnId}
+	</select>
+
+</mapper>

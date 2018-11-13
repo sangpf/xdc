@@ -1,0 +1,916 @@
+package com.newins.service.imp;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.newins.controller.AssessController;
+import com.newins.dao.AssessOrderDao;
+import com.newins.dao.AssessQuestionnaireDao;
+import com.newins.dao.SubmitAssessAnswerDao;
+import com.newins.dao.assess.AssessModelMulti_RelationDao;
+import com.newins.dao.assess.AssessModel_BigFiveDao;
+import com.newins.dao.assess.AssessModel_MBTIDao;
+import com.newins.dao.assess.AssessModel_multi_SumDao;
+import com.newins.dao.assess.Assess_model_multi_combination_Dao;
+import com.newins.dao.assess.Assess_model_simpleDao;
+import com.newins.model.Assess;
+import com.newins.model.AssessAnswer;
+import com.newins.model.AssessDelivery;
+import com.newins.model.AssessOrder;
+import com.newins.model.AssessQuestionnaire;
+import com.newins.model.AssessResult;
+import com.newins.model.assess.AssessModelMulti_Relation;
+import com.newins.model.assess.AssessModel_BigFive;
+import com.newins.model.assess.AssessModel_MBTI;
+import com.newins.model.assess.AssessModel_mbti_combination;
+import com.newins.model.assess.AssessModel_multi_Sum;
+import com.newins.model.assess.Assess_model_multi_combination;
+import com.newins.model.assess.Assess_model_multi_combination_relation;
+import com.newins.model.assess.Assess_model_simple;
+import com.newins.model.assess.ScoreByDimension;
+import com.newins.service.AssessDeliveryService;
+import com.newins.service.SubmitAssessAnswerService;
+import com.newins.util.AjaxResult;
+import com.newins.util.MathUtil;
+import com.newins.util.StrUtils;
+import com.newins.util.VarianceAndStandardDiviation;
+
+/**
+ * @Description 递交测评答案Service层实现类
+ * @author Guan
+ * @time 2016年6月20日 下午2:08:39
+ */
+@Service(value = "SubmitAssessAnswerService")
+public class SubmitAssessAnswerServiceImp implements SubmitAssessAnswerService {
+	private static Logger log = Logger.getLogger(AssessController.class);
+	@Autowired
+	private SubmitAssessAnswerDao submitAssessAnsDao;
+	@Autowired
+	@Qualifier("AssessOrder")
+	private AssessOrder assessOrder;
+	@Autowired
+	private AssessDeliveryService assessDeliveryService;
+	@Autowired
+	private AssessOrderDao assessOrderDao;
+	@Autowired
+	private AssessModelMulti_RelationDao assessModelMulti_RelationDao;
+	@Autowired
+	private AssessModel_BigFiveDao assessModel_BigFiveDao;
+	@Autowired
+	private AssessModel_MBTIDao assessModel_MBTIDao;
+	@Autowired
+	private AssessModel_multi_SumDao assessModel_multi_SumDao;
+	@Autowired
+	private Assess_model_simpleDao assess_model_simpleDao;
+	@Autowired
+	private Assess_model_multi_combination_Dao assess_model_multi_combination_Dao;
+	@Autowired
+	private AssessQuestionnaireDao assessQuestionnaireDao;
+	
+	/**
+	 * 将每条答案值付给1个Answer对象，并组成List递交到Dao层
+	 */
+	public boolean insertAssessAnswer(int user_Id, int answer_Num, int aqn_Id, JSONArray jsonAnswerArray) {
+		
+		// 初始化一个answerList存放每条问卷答案对象（SurveyAnswer)
+		List<AssessAnswer> assessAnsList = new ArrayList<AssessAnswer>();
+		for (int i = 0; i < answer_Num; i++) {
+			
+			AssessAnswer assessAnswer = new AssessAnswer();
+			JSONObject oneAnswer = (JSONObject) jsonAnswerArray.get(i);
+			
+			int qType = Integer.parseInt(oneAnswer.getString("questionType"));
+			int aqId = Integer.parseInt(oneAnswer.getString("aqId"));
+			String qAnswer = oneAnswer.getString("qAnswer");
+			String duration = oneAnswer.getString("duration");
+			// 添加属性到model
+			assessAnswer.setUserId(user_Id);
+			assessAnswer.setAqnId(aqn_Id);
+			assessAnswer.setQuestionType(qType);
+			assessAnswer.setAqId(aqId);
+			assessAnswer.setqAnswer(qAnswer);
+			assessAnswer.setDuration(duration);   // 答题持续时间
+			
+			assessAnsList.add(i, assessAnswer);
+
+		}
+		// 将svyAnsList递交到Dao层
+		try {
+			submitAssessAnsDao.insertAssessAnswer(assessAnsList);
+			log.info("------------------>>测评问卷答题 , 新增数据到 answer表中");
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+
+	/**
+	 *  验证答案递交状态，返回递交成功状态
+	 */
+	public AjaxResult insertAssessAnswer(int user_Id, int answer_Num, int aqn_Id,JSONArray jsonAnswerArray, 
+			int deliveryId, int aqnCategory) {
+		
+		log.info("=========================>> order表 基础数据已经更新完, 下面更新 answer表   begin ................");
+		AssessResult assessResult = new AssessResult();
+		//	插入记录到答案表 , 将每条答案值付给1个Answer对象，并组成List递交到 dao层
+		boolean isAssessAnswerExit = insertAssessAnswer(user_Id, answer_Num, aqn_Id,jsonAnswerArray);
+		
+		Map<String, Object> dataMap = new HashMap<String, Object>();// 将参数封装成map格式
+		dataMap.put("userId", user_Id);
+		dataMap.put("aqnId", aqn_Id);
+		
+		if (isAssessAnswerExit) {
+			log.info("=====================>>测评问卷答题后  新增数据到 Answer表成功 , 下面开始查询 测评输出结果 , 将测评结果保存到 order表中 ... "); 
+			log.info("测评问卷类型为 ,  aqnCategory: "+aqnCategory);
+			// 保存测评结果到 测评 订单 Order表中
+			if(aqnCategory == 0){
+				// 简单测评模型
+				assessResult = Calculation_Assess_model_simple(dataMap,assessResult);
+				
+			}else if(aqnCategory == 1){
+				// 多维度测评模型计算
+				assessResult = Calculation_assessModel_multi_Sum(dataMap,assessResult);
+				
+			}else if(aqnCategory == 3){
+				// MBTI 模型
+				assessResult = Calculation_AssessModel_MBTI(dataMap,assessResult);
+				
+			}else if(aqnCategory == 2){
+				// 大五模型计算
+				assessResult = Calculation_AssessModel_BigFive(dataMap,assessResult);
+				
+			}else if(aqnCategory == 4){
+				// 多维度组合输出模型
+				assessResult = Calculation_Assess_model_multi_combination(dataMap, assessResult);
+				
+			}else{
+				log.info("====================>>当前测评问卷测评类型 aqnCategory 错误");
+				return AjaxResult.errorCode("aqnCategory is wrong", "008");
+			}
+			
+			log.info("将测评结果 resultDetail resultSummary 存储到order 表中, 测评问卷答题, 将测评结果 封装到 assessResult 中.... ");
+			
+			if (assessResult != null) {
+				assessResult.setAqnId(aqn_Id);
+				assessResult.setUserId(user_Id);
+				// 根据aqnId和userId 将测评结果存入订单中
+				submitAssessAnsDao.insertResultToOrder(assessResult);
+			} else {
+				// 查询测评结果失败
+				log.info("--------------------->> 测评问卷答题中, 当前用户答题后测评结果查询为空 ");
+				return AjaxResult.errorCode("check assess result failed , 测评结果为空", "007");
+			}
+			//验证是否答题人数达到需要收集人数，如果达到将问卷状态改为6，数量完成
+			changeDeliveryStatus(deliveryId);// 更改投放状态
+			return AjaxResult.successResult("assess answer submit successfully");
+			
+		} else {
+			// 插入记录到答案表失败
+			log.info("--------------------->> 测评问卷答题中, 插入记录到  answer表 失败 ");
+			return AjaxResult.errorCode("insert into survey answer db failed", "006");
+		}
+
+	}
+	
+	// 简单测评模型的计算
+	private AssessResult Calculation_Assess_model_simple(Map<String, Object> dataMap,AssessResult assessResult){
+		log.info("==================================== 计算简单测评模型 的 输出结果  begin .....");
+		 // 简单测评模型
+		// 查询该问卷所有的简单测评模型
+		List<Assess_model_simple> assess_model_simple_list = assess_model_simpleDao.getAssess_model_simple_list(dataMap);
+		// 查询当前用户在该问卷得分
+		Integer assess_model_simple_score_user = assess_model_simpleDao.get_Assess_model_simple_score_user(dataMap);
+		log.info("===============>>查询当前用户在该问卷得分 :"+assess_model_simple_score_user);
+		
+		int interval_min = 0;
+		int interval_max = 0;
+		
+		// 得出 区间最小值, 最大值
+		Iterator<Assess_model_simple> iterator = assess_model_simple_list.iterator();
+		while(iterator.hasNext()){
+			Assess_model_simple next = iterator.next();
+			Integer intervalBegin = next.getIntervalBegin();
+			Integer intervalEnd = next.getIntervalEnd();
+			if(intervalBegin < interval_min){
+				interval_min = intervalBegin;
+			}
+			if(intervalEnd > interval_max){
+				interval_max = intervalEnd;
+			}
+		}
+		log.info("===========================>> 简单测评模型, 得出区间最小值为: "+interval_min + " ,最大值为 :"+interval_max);
+		// 得分非负化
+		double user_score = MathUtil.sub(assess_model_simple_score_user, interval_min);  // 得分 非负化
+		double max_score = MathUtil.sub(interval_max, interval_min);   // 最大区间 非负
+		log.info("======================>> 将得分 和最大分 进行非负化 , 得分非负化 :"+user_score + " 最大区间分非负化 :"+max_score);
+		// 用户得分 百分化
+		double user_score_div = MathUtil.div(user_score, max_score, 10);  
+		log.info("========================>>用户得分 百分化 : "+user_score_div);
+		log.info("========================>>用户得分 百分化 : "+user_score_div * 100);
+		assessResult.setPercentageScore(user_score_div * 100);
+		
+		Iterator<Assess_model_simple> iterator2 = assess_model_simple_list.iterator();
+		
+		// 取出 每个区间的数据 , 将区间值非负化
+		while(iterator2.hasNext()){
+			Assess_model_simple next = iterator2.next();
+			Integer intervalBegin = next.getIntervalBegin();
+			Integer intervalEnd = next.getIntervalEnd();
+			
+			// 将区间  非负
+			double intervalBegin_sub = MathUtil.sub(intervalBegin, interval_min);
+			double intervalEnd_sub = MathUtil.sub(intervalEnd, interval_min);
+			
+			if(user_score >= intervalBegin_sub && user_score <= intervalEnd_sub){
+				assessResult.setResultDetail(next.getResultDetail());
+				assessResult.setResultSummary(next.getResultSummary());
+			}
+			
+			// 将区间 百分化
+//			double intervalBegin_div = MathUtil.div(intervalBegin_sub, max_score, 10);
+//			double intervalEnd_div = MathUtil.div(intervalEnd_sub, max_score, 10);
+//			log.info("======================>> 每个区间最小值和最大值百分化后值为 :intervalBegin_div : "+intervalBegin_div +", intervalEnd_div:"+intervalEnd_div);
+			
+			// 如果用户得分百分化值  在区间百分化值内, 即为要获取的值
+//			if(user_score_div >= intervalBegin_div && user_score_div <= intervalEnd_div){
+//				log.info("==============>> 用户得分百分化值  在区间百分化值内, 即为要获取的值 , 此时的 测评结果为 :"+next.getResultDetail()+"|||| next.getResultSummary()");
+//				assessResult.setAqnId(next.getAqnId());
+//				assessResult.setResultDetail(next.getResultDetail());
+//				assessResult.setResultSummary(next.getResultSummary());
+//			}
+		}
+		
+		log.info("==============================>> 简单测评模型 计算  输出结果 :"+assessResult.toString());
+		return assessResult;
+	}
+	
+	private AssessResult Calculation_Assess_model_multi_combination(Map<String, Object> dataMap,AssessResult assessResult){
+		log.info("================>>测评问卷,多维度组合输出题 , begin ....");
+		// 查询当前用户在当前问卷每个纬度的总分
+		List<ScoreByDimension> get_avg_Assess_model_multi_combination_score = submitAssessAnsDao.get_avg_Assess_model_multi_combination_score(dataMap);
+		// 判断每个维度的平均分落在哪个区间内, 输出一个响应的值 例如  1_2 , 代表输出维度1的第2个区间
+		Iterator<ScoreByDimension> iterator = get_avg_Assess_model_multi_combination_score.iterator();
+		
+		String combination_relation = ""; // 拼接每个维度的输出结果
+		
+		while(iterator.hasNext()){
+			ScoreByDimension next = iterator.next();
+			Integer dimension = next.getDimension();  // 当前维度
+			Integer totalScore = next.getTotalScore();   // 维度总分
+			
+			log.info("=================>>查询当前用户在当前问卷每个纬度的总得分 :"+totalScore);
+			
+			dataMap.put("dimension", dimension);
+			log.info("============>> dataMap :"+dataMap);
+			
+			// 根据问卷id和维度id查询  多维度组合输出模型 表
+			List<Assess_model_multi_combination> get_By_dimension = assess_model_multi_combination_Dao.get_By_dimension(dataMap);
+			log.info("====================>> 多维度组合输出模型长度: "+get_By_dimension.size());
+			
+			Iterator<Assess_model_multi_combination> iterator2 = get_By_dimension.iterator();
+			while(iterator2.hasNext()){
+				Assess_model_multi_combination next2 = iterator2.next();
+				// 得到 每个区间的最低值和 最高值
+				Integer lowNum = next2.getLowNum();
+				Integer upperNum = next2.getUpperNum();
+				String section = next2.getSection();
+				
+				log.info("===================>> 多维度组合输出模型 , lowNum :"+lowNum+", upperNum :"+upperNum+", section:"+section);
+				
+				// 将所有维度的输出拼接成字符串
+				// 判断当前维度 得分是否落在 当前区间的 分值内
+				if(totalScore>=lowNum && totalScore<=upperNum){
+					// 输出该区间
+					combination_relation += (dimension+"_"+section+",");
+					
+				}
+			}
+		}
+		
+		log.info("====================>> 多维度组合输出模型 , 将所有维度的输出拼接成字符串 :"+combination_relation);
+		if(combination_relation.length()>0){
+			combination_relation = combination_relation.substring(0, combination_relation.length() - 1);
+		}
+		
+		// 将拼接的字符串与关联关系进行比对, 查询出输出结果
+		dataMap.put("combination_relation", combination_relation);
+		List<Assess_model_multi_combination_relation> get_combination_relation_Bydimension_combination = assess_model_multi_combination_Dao.get_combination_relation_Bydimension_combination(dataMap);
+		log.info("=======================>> 将拼接的字符串与关联关系进行比对, 查询出输出结果 , 记录条数为 :"+get_combination_relation_Bydimension_combination.size());
+		
+		if(get_combination_relation_Bydimension_combination != null && get_combination_relation_Bydimension_combination.size()>0){
+			Assess_model_multi_combination_relation assess_model_multi_combination_relation = get_combination_relation_Bydimension_combination.get(0);
+			
+			String resultDetail = assess_model_multi_combination_relation.getResultDetail();
+			String resultSummary = assess_model_multi_combination_relation.getResultSummary();
+			
+			log.info("=====================>> 根据关联关系 :"+combination_relation+",从数据库中查询出测评结果 : "+resultDetail);
+			assessResult.setResultDetail(resultDetail);
+			assessResult.setResultSummary(resultSummary);
+			
+		}
+		return assessResult;
+	}
+	
+	// 计算 大五模型
+	private AssessResult Calculation_AssessModel_BigFive(Map<String, Object> dataMap,AssessResult assessResult){
+		 //  2 大五模型
+//		一、每个维度分别加总
+		// 当前问卷 所有问题 根据维度进行分组  统计总得分 , 求出每个维度的总得分 
+		List<ScoreByDimension> listMaxScoreByDimension = submitAssessAnsDao.getTotalScoreByDimension(dataMap);
+		if(listMaxScoreByDimension != null && listMaxScoreByDimension.size()>0){
+			
+			String resultSummary_Total = "";
+			String resultDetail_Total = "";
+			
+			Iterator<ScoreByDimension> iterator = listMaxScoreByDimension.iterator();
+			
+			while(iterator.hasNext()){
+				ScoreByDimension maxScoreByDimension = iterator.next();
+				
+				assessResult.setTotalScore(maxScoreByDimension.getTotalScore());
+				
+				// 根据 问卷id , 维度编号, 总得分 查询 测评结果
+				dataMap.put("dimension", maxScoreByDimension.getDimension());
+				dataMap.put("totalScore", maxScoreByDimension.getTotalScore());
+				
+				List<AssessModel_BigFive> findAssessModel_BigFive = assessModel_BigFiveDao.findAssessModel_BigFive(dataMap);
+				if(findAssessModel_BigFive != null && findAssessModel_BigFive.size()>0){
+					AssessModel_BigFive assessModel_BigFive = findAssessModel_BigFive.get(0);
+					
+					String resultSummary = assessModel_BigFive.getResultSummary();
+					String resultDetail = assessModel_BigFive.getResultDetail();
+					
+					resultSummary_Total = resultSummary_Total + resultSummary;
+					resultDetail_Total = resultDetail_Total + resultDetail;
+				}
+				
+			}
+			
+//		二、看每个维度分数 落在各自 哪个分数段内，输出对应的分数段个人解析 , 查询 大五模型表  得出 答题结果信息
+			
+//		三、全部维度个人解析组成总解析 , 将 多个维度得出的解析进行拼接, 存储
+			assessResult.setResultDetail(resultDetail_Total);
+			assessResult.setResultSummary(resultSummary_Total);
+		}
+		
+		return assessResult;
+	}
+	
+	private AssessResult Calculation_AssessModel_MBTI(Map<String, Object> dataMap,AssessResult assessResult){
+		 // 3 MBTI模型
+//		一、加总每一个一级维度中的二级维度的得分
+		// 查询当前问卷所有的 一级维度下对应的二级维度 集合
+		List<AssessModel_MBTI> findAssessModel_MBTI = assessModel_MBTIDao.findAssessModel_MBTI(dataMap);
+		
+		if(findAssessModel_MBTI!=null){
+			
+			Iterator<AssessModel_MBTI> iterator = findAssessModel_MBTI.iterator();
+			
+			StringBuffer stringBuffer = new StringBuffer();
+			
+			while(iterator.hasNext()){
+				AssessModel_MBTI next = iterator.next();
+				// 查询每个 一级维度中的两个二级维度  
+				String leftSecond = next.getLeftSecond();
+				String rightSecond = next.getRightSecond();
+				
+				ArrayList<String> arrayList = new ArrayList<String>();
+				arrayList.add(leftSecond);
+				arrayList.add(rightSecond);
+				
+				dataMap.put("dimension_mbti_List", arrayList);
+				
+			    // 从这两个维度中 查询出分值高的那个
+//		二、筛选出每一个一级维度中得分最高的二级维度
+				List<ScoreByDimension> listMaxScoreByDimension = assessModel_MBTIDao.getMaxScoreByDimension_mbti(dataMap);
+				
+				if(listMaxScoreByDimension != null && listMaxScoreByDimension.size()>0){
+					ScoreByDimension maxScoreByDimension = listMaxScoreByDimension.get(0);
+					// 返回的 分值高的 二级维度 
+					if(maxScoreByDimension != null){
+						String dimension_mbti = maxScoreByDimension.getDimensionStr();  //两个 二级维度 得分高的维度 编号 
+						stringBuffer.append(dimension_mbti);
+					}
+				}else{
+					log.info("=======================>> MBTI模型每个一级维度下的 二级维度 没有查询除 最大得分的维度编号");
+				}
+			}
+			
+//		三、把所有得分最高的二级维度联合，输出对应的个人解析
+			char[] charArray = stringBuffer.toString().toCharArray();
+			
+			Set<String> fullPermutation = StrUtils.getFullPermutation(charArray);
+			
+			dataMap.put("listDimension", fullPermutation);
+			
+			// 查询 MBTI 组合编号 ,  返回测评内容 
+			List<AssessModel_mbti_combination> listAssessModel_mbti_combination = assessModel_MBTIDao.getAssessModel_mbti_combination(dataMap);
+			
+			if(listAssessModel_mbti_combination != null && listAssessModel_mbti_combination.size()>0){
+				AssessModel_mbti_combination assessModel_mbti_combination = listAssessModel_mbti_combination.get(0);
+				
+				if(assessModel_mbti_combination!=null){
+					assessResult.setResultDetail(assessModel_mbti_combination.getResultDetail());
+					assessResult.setResultSummary(assessModel_mbti_combination.getResultSummary());
+				}
+			}
+		}
+		
+		return assessResult;
+	}
+	
+	// 多维度测评模型计算
+	public AssessResult Calculation_assessModel_multi_Sum(Map<String, Object> dataMap,AssessResult assessResult){
+		// 查询一份问卷,一个用户, 每个维度的平均得分
+		List<ScoreByDimension> listScoreByDimension = submitAssessAnsDao.getScoreByDimension(dataMap);
+		// 查询  每个维度, 所有用户的平均得分  根据用户分组
+		List<ScoreByDimension> listAllUserScoreByDimension = submitAssessAnsDao.getAllUserScoreByDimension(dataMap);
+		// 查询  每个维度, 所有用户的平均得分 不根据用户分组
+		List<ScoreByDimension> allUserScoreByDimension_noGroupByUser = submitAssessAnsDao.allUserScoreByDimension_noGroupByUser(dataMap);
+		// 根据 维度编号排序  
+//        Collections.sort(listAllUserScoreByDimension , new Comparator<ScoreByDimension>(){
+//            @Override
+//            public int compare(ScoreByDimension o1, ScoreByDimension o2) {
+//                if (o1.getDimension() >= o2.getDimension()){
+//                    return 1;
+//                }else{
+//                    return -1;
+//                }
+//            }
+//        });
+		
+		Iterator<ScoreByDimension> iterator = listScoreByDimension.iterator();
+		
+		Double maxScore = -1000.00;  // 记录最大值 , 默认设置为 -1000.0
+		int maxScoreCount = 0;  // 最大值的个数
+		
+		// 第一次迭代, 记录最大的平均得分值
+		while(iterator.hasNext()){
+			ScoreByDimension next = iterator.next();
+			Double score = next.getScore();  // 获取单个维度的平均分
+			
+			log.info("=================>>查询一份问卷,一个用户, 每个维度的平均得分, 单个维度平均分 score :"+score+", 维度 dimension :"+next.getDimension());
+			if(score >= maxScore){
+				maxScore = score;
+			}
+		}
+		log.info("=====================>>第一次迭代, 记录最大的平均得分值 结束 , 最大平均值, maxScore :"+maxScore);
+		
+		Iterator<ScoreByDimension> iterator2 = listScoreByDimension.iterator();
+		List<Integer> dimensionList = new ArrayList<>();  // 存储 平均分最大值的维度 列表
+		// 第二次迭代, 判断有多少个最大值, 记录个数
+		while(iterator2.hasNext()){
+			log.info("=====================第二次迭代, 判断有多少个最大值 ....");
+			ScoreByDimension next = iterator2.next();
+			Double score = next.getScore();  // 获取单个维度的平均分
+			log.info("================>> maxScore :"+maxScore+", score :"+score);
+			if(maxScore.equals(score)){
+				log.info("=================>> 当前维度平均分 和最大值相等 , 记录一次 , maxScore :"+maxScore+", score :"+score);
+				maxScoreCount += 1;
+				dimensionList.add(next.getDimension());
+			}else{
+				log.info("=================>> 当前维度平均分 和最大值  不不不相等 , 记录一次 , maxScore :"+maxScore+", score :"+score);
+			}
+		}
+		log.info("==================>>第二次迭代, 判断有多少个最大值, 记录个数, maxScoreCount : "+maxScoreCount);
+		log.info("==================>> 将平均得分最大值放入列表dimensionList 中 , size 为 : "+dimensionList.size());
+		
+		// 如果只有一个最大值, 查询多维度测评模型表,将结果页数据返回
+		if(maxScoreCount == 1){
+			log.info("====================>>只有一个最大值, 查询多维度测评模型表,将结果页数据返回 ......");
+			dataMap.put("dimension", dimensionList.get(0));
+			
+			List<AssessModel_multi_Sum> selectByKey = assessModel_multi_SumDao.selectByKey(dataMap);
+			
+			if(selectByKey != null && selectByKey.size()>0){
+				AssessModel_multi_Sum assessModel_multi_Sum = selectByKey.get(0);
+				if(assessModel_multi_Sum != null){
+					
+					assessResult.setResultSummary(assessModel_multi_Sum.getResultSummary());
+					assessResult.setResultDetail(assessModel_multi_Sum.getResultDetail());
+				}
+			}
+			
+		}else if(maxScoreCount == 2){
+			log.info("=======================>>有两个最大值, 查询关联输出");
+			// 有两个最大值, 查询关联输出
+			int dimension_0 = dimensionList.get(0);
+			int dimension_1 = dimensionList.get(1);
+			
+			List<String> arrayList = new ArrayList<>();
+			arrayList.add( dimension_0+","+dimension_1);
+			arrayList.add( dimension_1+","+dimension_0);
+			
+			dataMap.put("relationList", arrayList);
+			
+			List<AssessModelMulti_Relation> findByKeyMap = assessModelMulti_RelationDao.findByKeyMap(dataMap);
+			if(findByKeyMap != null && findByKeyMap.size()>0){
+				AssessModelMulti_Relation assessModelMulti_Relation = findByKeyMap.get(0);
+				log.info("===================>> 已经查询到关联输出 ,现在输出结果");
+				if(assessModelMulti_Relation != null){
+					assessResult.setResultSummary(assessModelMulti_Relation.getResultSummary());
+					assessResult.setResultDetail(assessModelMulti_Relation.getResultDetail());
+				}
+				
+			}else{
+				log.info("===========================>> 没有查询到关联输出, 现在计算标准差... ");
+				// 没有关联输出 , 下面根据 每个维度的标准差计算
+				assessResult = assessModel_multi_Sum_StandardDiviation(listAllUserScoreByDimension,dimensionList,dataMap,assessResult);
+				
+				// 根据问卷id, 维度编号查询  多维度测评模型 , 输出优先级大的哪一条记录
+//				List<Integer> arrayList2 = new ArrayList<>();
+//				arrayList2.add(dimension_0);
+//				arrayList2.add(dimension_1);
+//				
+//				dataMap.put("dimension_list", arrayList2);
+//				listMaxScoreByDimension = submitAssessAnsDao.findAssessModelMulti_sum(dataMap);
+//				
+//				if(listMaxScoreByDimension != null && listMaxScoreByDimension.size()>0){
+//					
+//					assessResult.setResultSummary(listMaxScoreByDimension.get(0).getResultSummary());
+//					assessResult.setResultDetail(listMaxScoreByDimension.get(0).getResultDetail());
+//				}
+			}
+		}else if(maxScoreCount > 2){
+			log.info("==================>> 多维度测评模型,每个维度的平均分值 最大值数量超过两个 , 下面开始标准差, 然后输出 .... begin ...");
+			assessResult = assessModel_multi_Sum_StandardDiviation(listAllUserScoreByDimension,dimensionList,dataMap,assessResult);
+			log.info("=================>>  多维度, 平均值最大个数多于2个, 计算标准差, 返回计算结果 ,assessResult :"+assessResult);
+		}
+		
+		// 多维度测评模型题, 用户答题提交后, 计算每个维度的Z分值, 更新到数据库
+		// Z分值计算规则   进行Z分数计算，𝒛=(𝒙−𝝁)/𝝈 ，个体平均分𝝌，标准差𝝈 ，平均值𝝁，Z分数可以是负数
+
+		Calculation_Z_Score(listScoreByDimension,listAllUserScoreByDimension,allUserScoreByDimension_noGroupByUser);
+		
+		return assessResult;
+	}
+	
+	// 计算每个维度的Z分值
+	private void Calculation_Z_Score(List<ScoreByDimension> listScoreByDimension, List<ScoreByDimension> listAllUserScoreByDimension,
+			List<ScoreByDimension> allUserScoreByDimension_noGroupByUser ){
+		// 需要知道 每个维度 当前用户得分, 所有用户得分, 维度的标准差
+		
+		// 取出所有的维度  当前用户得分
+		Iterator<ScoreByDimension> iterator_listScoreByDimension = listScoreByDimension.iterator();
+		while(iterator_listScoreByDimension.hasNext()){
+			ScoreByDimension next = iterator_listScoreByDimension.next();
+			// 当前维度 id
+			Integer cur_dimension = next.getDimension();
+			
+			// 获取 当前用户  当前维度的平均分
+			Double score_oneUser = next.getScore();  
+			
+			// 计算每个维度的标准差 -------------- begin -------
+			List<Double> double_score = new ArrayList<>();
+			
+			Iterator<ScoreByDimension> iterator_listAllUserScoreByDimension = listAllUserScoreByDimension.iterator();
+			while(iterator_listAllUserScoreByDimension.hasNext()){
+				
+				ScoreByDimension scoreByDimension_allUser = iterator_listAllUserScoreByDimension.next();
+				if(scoreByDimension_allUser != null){
+					Integer dimension_allUser = scoreByDimension_allUser.getDimension();
+					// 找到当前维度 id 所属的所有用户平均分的维度
+					if(dimension_allUser.equals(cur_dimension)){
+						// 得到 用户的 平均分
+						Double score_everyUser = scoreByDimension_allUser.getScore();
+						
+						double_score.add(score_everyUser);
+						
+					}
+					
+				}
+			}
+			// 循环结束, 得到当前 维度下的所有分值的 集合 double_score 
+			// 计算 标准差  
+			Double[] array = double_score.toArray(new Double[0]);
+			
+			// 计算标准差
+			double standardDiviation = VarianceAndStandardDiviation.StandardDiviation(array);
+			log.info("===================>> 当前循环标准差, standardDiviation : "+standardDiviation+", 当前维度 cur_dimension: "+cur_dimension);
+			
+			// 获取当前维度的 所有用户的平均得分
+			Double score_allUser = null;
+			
+			Iterator<ScoreByDimension> iterator_allUserScoreByDimension_noGroupByUser = allUserScoreByDimension_noGroupByUser.iterator();
+			while(iterator_allUserScoreByDimension_noGroupByUser.hasNext()){
+				ScoreByDimension next2 = iterator_allUserScoreByDimension_noGroupByUser.next();
+				if(next2.getDimension().equals(cur_dimension)){
+					score_allUser = next2.getScore();
+					
+				}
+			}
+			
+			// 计算 Z分值 , 进行Z分数计算，𝒛=(𝒙−𝝁)/𝝈 ，个体平均分𝝌，标准差𝝈 ，平均值𝝁，Z分数可以是负数
+			double sub = MathUtil.sub(score_oneUser, score_allUser);
+			double div = MathUtil.div(sub, standardDiviation, 5);
+			log.info("=============================>> 计算Z分值结果: 维度"+cur_dimension+", Z值 :"+div);
+			
+			// 将Z 分值进行存储
+			// ..................
+			
+		}
+		
+	}
+	
+	// 计算标准差, 多维度测评模型 一份问卷多个用户, 每个维度得分平均分的 标准差
+	private AssessResult assessModel_multi_Sum_StandardDiviation(List<ScoreByDimension> listAllUserScoreByDimension,List<Integer> dimensionList,
+			Map<String, Object> dataMap,AssessResult assessResult){
+		// 查询 每个维度的所有人答题 总得分  
+		// 二、计算或给定总体平均值（𝝁），𝝁= "(" 𝒙_𝟏 "+" 𝒙_𝟐 "+…+" 𝒙_𝒏 ")"∕"n "，𝒙_𝟏，𝒙_𝟐，…𝒙_𝒏 
+		
+		// 分组
+		if(dimensionList.size()>0){
+			
+			Integer last_dimension = null;
+			Double last_standardDiviation = 10000000.00;
+			
+			// 遍历所有的维度 
+			Iterator<Integer> iterator_list_dimension = dimensionList.iterator();
+			
+			while(iterator_list_dimension.hasNext()){
+				// 取出每个维度 id
+				Integer cur_dimension = iterator_list_dimension.next();
+				
+				List<Double> double_score = new ArrayList<>();
+				
+				// 遍历 所有用户答题 每个维度的平均分
+				Iterator<ScoreByDimension> iterator2 = listAllUserScoreByDimension.iterator();
+				
+				while(iterator2.hasNext()){
+					ScoreByDimension cur_ScoreByDimension = iterator2.next();
+					// 遍历到 当前维度 
+					if(cur_ScoreByDimension.getDimension().equals(cur_dimension)){
+						// 如果从所有用户答题信息中 遍历到的 维度 id 与当前维度 id相等
+						Double cur_score = cur_ScoreByDimension.getScore();
+						// 将 当前维度的得分存储到 列表中
+						double_score.add(cur_score);
+					}
+				}
+				
+				log.info("=====================>> 多维度测评模型, 每个维度的平均值最大值数量超过两个, 计算标准差, 比较每个维度所有用户的得分离散情况");
+				log.info("=====================>> 当前维度 id , cur_dimension: "+cur_dimension +", 平均分列表 ,double_score.size() :"+double_score.size());
+				
+				
+				// 循环结束, 得到当前 维度下的所有分值的 集合 double_score 
+				// 计算 标准差  
+				Double[] array = double_score.toArray(new Double[0]);
+				
+				// 计算标准差
+				double standardDiviation = VarianceAndStandardDiviation.StandardDiviation(array);
+				log.info("===================>> 当前循环标准差, standardDiviation : "+standardDiviation+", 当前维度 cur_dimension: "+cur_dimension);
+				
+				if(standardDiviation < last_standardDiviation){
+					last_standardDiviation = standardDiviation;
+					last_dimension = cur_dimension;
+				}
+				
+			}
+			
+			log.info("====================> 循环结束, 最终计算的 标准差最小值为 : last_standardDiviation :"+last_standardDiviation+", 最终维度 last_dimension :"+last_dimension);
+			
+			// 循环结束, 得到分值标准差最小的 维度和标准差
+			dataMap.put("dimension", last_dimension);
+			List<AssessModel_multi_Sum> selectByKey = assessModel_multi_SumDao.selectByKey(dataMap);
+			if(selectByKey.size() > 0){
+				AssessModel_multi_Sum assessModel_multi_Sum = selectByKey.get(0);
+				assessResult.setResultDetail(assessModel_multi_Sum.getResultDetail());
+				assessResult.setResultSummary(assessModel_multi_Sum.getResultSummary());
+			} 
+			
+		}
+		return assessResult;
+	}
+
+	//从订单表里获取测评结果
+	public AssessResult getAssessResultFromOrder(int user_Id, int aqn_Id){
+		Map<String, Object> param = new HashMap<String, Object>();// 将参数封装成map格式
+		param.put("userId", user_Id);
+		param.put("aqnId", aqn_Id);		
+		return submitAssessAnsDao.getAssessResultFromOrder(param);
+	}
+	
+	/**
+	 * 验证是否答题人数达到需要收集人数，如果达到将问卷状态改为6，数量完成
+	 */
+	public void changeDeliveryStatus(int deliveryId) {
+		
+		Assess assess = submitAssessAnsDao.getCollectedNumById(deliveryId);
+		
+		if (assess.getCollectedNum() >= assess.getCollectNum()) {
+			submitAssessAnsDao.changeDeliveryStatus(deliveryId);
+			log.info("-------------------->> Delivery status has been changed into 6 number is over");// 6为数量完成状态
+		} else {
+			log.info("-------------------->> Delivery status is not changed");
+		}
+	}
+
+	// 查询测评结果 
+	public AjaxResult getAssessResultFromOrder(HttpServletRequest request) {
+		
+		AjaxResult ajaxResult = new AjaxResult();
+
+		HttpSession newSession = request.getSession(true);
+		Object userId = newSession.getAttribute("userId");
+		
+		String aqnId_str = request.getParameter("aqnId");
+		int aqnId = Integer.parseInt(aqnId_str);
+		
+		// 判断当前测评问卷的类型
+		if (userId != null) {
+			int user_Id = Integer.parseInt(userId.toString());
+			
+			Map<String, Object> dataMap = new HashMap<String, Object>();// 将参数封装成map格式
+			
+			dataMap.put("userId", user_Id);
+			dataMap.put("aqnId", aqnId);		
+			
+			// 根据用户id , 问卷id , 查询订单表, 如果有记录, 代表当前问卷被当前用户答过 
+			AssessResult assessResultFromOrder = submitAssessAnsDao.getAssessResultFromOrder(dataMap);
+			
+			if(assessResultFromOrder != null){
+				
+				String resultSummary = assessResultFromOrder.getResultSummary();
+				String resultDetail = assessResultFromOrder.getResultDetail();
+				
+				ajaxResult.put("success", true);
+				ajaxResult.put("resultSummary", resultSummary);
+				ajaxResult.put("resultDetail", resultDetail);
+				
+				
+			}else{
+				log.info("----------------->>加载测评结果页面为空 ..... 可能当前用户未答过当前这道题");
+				return AjaxResult.errorCode("当前用户未答过当前这道题", "002");
+			}
+
+		}else{
+			return AjaxResult.errorCode("用户未登录,无法加载测评问卷答题结果页", "001");
+		}
+		
+		return ajaxResult;
+	}
+
+	//测评问卷提交
+	public AjaxResult submitAssessAnswer(HttpServletRequest request) {
+		log.info("============================>> 测评问卷提交 : begin ....==================>>");
+		// 取出request的参数，其中answers为JSONArray,其余变量为单值变量
+		HttpSession newSession = request.getSession(true);
+		Object userId_obj = newSession.getAttribute("userId");
+		
+		/**
+		 * 生成临时用户id 迁移到加载测评问卷中
+		 */
+		if(userId_obj == null){
+			log.info("===================>>当前登录用户id为空");
+			return AjaxResult.errorCode("用户未登录", "001");
+		}else{
+			//用户已经登录
+			// --------------------------从页面获取一堆参数 -------------begin-----------
+			Integer userId = Integer.parseInt(userId_obj.toString());
+			
+			String aqnId_str = request.getParameter("aqnId");
+			
+			log.info("======================>> 答题提交 aqnId : "+aqnId_str);
+			
+			Integer aqnId = StrUtils.changeToInt(aqnId_str);
+			// 查询测评问卷
+			
+			AssessQuestionnaire assessQuestionnaire_byAqnId = assessQuestionnaireDao.getAssessQuestionnaire_byAqnId(aqnId);
+			
+			Integer aqnCategory = assessQuestionnaire_byAqnId.getAqnCategory();
+			
+			String answerNum = request.getParameter("answerNum");
+			
+			String awardIdStr = request.getParameter("awardId");
+			String answerBTimeStr = request.getParameter("answerBTime");
+			String answers = request.getParameter("answers");
+			String deliveryId = request.getParameter("deliveryId");
+			String awardMethodStr = request.getParameter("awardMethod");
+			
+			log.info("=====================>> 测评问卷提交 , 从页面获取的参数有 , answerNum :"+answerNum+", aqnId:"+aqnId+",awardIdStr :"+awardIdStr+",answerBTimeStr:"+answerBTimeStr);
+			log.info("=====================>> 测评问卷提交 , 从页面获取的参数有 , answers :"+answers);
+			log.info("=====================>> 测评问卷提交 , 从页面获取的参数有 , deliveryId:"+deliveryId+",awardMethodStr :"+awardMethodStr);
+			
+			int answer_Num = 0;
+			int award_Id = 0;
+			Timestamp answerBTime = null;
+			int delivery_Id = 0;
+			int awardMethod = 0;
+			try {
+				answer_Num = StrUtils.changeToInt(answerNum);
+				award_Id = StrUtils.changeToInt(awardIdStr);
+				
+				answerBTime = Timestamp.valueOf(answerBTimeStr);
+				delivery_Id = Integer.parseInt(deliveryId);
+				awardMethod = 0;
+				if (StrUtils.isNotEmpty(awardMethodStr)) {
+					awardMethod = Integer.parseInt(awardMethodStr);
+				}
+			} catch (NumberFormatException e1) {
+				e1.printStackTrace();
+			}
+			
+			// 将answers转化成大的JSON对象
+			String answerStr = "{'answers':" + answers + "}";
+			JSONObject jsonObject = JSONObject.fromObject(answerStr);
+			// 取出answers的JSONArray
+			JSONArray jsonAnswerArray = jsonObject.getJSONArray("answers");
+			// --------------------------从页面获取一堆参数 -------------end-----------
+			
+			// 根据投放id查询投放状态
+			AssessDelivery assessDelivery = assessDeliveryService.getDeliveryStatusById(delivery_Id);
+			
+			if (assessDelivery != null) {
+				int deliveryStatus = assessDelivery.getStatus();
+				if (deliveryStatus == 2) {
+					// 如果投放状态为投放中则向下进行
+					// 创建一条订单，返回订单创建是否成功的状态
+					/*
+					 * 用户答题时需要判断当前用户是否答过该道题, 如果答过就直接显示答题结果页 
+					 * 如何判断用户是否答过当前这道题, 以前的业务逻辑是先到订单表中根据 用户id,问卷id查询, 如果有记录则说明用户已经答过题
+					 * 用户答题数据需要存储到两张表 Order表和 Answer表, 
+					 * 先到 order表查询是否有记录, 如果没有则新增, 如果有就返回已经答过标识, 当用户未答过该题, Order表中新增数据后, 又需向 Answer表中新增数据
+					 * 我遇到过一次问题是, Order表中根据用户id,问卷id查询是没有记录, 但是 根据用户id,问卷id 查询answer表 居然有数据, 这时候如果向 Answer表新增数据就会主键冲突
+					 * 不知道是数据的问题还是什么 ? 
+					 * 按道理来说之前的逻辑安全性不够好, 不能在一张表中判断是否答过题,然后向另一张表新增数据 
+					 * 
+					 * */
+					
+					// 判断用户是否已经答过题 , 如果已经答过, order表, answer表中都应该有数据 , 如果没有数据则代表没有答过这道题
+					
+					// 创建order前先查询并判断这条订单是否存在
+					Map<String, Object> dataMap = new HashMap<String, Object>();// 将参数封装成map格式
+					dataMap.put("userId", userId);
+					dataMap.put("aqnId", aqnId);
+					AssessOrder assessOrder = assessOrderDao.getAssessOrder(dataMap);
+					
+					// 如果没有数据则代表没有答过这道题
+					if(assessOrder == null){
+						log.info("=================>> 从 order 表中查询, 没有数据, 说明当前用户没有答过这道题.... ");
+						// 新增数据到 order表, answer表
+						assessOrder = new AssessOrder(); // 订单不存在, 创建一条新的订单
+						
+						Timestamp orderCTime = new Timestamp(System.currentTimeMillis());// 获取当前系统时间
+						Timestamp answerETime = new Timestamp(System.currentTimeMillis());
+		
+						assessOrder.setUserId(userId);
+						assessOrder.setDeliveryId(delivery_Id);
+						assessOrder.setAqnId(aqnId);
+						assessOrder.setOrderCTime(orderCTime);
+						assessOrder.setAnswerETime(answerETime);
+						assessOrder.setOrderStatus(1);// 订单状态为订单生成
+						assessOrder.setAnswerBTime(answerBTime);
+						assessOrder.setAwardId(award_Id);
+						assessOrder.setAwardMethod(awardMethod);
+						// 如果该订单结果不存在则生成一条订单
+						// 递交给Dao生成订单
+						
+						try {
+							submitAssessAnsDao.initAssessOrder(assessOrder);
+							log.info("------------------------->> 测评问卷答题 信息 , 这些数据是order表中一般信息,包括 用户id,投放id,时间,状态 ,  已经新增数据到 order表中  ");
+							log.info("------------------------->> 测评问卷答题 信息 , 此时的 order表中还没有 resultSummary, resultDetail 数据  ");
+						} catch (Exception e) {
+							e.printStackTrace();
+							log.info("===============================>>测评问卷答题新增到order表失败");
+							return AjaxResult.errorCode("用户答题创建订单失败", "005");
+						}
+						
+						AjaxResult insertAssessAnswer = insertAssessAnswer(userId, answer_Num, aqnId, jsonAnswerArray, delivery_Id, aqnCategory);
+						
+						return insertAssessAnswer;
+					}else{
+						// 如果已经答过, order表, answer表中都应该有数据 
+						return AjaxResult.errorCode("当前用户已经答过这道题", "004");
+					}
+					
+				} else {
+					return AjaxResult.errorCode("当前测评投放状态并不是投放中", "003");
+				}
+
+			} else {
+				return AjaxResult.errorCode("当前测评投放不存在", "002");
+			}
+
+		}
+	}
+}

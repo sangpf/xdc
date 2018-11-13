@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newins.dao.MySuperSurveyDao">
+	<!-- 查询我参加的投票总数 -->
+	<select id="getVoteTotal" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+		select count(*) from ni_vote_order where userId=#{userId}
+	</select>
+	<!-- 查询出我参加的调查和投票详细数据 -->
+	<select id="getMysuperSuveyInfo" resultType="com.newins.model.MysuperSuvey" parameterType="java.lang.Integer">
+		select * from (SELECT ni_survey_order.deliveryId, 
+	ni_survey_delivery.`status` AS deliveryStatus, 
+	ni_survey_order.sqnId AS qnId, 
+	ni_survey_questionnaire.sqnName AS qnName, 
+	1 AS qnType, 
+	DATE_FORMAT(ni_survey_order.answerETime,'%Y-%m-%d') as answerETime, 
+	ni_sqnclass_dict.sqnClassName as qnClassName, 
+	ni_report.reportUrl, 
+	ni_report.reportStatus, 
+	ni_report.thumbUp, 
+	ni_report.reportId, 
+	ni_report.reportTitle
+FROM ni_survey_order LEFT OUTER JOIN ni_survey_questionnaire ON ni_survey_order.sqnId = ni_survey_questionnaire.sqnId
+	 LEFT OUTER JOIN ni_survey_delivery ON ni_survey_delivery.deliveryId = ni_survey_order.deliveryId
+	 LEFT OUTER JOIN ni_sqnclass_dict ON ni_survey_questionnaire.sqnClassId = ni_sqnclass_dict.sqnClassId
+	 LEFT OUTER JOIN ni_report ON ni_report.qnId = ni_survey_order.sqnId
+WHERE ni_survey_order.userId=#{userId} AND ni_survey_delivery.channelId=1 and (ni_report.reportStatus is null or ni_report.reportStatus=2) 
+UNION
+SELECT ni_vote_order.deliveryId, 
+	ni_vote_delivery.`status` AS deliveryStatus, 
+	ni_vote_order.vqnId AS qnId, 
+	ni_vote_questionnaire.vqnName AS qnName, 
+	3 AS qnType, 
+	DATE_FORMAT(ni_vote_order.answerETime,'%Y-%m-%d') as answerETime,
+	ni_vqnclass_dict.vqnClassName as qnClassName, 
+	ni_report.reportUrl, 
+	ni_report.reportStatus, 
+	ni_report.thumbUp, 
+	ni_report.reportId, 
+	ni_report.reportTitle
+FROM ni_vote_order LEFT OUTER JOIN ni_vote_questionnaire ON ni_vote_order.vqnId = ni_vote_questionnaire.vqnId
+	 LEFT OUTER JOIN ni_vote_delivery ON ni_vote_order.deliveryId = ni_vote_delivery.deliveryId
+	 LEFT OUTER JOIN ni_vqnclass_dict ON ni_vqnclass_dict.vqnClassId = ni_vote_questionnaire.vqnClassId
+	 left join ni_report on (ni_vote_order.vqnId=ni_report.qnId)
+WHERE ni_vote_order.userId=#{userId} and ni_vote_delivery.channelId and (ni_report.reportStatus is null or ni_report.reportStatus=2))
+AS NEW_TABLE order by NEW_TABLE.answerETime desc
+	</select>
+	<!-- 匹配是否收藏 -->
+	<select id="matchingIsFavorite" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select count(*) from ni_user_favorite_report where userId=#{0} and reportId=#{1};
+	</select>
+</mapper>

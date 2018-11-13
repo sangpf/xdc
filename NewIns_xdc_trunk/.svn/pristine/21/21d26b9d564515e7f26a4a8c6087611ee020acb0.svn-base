@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.QnAdvertDao">
+	<resultMap type="com.newins.model.QnAdvert" id="qnAdvertMap">
+		<result property="adId" column="adId" />
+		<result property="adTitle" column="adTitle" />
+		<result property="adImg" column="adImg" />
+		<result property="adLink" column="adLink" />
+	</resultMap>
+
+	<select id="getQnAdvert" resultMap="qnAdvertMap">
+		SELECT
+		ni_ad_info.adId,
+		ni_ad_info.adTitle,
+		ni_ad_info.adImg,
+		ni_ad_info.adLink
+		from ni_survey_delivery,ni_ad_info
+		where deliveryId=#{deliveryId} and ni_survey_delivery.adId=ni_ad_info.adId AND ni_survey_delivery.channelId=1
+	</select>
+
+
+</mapper>

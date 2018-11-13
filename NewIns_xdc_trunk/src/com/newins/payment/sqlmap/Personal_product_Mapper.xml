@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newins.payment.dao.Personal_product_Dao" >
+
+	<insert id="insert" parameterType="com.newins.payment.model.Personal_product">
+		INSERT INTO ni_personal_product(
+			userId,packageId,status,bTime,eTime
+		)
+		VALUES(
+			#{userId},#{packageId},#{status},#{bTime},#{eTime}
+		)
+	</insert>
+	
+
+</mapper>

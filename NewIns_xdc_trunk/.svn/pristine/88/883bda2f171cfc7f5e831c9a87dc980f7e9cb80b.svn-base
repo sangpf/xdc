@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newins.dao.NiUserBaseMapper" >
+  <resultMap id="BaseResultMap" type="com.newins.model.NiUserBase" >
+    <id column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="userName" property="username" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="TINYINT" />
+    <result column="race" property="race" jdbcType="VARCHAR" />
+    <result column="nationality" property="nationality" jdbcType="VARCHAR" />
+    <result column="birthplace" property="birthplace" jdbcType="VARCHAR" />
+    <result column="idCard" property="idcard" jdbcType="VARCHAR" />
+    <result column="politicsStatus" property="politicsstatus" jdbcType="TINYINT" />
+    <result column="career" property="career" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="marriage" property="marriage" jdbcType="TINYINT" />
+    <result column="hasChildren" property="haschildren" jdbcType="TINYINT" />
+    <result column="workUnit" property="workunit" jdbcType="VARCHAR" />
+    <result column="jobPosition" property="jobposition" jdbcType="VARCHAR" />
+    <result column="jobTitle" property="jobtitle" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="qq" property="qq" jdbcType="VARCHAR" />
+    <result column="weixin" property="weixin" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="userChannel" property="userchannel" jdbcType="TINYINT" />
+    <result column="userCTime" property="userctime" jdbcType="TIMESTAMP" />
+    <result column="userFirstCTime" property="userfirstctime" jdbcType="TIMESTAMP" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    userId, userName, gender, race, nationality, birthplace, idCard, politicsStatus, 
+    career, address, birthday, marriage, hasChildren, workUnit, jobPosition, jobTitle, 
+    phone, qq, weixin, email, userChannel, userCTime, userFirstCTime, comment
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.newins.model.NiUserBaseExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ni_user_base
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ni_user_base
+    where userId = #{userid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ni_user_base
+    where userId = #{userid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.newins.model.NiUserBaseExample" >
+    delete from ni_user_base
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.newins.model.NiUserBase" >
+    insert into ni_user_base (userId, userName, gender, 
+      race, nationality, birthplace, 
+      idCard, politicsStatus, career, 
+      address, birthday, marriage, 
+      hasChildren, workUnit, jobPosition, 
+      jobTitle, phone, qq, 
+      weixin, email, userChannel, 
+      userCTime, userFirstCTime, comment
+      )
+    values (#{userid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{gender,jdbcType=TINYINT}, 
+      #{race,jdbcType=VARCHAR}, #{nationality,jdbcType=VARCHAR}, #{birthplace,jdbcType=VARCHAR}, 
+      #{idcard,jdbcType=VARCHAR}, #{politicsstatus,jdbcType=TINYINT}, #{career,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, #{marriage,jdbcType=TINYINT}, 
+      #{haschildren,jdbcType=TINYINT}, #{workunit,jdbcType=VARCHAR}, #{jobposition,jdbcType=VARCHAR}, 
+      #{jobtitle,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, 
+      #{weixin,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{userchannel,jdbcType=TINYINT}, 
+      #{userctime,jdbcType=TIMESTAMP}, #{userfirstctime,jdbcType=TIMESTAMP}, #{comment,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.newins.model.NiUserBase" >
+    insert into ni_user_base
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="username != null" >
+        userName,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="race != null" >
+        race,
+      </if>
+      <if test="nationality != null" >
+        nationality,
+      </if>
+      <if test="birthplace != null" >
+        birthplace,
+      </if>
+      <if test="idcard != null" >
+        idCard,
+      </if>
+      <if test="politicsstatus != null" >
+        politicsStatus,
+      </if>
+      <if test="career != null" >
+        career,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="marriage != null" >
+        marriage,
+      </if>
+      <if test="haschildren != null" >
+        hasChildren,
+      </if>
+      <if test="workunit != null" >
+        workUnit,
+      </if>
+      <if test="jobposition != null" >
+        jobPosition,
+      </if>
+      <if test="jobtitle != null" >
+        jobTitle,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="qq != null" >
+        qq,
+      </if>
+      <if test="weixin != null" >
+        weixin,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="userchannel != null" >
+        userChannel,
+      </if>
+      <if test="userctime != null" >
+        userCTime,
+      </if>
+      <if test="userfirstctime != null" >
+        userFirstCTime,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="race != null" >
+        #{race,jdbcType=VARCHAR},
+      </if>
+      <if test="nationality != null" >
+        #{nationality,jdbcType=VARCHAR},
+      </if>
+      <if test="birthplace != null" >
+        #{birthplace,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null" >
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="politicsstatus != null" >
+        #{politicsstatus,jdbcType=TINYINT},
+      </if>
+      <if test="career != null" >
+        #{career,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="marriage != null" >
+        #{marriage,jdbcType=TINYINT},
+      </if>
+      <if test="haschildren != null" >
+        #{haschildren,jdbcType=TINYINT},
+      </if>
+      <if test="workunit != null" >
+        #{workunit,jdbcType=VARCHAR},
+      </if>
+      <if test="jobposition != null" >
+        #{jobposition,jdbcType=VARCHAR},
+      </if>
+      <if test="jobtitle != null" >
+        #{jobtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="weixin != null" >
+        #{weixin,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="userchannel != null" >
+        #{userchannel,jdbcType=TINYINT},
+      </if>
+      <if test="userctime != null" >
+        #{userctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userfirstctime != null" >
+        #{userfirstctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.newins.model.NiUserBaseExample" resultType="java.lang.Integer" >
+    select count(*) from ni_user_base
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ni_user_base
+    <set >
+      <if test="record.userid != null" >
+        userId = #{record.userid,jdbcType=INTEGER},
+      </if>
+      <if test="record.username != null" >
+        userName = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gender != null" >
+        gender = #{record.gender,jdbcType=TINYINT},
+      </if>
+      <if test="record.race != null" >
+        race = #{record.race,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nationality != null" >
+        nationality = #{record.nationality,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthplace != null" >
+        birthplace = #{record.birthplace,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idcard != null" >
+        idCard = #{record.idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.politicsstatus != null" >
+        politicsStatus = #{record.politicsstatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.career != null" >
+        career = #{record.career,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthday != null" >
+        birthday = #{record.birthday,jdbcType=DATE},
+      </if>
+      <if test="record.marriage != null" >
+        marriage = #{record.marriage,jdbcType=TINYINT},
+      </if>
+      <if test="record.haschildren != null" >
+        hasChildren = #{record.haschildren,jdbcType=TINYINT},
+      </if>
+      <if test="record.workunit != null" >
+        workUnit = #{record.workunit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jobposition != null" >
+        jobPosition = #{record.jobposition,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jobtitle != null" >
+        jobTitle = #{record.jobtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qq != null" >
+        qq = #{record.qq,jdbcType=VARCHAR},
+      </if>
+      <if test="record.weixin != null" >
+        weixin = #{record.weixin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userchannel != null" >
+        userChannel = #{record.userchannel,jdbcType=TINYINT},
+      </if>
+      <if test="record.userctime != null" >
+        userCTime = #{record.userctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userfirstctime != null" >
+        userFirstCTime = #{record.userfirstctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.comment != null" >
+        comment = #{record.comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ni_user_base
+    set userId = #{record.userid,jdbcType=INTEGER},
+      userName = #{record.username,jdbcType=VARCHAR},
+      gender = #{record.gender,jdbcType=TINYINT},
+      race = #{record.race,jdbcType=VARCHAR},
+      nationality = #{record.nationality,jdbcType=VARCHAR},
+      birthplace = #{record.birthplace,jdbcType=VARCHAR},
+      idCard = #{record.idcard,jdbcType=VARCHAR},
+      politicsStatus = #{record.politicsstatus,jdbcType=TINYINT},
+      career = #{record.career,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      birthday = #{record.birthday,jdbcType=DATE},
+      marriage = #{record.marriage,jdbcType=TINYINT},
+      hasChildren = #{record.haschildren,jdbcType=TINYINT},
+      workUnit = #{record.workunit,jdbcType=VARCHAR},
+      jobPosition = #{record.jobposition,jdbcType=VARCHAR},
+      jobTitle = #{record.jobtitle,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      qq = #{record.qq,jdbcType=VARCHAR},
+      weixin = #{record.weixin,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      userChannel = #{record.userchannel,jdbcType=TINYINT},
+      userCTime = #{record.userctime,jdbcType=TIMESTAMP},
+      userFirstCTime = #{record.userfirstctime,jdbcType=TIMESTAMP},
+      comment = #{record.comment,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.newins.model.NiUserBase" >
+    update ni_user_base
+    <set >
+      <if test="username != null" >
+        userName = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="race != null" >
+        race = #{race,jdbcType=VARCHAR},
+      </if>
+      <if test="nationality != null" >
+        nationality = #{nationality,jdbcType=VARCHAR},
+      </if>
+      <if test="birthplace != null" >
+        birthplace = #{birthplace,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null" >
+        idCard = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="politicsstatus != null" >
+        politicsStatus = #{politicsstatus,jdbcType=TINYINT},
+      </if>
+      <if test="career != null" >
+        career = #{career,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="marriage != null" >
+        marriage = #{marriage,jdbcType=TINYINT},
+      </if>
+      <if test="haschildren != null" >
+        hasChildren = #{haschildren,jdbcType=TINYINT},
+      </if>
+      <if test="workunit != null" >
+        workUnit = #{workunit,jdbcType=VARCHAR},
+      </if>
+      <if test="jobposition != null" >
+        jobPosition = #{jobposition,jdbcType=VARCHAR},
+      </if>
+      <if test="jobtitle != null" >
+        jobTitle = #{jobtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        qq = #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="weixin != null" >
+        weixin = #{weixin,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="userchannel != null" >
+        userChannel = #{userchannel,jdbcType=TINYINT},
+      </if>
+      <if test="userctime != null" >
+        userCTime = #{userctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userfirstctime != null" >
+        userFirstCTime = #{userfirstctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where userId = #{userid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.newins.model.NiUserBase" >
+    update ni_user_base
+    set userName = #{username,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=TINYINT},
+      race = #{race,jdbcType=VARCHAR},
+      nationality = #{nationality,jdbcType=VARCHAR},
+      birthplace = #{birthplace,jdbcType=VARCHAR},
+      idCard = #{idcard,jdbcType=VARCHAR},
+      politicsStatus = #{politicsstatus,jdbcType=TINYINT},
+      career = #{career,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      marriage = #{marriage,jdbcType=TINYINT},
+      hasChildren = #{haschildren,jdbcType=TINYINT},
+      workUnit = #{workunit,jdbcType=VARCHAR},
+      jobPosition = #{jobposition,jdbcType=VARCHAR},
+      jobTitle = #{jobtitle,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      qq = #{qq,jdbcType=VARCHAR},
+      weixin = #{weixin,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      userChannel = #{userchannel,jdbcType=TINYINT},
+      userCTime = #{userctime,jdbcType=TIMESTAMP},
+      userFirstCTime = #{userfirstctime,jdbcType=TIMESTAMP},
+      comment = #{comment,jdbcType=VARCHAR}
+    where userId = #{userid,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newins.dao.NiAssessQuestionnaireMapper" >
+  <resultMap id="BaseResultMap" type="com.newins.model.NiAssessQuestionnaire" >
+    <id column="aqnId" property="aqnid" jdbcType="INTEGER" />
+    <result column="aqnName" property="aqnname" jdbcType="VARCHAR" />
+    <result column="publisherId" property="publisherid" jdbcType="INTEGER" />
+    <result column="publisherName" property="publishername" jdbcType="VARCHAR" />
+    <result column="epilogue" property="epilogue" jdbcType="VARCHAR" />
+    <result column="perface" property="perface" jdbcType="VARCHAR" />
+    <result column="aqnClassId" property="aqnclassid" jdbcType="INTEGER" />
+    <result column="cTime" property="ctime" jdbcType="TIMESTAMP" />
+    <result column="sTime" property="stime" jdbcType="TIMESTAMP" />
+    <result column="staus" property="staus" jdbcType="TINYINT" />
+    <result column="recommandQty" property="recommandqty" jdbcType="INTEGER" />
+    <result column="questionNum" property="questionnum" jdbcType="INTEGER" />
+    <result column="filePath" property="filepath" jdbcType="VARCHAR" />
+    <result column="validation" property="validation" jdbcType="TINYINT" />
+    <result column="tag1Id" property="tag1id" jdbcType="INTEGER" />
+    <result column="tag2Id" property="tag2id" jdbcType="INTEGER" />
+    <result column="tag3Id" property="tag3id" jdbcType="INTEGER" />
+    <result column="tag4Id" property="tag4id" jdbcType="INTEGER" />
+    <result column="tag5Id" property="tag5id" jdbcType="INTEGER" />
+    <result column="picPath" property="picpath" jdbcType="VARCHAR" />
+    <result column="aqnSummary" property="aqnsummary" jdbcType="VARCHAR" />
+    <result column="editor" property="editor" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    aqnId, aqnName, publisherId, publisherName, epilogue, perface, aqnClassId, cTime, 
+    sTime, staus, recommandQty, questionNum, filePath, validation, tag1Id, tag2Id, tag3Id, 
+    tag4Id, tag5Id, picPath, aqnSummary, editor, comment
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.newins.model.NiAssessQuestionnaireExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ni_assess_questionnaire
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ni_assess_questionnaire
+    where aqnId = #{aqnid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ni_assess_questionnaire
+    where aqnId = #{aqnid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.newins.model.NiAssessQuestionnaireExample" >
+    delete from ni_assess_questionnaire
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.newins.model.NiAssessQuestionnaire" >
+	  <selectKey keyProperty="aqnid" order="AFTER" resultType="java.lang.Integer">
+	  	select LAST_INSERT_ID()
+	  </selectKey>
+  	
+    insert into ni_assess_questionnaire (aqnId, aqnName, publisherId, 
+      publisherName, epilogue, perface, 
+      aqnClassId, cTime, sTime, 
+      staus, recommandQty, questionNum, 
+      filePath, validation, tag1Id, 
+      tag2Id, tag3Id, tag4Id, 
+      tag5Id, picPath, aqnSummary, 
+      editor, comment)
+    values (#{aqnid,jdbcType=INTEGER}, #{aqnname,jdbcType=VARCHAR}, #{publisherid,jdbcType=INTEGER}, 
+      #{publishername,jdbcType=VARCHAR}, #{epilogue,jdbcType=VARCHAR}, #{perface,jdbcType=VARCHAR}, 
+      #{aqnclassid,jdbcType=INTEGER}, #{ctime,jdbcType=TIMESTAMP}, #{stime,jdbcType=TIMESTAMP}, 
+      #{staus,jdbcType=TINYINT}, #{recommandqty,jdbcType=INTEGER}, #{questionnum,jdbcType=INTEGER}, 
+      #{filepath,jdbcType=VARCHAR}, #{validation,jdbcType=TINYINT}, #{tag1id,jdbcType=INTEGER}, 
+      #{tag2id,jdbcType=INTEGER}, #{tag3id,jdbcType=INTEGER}, #{tag4id,jdbcType=INTEGER}, 
+      #{tag5id,jdbcType=INTEGER}, #{picpath,jdbcType=VARCHAR}, #{aqnsummary,jdbcType=VARCHAR}, 
+      #{editor,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.newins.model.NiAssessQuestionnaire" >
+    insert into ni_assess_questionnaire
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="aqnid != null" >
+        aqnId,
+      </if>
+      <if test="aqnname != null" >
+        aqnName,
+      </if>
+      <if test="publisherid != null" >
+        publisherId,
+      </if>
+      <if test="publishername != null" >
+        publisherName,
+      </if>
+      <if test="epilogue != null" >
+        epilogue,
+      </if>
+      <if test="perface != null" >
+        perface,
+      </if>
+      <if test="aqnclassid != null" >
+        aqnClassId,
+      </if>
+      <if test="ctime != null" >
+        cTime,
+      </if>
+      <if test="stime != null" >
+        sTime,
+      </if>
+      <if test="staus != null" >
+        staus,
+      </if>
+      <if test="recommandqty != null" >
+        recommandQty,
+      </if>
+      <if test="questionnum != null" >
+        questionNum,
+      </if>
+      <if test="filepath != null" >
+        filePath,
+      </if>
+      <if test="validation != null" >
+        validation,
+      </if>
+      <if test="tag1id != null" >
+        tag1Id,
+      </if>
+      <if test="tag2id != null" >
+        tag2Id,
+      </if>
+      <if test="tag3id != null" >
+        tag3Id,
+      </if>
+      <if test="tag4id != null" >
+        tag4Id,
+      </if>
+      <if test="tag5id != null" >
+        tag5Id,
+      </if>
+      <if test="picpath != null" >
+        picPath,
+      </if>
+      <if test="aqnsummary != null" >
+        aqnSummary,
+      </if>
+      <if test="editor != null" >
+        editor,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="aqnid != null" >
+        #{aqnid,jdbcType=INTEGER},
+      </if>
+      <if test="aqnname != null" >
+        #{aqnname,jdbcType=VARCHAR},
+      </if>
+      <if test="publisherid != null" >
+        #{publisherid,jdbcType=INTEGER},
+      </if>
+      <if test="publishername != null" >
+        #{publishername,jdbcType=VARCHAR},
+      </if>
+      <if test="epilogue != null" >
+        #{epilogue,jdbcType=VARCHAR},
+      </if>
+      <if test="perface != null" >
+        #{perface,jdbcType=VARCHAR},
+      </if>
+      <if test="aqnclassid != null" >
+        #{aqnclassid,jdbcType=INTEGER},
+      </if>
+      <if test="ctime != null" >
+        #{ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stime != null" >
+        #{stime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="staus != null" >
+        #{staus,jdbcType=TINYINT},
+      </if>
+      <if test="recommandqty != null" >
+        #{recommandqty,jdbcType=INTEGER},
+      </if>
+      <if test="questionnum != null" >
+        #{questionnum,jdbcType=INTEGER},
+      </if>
+      <if test="filepath != null" >
+        #{filepath,jdbcType=VARCHAR},
+      </if>
+      <if test="validation != null" >
+        #{validation,jdbcType=TINYINT},
+      </if>
+      <if test="tag1id != null" >
+        #{tag1id,jdbcType=INTEGER},
+      </if>
+      <if test="tag2id != null" >
+        #{tag2id,jdbcType=INTEGER},
+      </if>
+      <if test="tag3id != null" >
+        #{tag3id,jdbcType=INTEGER},
+      </if>
+      <if test="tag4id != null" >
+        #{tag4id,jdbcType=INTEGER},
+      </if>
+      <if test="tag5id != null" >
+        #{tag5id,jdbcType=INTEGER},
+      </if>
+      <if test="picpath != null" >
+        #{picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="aqnsummary != null" >
+        #{aqnsummary,jdbcType=VARCHAR},
+      </if>
+      <if test="editor != null" >
+        #{editor,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.newins.model.NiAssessQuestionnaireExample" resultType="java.lang.Integer" >
+    select count(*) from ni_assess_questionnaire
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ni_assess_questionnaire
+    <set >
+      <if test="record.aqnid != null" >
+        aqnId = #{record.aqnid,jdbcType=INTEGER},
+      </if>
+      <if test="record.aqnname != null" >
+        aqnName = #{record.aqnname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.publisherid != null" >
+        publisherId = #{record.publisherid,jdbcType=INTEGER},
+      </if>
+      <if test="record.publishername != null" >
+        publisherName = #{record.publishername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.epilogue != null" >
+        epilogue = #{record.epilogue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.perface != null" >
+        perface = #{record.perface,jdbcType=VARCHAR},
+      </if>
+      <if test="record.aqnclassid != null" >
+        aqnClassId = #{record.aqnclassid,jdbcType=INTEGER},
+      </if>
+      <if test="record.ctime != null" >
+        cTime = #{record.ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.stime != null" >
+        sTime = #{record.stime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.staus != null" >
+        staus = #{record.staus,jdbcType=TINYINT},
+      </if>
+      <if test="record.recommandqty != null" >
+        recommandQty = #{record.recommandqty,jdbcType=INTEGER},
+      </if>
+      <if test="record.questionnum != null" >
+        questionNum = #{record.questionnum,jdbcType=INTEGER},
+      </if>
+      <if test="record.filepath != null" >
+        filePath = #{record.filepath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.validation != null" >
+        validation = #{record.validation,jdbcType=TINYINT},
+      </if>
+      <if test="record.tag1id != null" >
+        tag1Id = #{record.tag1id,jdbcType=INTEGER},
+      </if>
+      <if test="record.tag2id != null" >
+        tag2Id = #{record.tag2id,jdbcType=INTEGER},
+      </if>
+      <if test="record.tag3id != null" >
+        tag3Id = #{record.tag3id,jdbcType=INTEGER},
+      </if>
+      <if test="record.tag4id != null" >
+        tag4Id = #{record.tag4id,jdbcType=INTEGER},
+      </if>
+      <if test="record.tag5id != null" >
+        tag5Id = #{record.tag5id,jdbcType=INTEGER},
+      </if>
+      <if test="record.picpath != null" >
+        picPath = #{record.picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.aqnsummary != null" >
+        aqnSummary = #{record.aqnsummary,jdbcType=VARCHAR},
+      </if>
+      <if test="record.editor != null" >
+        editor = #{record.editor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.comment != null" >
+        comment = #{record.comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ni_assess_questionnaire
+    set aqnId = #{record.aqnid,jdbcType=INTEGER},
+      aqnName = #{record.aqnname,jdbcType=VARCHAR},
+      publisherId = #{record.publisherid,jdbcType=INTEGER},
+      publisherName = #{record.publishername,jdbcType=VARCHAR},
+      epilogue = #{record.epilogue,jdbcType=VARCHAR},
+      perface = #{record.perface,jdbcType=VARCHAR},
+      aqnClassId = #{record.aqnclassid,jdbcType=INTEGER},
+      cTime = #{record.ctime,jdbcType=TIMESTAMP},
+      sTime = #{record.stime,jdbcType=TIMESTAMP},
+      staus = #{record.staus,jdbcType=TINYINT},
+      recommandQty = #{record.recommandqty,jdbcType=INTEGER},
+      questionNum = #{record.questionnum,jdbcType=INTEGER},
+      filePath = #{record.filepath,jdbcType=VARCHAR},
+      validation = #{record.validation,jdbcType=TINYINT},
+      tag1Id = #{record.tag1id,jdbcType=INTEGER},
+      tag2Id = #{record.tag2id,jdbcType=INTEGER},
+      tag3Id = #{record.tag3id,jdbcType=INTEGER},
+      tag4Id = #{record.tag4id,jdbcType=INTEGER},
+      tag5Id = #{record.tag5id,jdbcType=INTEGER},
+      picPath = #{record.picpath,jdbcType=VARCHAR},
+      aqnSummary = #{record.aqnsummary,jdbcType=VARCHAR},
+      editor = #{record.editor,jdbcType=VARCHAR},
+      comment = #{record.comment,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.newins.model.NiAssessQuestionnaire" >
+    update ni_assess_questionnaire
+    <set >
+      <if test="aqnname != null" >
+        aqnName = #{aqnname,jdbcType=VARCHAR},
+      </if>
+      <if test="publisherid != null" >
+        publisherId = #{publisherid,jdbcType=INTEGER},
+      </if>
+      <if test="publishername != null" >
+        publisherName = #{publishername,jdbcType=VARCHAR},
+      </if>
+      <if test="epilogue != null" >
+        epilogue = #{epilogue,jdbcType=VARCHAR},
+      </if>
+      <if test="perface != null" >
+        perface = #{perface,jdbcType=VARCHAR},
+      </if>
+      <if test="aqnclassid != null" >
+        aqnClassId = #{aqnclassid,jdbcType=INTEGER},
+      </if>
+      <if test="ctime != null" >
+        cTime = #{ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stime != null" >
+        sTime = #{stime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="staus != null" >
+        staus = #{staus,jdbcType=TINYINT},
+      </if>
+      <if test="recommandqty != null" >
+        recommandQty = #{recommandqty,jdbcType=INTEGER},
+      </if>
+      <if test="questionnum != null" >
+        questionNum = #{questionnum,jdbcType=INTEGER},
+      </if>
+      <if test="filepath != null" >
+        filePath = #{filepath,jdbcType=VARCHAR},
+      </if>
+      <if test="validation != null" >
+        validation = #{validation,jdbcType=TINYINT},
+      </if>
+      <if test="tag1id != null" >
+        tag1Id = #{tag1id,jdbcType=INTEGER},
+      </if>
+      <if test="tag2id != null" >
+        tag2Id = #{tag2id,jdbcType=INTEGER},
+      </if>
+      <if test="tag3id != null" >
+        tag3Id = #{tag3id,jdbcType=INTEGER},
+      </if>
+      <if test="tag4id != null" >
+        tag4Id = #{tag4id,jdbcType=INTEGER},
+      </if>
+      <if test="tag5id != null" >
+        tag5Id = #{tag5id,jdbcType=INTEGER},
+      </if>
+      <if test="picpath != null" >
+        picPath = #{picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="aqnsummary != null" >
+        aqnSummary = #{aqnsummary,jdbcType=VARCHAR},
+      </if>
+      <if test="editor != null" >
+        editor = #{editor,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where aqnId = #{aqnid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.newins.model.NiAssessQuestionnaire" >
+    update ni_assess_questionnaire
+    set aqnName = #{aqnname,jdbcType=VARCHAR},
+      publisherId = #{publisherid,jdbcType=INTEGER},
+      publisherName = #{publishername,jdbcType=VARCHAR},
+      epilogue = #{epilogue,jdbcType=VARCHAR},
+      perface = #{perface,jdbcType=VARCHAR},
+      aqnClassId = #{aqnclassid,jdbcType=INTEGER},
+      cTime = #{ctime,jdbcType=TIMESTAMP},
+      sTime = #{stime,jdbcType=TIMESTAMP},
+      staus = #{staus,jdbcType=TINYINT},
+      recommandQty = #{recommandqty,jdbcType=INTEGER},
+      questionNum = #{questionnum,jdbcType=INTEGER},
+      filePath = #{filepath,jdbcType=VARCHAR},
+      validation = #{validation,jdbcType=TINYINT},
+      tag1Id = #{tag1id,jdbcType=INTEGER},
+      tag2Id = #{tag2id,jdbcType=INTEGER},
+      tag3Id = #{tag3id,jdbcType=INTEGER},
+      tag4Id = #{tag4id,jdbcType=INTEGER},
+      tag5Id = #{tag5id,jdbcType=INTEGER},
+      picPath = #{picpath,jdbcType=VARCHAR},
+      aqnSummary = #{aqnsummary,jdbcType=VARCHAR},
+      editor = #{editor,jdbcType=VARCHAR},
+      comment = #{comment,jdbcType=VARCHAR}
+    where aqnId = #{aqnid,jdbcType=INTEGER}
+  </update>
+</mapper>

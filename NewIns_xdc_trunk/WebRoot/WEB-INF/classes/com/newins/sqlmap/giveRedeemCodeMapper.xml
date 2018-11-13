@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.GiveRedeemCodeDao">
+	<!-- 给予用户口粮兑换码 -->
+	<select id="getRedeemInfo" resultType="com.newins.model.RedeemCode">
+		select id AS redeemCodeId,redeemCode,ni_award_pool.awardPoolName as awardName,ni_award_pool.validBTime,ni_award_pool.validETime from ni_redeem_code,ni_award_pool where ni_redeem_code.awardPoolId=ni_award_pool.awardPoolId and ni_redeem_code.grantStatus=0 order by ni_redeem_code.id  LIMIT 1
+	</select>
+	<!-- 更新兑换码相关信息 -->
+	<update id="updateRedeem" parameterType="com.newins.model.RedeemCode">
+		UPDATE ni_redeem_code set ni_redeem_code.userId=#{userId},ni_redeem_code.grantStatus=1,ni_redeem_code.grantTime=current_timestamp(),ni_redeem_code.phoneNum=#{phoneNum} where ni_redeem_code.id=#{redeemCodeId}
+	</update>
+</mapper>

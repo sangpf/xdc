@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newins.dao.NiAdFlowRecordMapper">
+	
+	<!-- 记录广告流水表 -->
+	<insert id="insertAdFlowRecord" parameterType="com.newins.model.NiAdFlowRecord">
+		INSERT INTO ni_ad_flow_record
+	<trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="adId != null" >
+        adId,
+      </if>
+      <if test="userId != null" >
+        userId,
+      </if>
+      <if test="adChannel != null" >
+        adChannel,
+      </if>
+      <if test="adPosCode != null" >
+        adPosCode,
+      </if>
+      <if test="adTapTime != null" >
+        adTapTime,
+      </if>
+      <if test="Comment != null" >
+        Comment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="adId != null" >
+        #{adId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="adChannel != null" >
+        #{adChannel,jdbcType=INTEGER},
+      </if>
+      <if test="adPosCode != null" >
+        #{adPosCode,jdbcType=VARCHAR},
+      </if>
+      <if test="adTapTime != null" >
+        #{adTapTime,jdbcType=TIMESTAMP},
+      </if>
+     
+      <if test="Comment != null" >
+        #{Comment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+	
+	</insert>
+</mapper>

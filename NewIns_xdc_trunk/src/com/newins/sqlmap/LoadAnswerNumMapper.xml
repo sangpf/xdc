@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newins.dao.LoadAnswerNumDao">
+	<select id="ToDo" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+		select count(*) from ni_assess_order where deliveryId=#{deliveryId}
+	</select>
+	
+	<select id="GetResultShowType" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+		select resutShowType from ni_assess_questionnaire where aqnId=#{aqnId}
+	</select>
+</mapper>

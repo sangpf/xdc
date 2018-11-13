@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newins.payment.dao.ProductPackage_Dao" >
+	
+	<select id="select_key" parameterType="java.lang.Integer" resultType="com.newins.payment.model.ProductPackage">
+		SELECT *
+		FROM ni_product_package
+		WHERE ni_product_package.id = #{id}
+	</select>
+
+</mapper>

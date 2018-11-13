@@ -1,0 +1,493 @@
+"use strict";
+
++ function() {
+
+    // mui初始化
+    mui.init({
+        swipeBack: true, //启用右滑关闭功能
+        beforeback: function() {
+            MtaH5.clickStat('2302');
+        }
+    });
+
+    // h5统计
+    MtaH5.clickStat('2300');
+
+    var qnType = 1;
+    var qnId = getIdFromQueryString();
+    var deliveryId = getDeliveryIdFromQueryString();
+
+    // 加载投放信息
+    getDeliveryInfo(qnType, deliveryId, 'content', function() {
+        loadSqn();
+    });
+}()
+
+/**
+ * 加载问卷
+ */
+function loadSqn() {
+    mui.ajax('/NewIns/wanx/loadSqn', {
+        data: {
+            userId: 1,
+            sqnId: getIdFromQueryString(),
+            sqnCategory: localStorage.getItem('sqnCategory'),
+            answered: localStorage.getItem('answered')
+        },
+        dataType: 'json',
+        type: 'get',
+        timeout: 10000,
+        success: function(data) {
+            
+            if (!isDataSuccess(data)) {
+                mui.toast(data.errInfo);
+                setTimeout(function() {
+                    history.back();
+                }, 1000);
+                return;
+            }
+            var placeholder=""
+            if (data.showType == 1) {
+            		//showType==1表示当前问卷为整页显示
+                var footArea = [
+                    '   {{#isLastQuestion}}',
+                    '      <div class=\"mui-content-padded\">',
+                    '          <p class=\"statement\">声明：本次为匿名调查，您提供的信息将受到保护，请仔细作答，对不正常试卷将做无效处理！</p>',
+                    '          <button class="mui-btn xdc-btn-submit mui-btn-block" onclick=\"submitDo(event)\">提交</button>',
+                    '      </div>',
+                    '   {{/isLastQuestion}}'
+                ].join('');
+
+                var titleTemplate = [
+                    '<div class=\"mui-content-padded-18px\" id=\"title-box\">',
+                    '   <h4 id=\"title\">【{{questionQty}}题】{{sqnName}}</h4>',
+                    '   <p class=\"title-desc\"><span>出题人：{{publisherName}}</span> 类型：{{sqnClassName}}</p>',
+                    '   <img class=\"title-pic\"  src=\"' + baseUrl + '{{picPath}}\" alt=\"title-Picture\">',
+                    '   <p class=\"title-summary\">{{{sqnSummary}}}</p>',
+                    '</div>'
+                ].join('');
+
+                var templateSingle = [
+                    '<div id=\"q{{questionNum}}-box\">',
+                    '   <h5>',
+                    '      {{questionNum}}.{{sqTitle}}',
+                    '      <font color=\"red\">(单选)</font>',
+                    '      {{#qImgUrl}}',
+                    '          <div class=\"qimg\">',
+                    '               <img src=\"' + baseUrl + '{{qImgUrl}}\" alt=\"{{sqTitle}}\">',
+                    '          </div>',
+                    '      {{/qImgUrl}}',
+                    '   </h5>',
+                    '   <form class=\"mui-input-group\" id=\"q{{questionNum}}\" name=\"xdc-single-choice\" data-id=\"{{sqId}}\" data-isRequired=\"{{required}}\">',
+                    '       {{#options}}',
+                    '           <div class=\"mui-input-row mui-radio mui-left\">',
+                    '               <label>{{optionDes}}</label>',
+                    '               <input name=\"q{{questionNum}}\" value=\"{{optionOrder}}\" type=\"radio\"></input>',
+                    '           </div>',
+                    '       {{/options}}',
+                    '   </form>',
+                    footArea,
+                    '</div>'
+                ].join('');
+
+                var templateMuti = [
+                    '<div id=\"q{{questionNum}}-box\">',
+                    '   <h5>',
+                    '      {{questionNum}}.{{sqTitle}}',
+                    '      <font color=\"red\">(多选{{chioceDesc}})</font>',
+                    '      {{#qImgUrl}}',
+                    '          <div class=\"qimg\">',
+                    '               <img src=\"' + baseUrl + '{{qImgUrl}}\" alt=\"{{aqTitle}}\">',
+                    '          </div>',
+                    '      {{/qImgUrl}}',
+                    '   </h5>',
+                    '   <form class=\"mui-input-group\" id=\"q{{questionNum}}\" name=\"xdc-multiple-choice\" data-id=\"{{sqId}}\" data-isRequired=\"{{required}}\" data-optMaxNum=\"{{optMaxNum}}\" data-optMinNum=\"{{optMinNum}}\">',
+                    '       {{#options}}',
+                    '           <div class=\"mui-input-row mui-checkbox mui-left\">',
+                    '               <label>{{optionDes}}</label>',
+                    '               <input name=\"q{{questionNum}}\" value=\"{{optionOrder}}\" type=\"checkbox\"></input>',
+                    '           </div>',
+                    '       {{/options}}',
+                    '   </form>',
+                    footArea,
+                    '</div>'
+                ].join('');
+
+                var templateNumInput = [
+                    '<div id=\"q{{questionNum}}-box\">',
+                    '   <h5>',
+                    '      {{questionNum}}.{{sqTitle}}',
+                    '      <font color=\"red\">(填空)</font>',
+                    '      {{#qImgUrl}}',
+                    '          <div class=\"qimg\">',
+                    '               <img src=\"' + baseUrl + '{{qImgUrl}}\" alt=\"{{aqTitle}}\">',
+                    '          </div>',
+                    '      {{/qImgUrl}}',
+                    '   </h5>',
+                    '   <form class=\"mui-input-group\" id=\"q{{questionNum}}\" name=\"xdc-self-define\" data-id=\"{{sqId}}\" data-isRequired=\"{{required}}\">',
+                    '       <div class=\"mui-input-row selfDefine-input\">',
+                    '           <textarea name=\"q{{questionNum}}\" maxlength=\"9\" placeholder=\"请在这里输入数字答案\" onkeyup=\"this.value=this.value.replace(/[^0-9.]/g,\"\")\"></textarea>',
+                    '       </div>',
+                    '   </form>',
+                    footArea,
+                    '</div>'
+                ].join('');
+
+                var templateTxtInput = [
+                    '<div id=\"q{{questionNum}}-box\">',
+                    '   <h5>',
+                    '      {{questionNum}}.{{sqTitle}}',
+                    '      <font color=\"red\">(填空)</font>',
+                    '      {{#qImgUrl}}',
+                    '          <div class=\"qimg\">',
+                    '               <img src=\"' + baseUrl + '{{qImgUrl}}\" alt=\"{{aqTitle}}\">',
+                    '          </div>',
+                    '      {{/qImgUrl}}',
+                    '   </h5>',
+                    '   <form class=\"mui-input-group\" id=\"q{{questionNum}}\" name=\"xdc-self-define\" data-id=\"{{sqId}}\" data-isRequired=\"{{required}}\" data-questionType=\"{{questionType}}\" data-textMaxVal=\"{{textMaxVal}}\" data-textMinVal=\"{{textMinVal}}\" data-textLength=\"{{textLength}}\" data-decimalDigits=\"{{decimalDigits}}\">',
+                    '       <div class=\"mui-input-row selfDefine-input\">',
+                    '           <textarea name=\"q{{questionNum}}\" maxlength=\"140\" placeholder=\"请输入答案\"></textarea>',
+                    '       </div>',
+                    '   </form>',
+                    footArea,
+                    '</div>'
+                ].join('');
+
+            } else if (data.showType == 2) {
+            		//showType=2表示是分页显示
+                var footArea = [
+                    '   {{#isFirstQuestion}}',
+                    '      <div class=\"mui-row\" style=\"margin-top: 15px;\">',
+                    '         <div class=\"mui-col-xs-5 mui-col-sm-5\">',
+                    '            <button class=\"mui-btn xdc-btn-submit mui-btn-block\" onclick=\"firstDo(event)\">返回</button>',
+                    '         </div>',
+                    '         <div class=\"mui-col-xs-2 mui-col-sm-2\"></div>',
+                    '         <div class=\"mui-col-xs-5 mui-col-sm-5\">',
+                    '            <button class=\"mui-btn xdc-btn-submit mui-btn-block\" onclick=\"nextDo(event)\">下一题</button>',
+                    '         </div>',
+                    '      </div>',
+                    '   {{/isFirstQuestion}}',
+                    '   {{#isMiddleQuestion}}',
+                    '      <div class=\"mui-row\" style=\"margin-top: 15px;\">',
+                    '         <div class=\"mui-col-xs-5 mui-col-sm-5\">',
+                    '            <button class=\"mui-btn xdc-btn-submit mui-btn-block\" onclick=\"prevDo(event)\">上一题</button>',
+                    '         </div>',
+                    '         <div class=\"mui-col-xs-2 mui-col-sm-2\"></div>',
+                    '         <div class=\"mui-col-xs-5 mui-col-sm-5\">',
+                    '            <button class=\"mui-btn xdc-btn-submit mui-btn-block\" onclick=\"nextDo(event)\">下一题</button>',
+                    '         </div>',
+                    '      </div>',
+                    '   {{/isMiddleQuestion}}',
+                    '   {{#isLastQuestion}}',
+                    '      <div class=\"mui-row\" style=\"margin-top: 15px;\">',
+                    '         <div class=\"mui-col-xs-5 mui-col-sm-5\">',
+                    '            <button class=\"mui-btn xdc-btn-submit mui-btn-block\" onclick=\"prevDo(event)\">上一题</button>',
+                    '         </div>',
+                    '         <div class=\"mui-col-xs-2 mui-col-sm-2\"></div>',
+                    '         <div class=\"mui-col-xs-5 mui-col-sm-5\">',
+                    '            <button class=\"mui-btn xdc-btn-submit mui-btn-block\"  onclick=\"submitDo(event)\">提交</button>',
+                    '         </div>',
+                    '      </div>',
+                    '      <p class=\"statement mui-content-padded\">声明：本次为匿名调查，您提供的信息将受到保护，请仔细作答，对不正常试卷将做无效处理！</p>',
+                    '   {{/isLastQuestion}}'
+                ].join('');
+
+                var titleTemplate = [
+                    '<div class=\"mui-fullscreen\" id=\"title-box\" style=\"padding: 0 18px;\">',
+                    '   <h4 id=\"title\">【{{questionQty}}题】{{sqnName}}</h4>',
+                    '   <p class=\"title-desc\"><span>出题人：{{publisherName}}</span> 类型：{{sqnClassName}}</p>',
+                    '   <img class=\"title-pic\"  src=\"' + baseUrl + '{{picPath}}\" alt=\"title-Picture\">',
+                    '   <p class=\"title-summary\">{{{sqnSummary}}}</p>',
+                    '   <button class=\"mui-btn xdc-btn-submit mui-btn-block\" onclick=\"firstDo(event)\">开始答题</button>',
+                    '</div>'
+                ].join('');
+
+                var footTemplate = [].join('');
+
+                var templateSingle = [
+                    '<div class=\"mui-fullscreen hide\" id=\"q{{questionNum}}-box\" style=\"padding: 0 10px;\">',
+                    '   <h5>',
+                    '      {{questionNum}}.{{sqTitle}}',
+                    '      <font color=\"red\">(单选)</font>',
+                    '      {{#qImgUrl}}',
+                    '          <div class=\"qimg\">',
+                    '               <img src=\"' + baseUrl + '{{qImgUrl}}\" alt=\"{{sqTitle}}\">',
+                    '          </div>',
+                    '      {{/qImgUrl}}',
+                    '   </h5>',
+                    '   <form class=\"mui-input-group\" id=\"q{{questionNum}}\" name=\"xdc-single-choice\" data-id=\"{{sqId}}\" data-isRequired=\"{{required}}\">',
+                    '       {{#options}}',
+                    '           <div class=\"mui-input-row mui-radio mui-left\">',
+                    '               <label>{{optionDes}}</label>',
+                    '               <input name=\"q{{questionNum}}\" value=\"{{optionOrder}}\" type=\"radio\" data-linkto=\"q{{optionLink}}\""></input>',
+                    '           </div>',
+                    '       {{/options}}',
+                    '   </form>',
+                    footArea,
+                    '</div>'
+                ].join('');
+
+                var templateMuti = [
+                    '<div class=\"mui-fullscreen hide\" id=\"q{{questionNum}}-box\" style=\"padding: 0 10px;\">',
+                    '   <h5>',
+                    '      {{questionNum}}.{{sqTitle}}',
+                    '      <font color=\"red\">(多选{{chioceDesc}})</font>',
+                    '      {{#qImgUrl}}',
+                    '          <div class=\"qimg\">',
+                    '               <img src=\"' + baseUrl + '{{qImgUrl}}\" alt=\"{{aqTitle}}\">',
+                    '          </div>',
+                    '      {{/qImgUrl}}',
+                    '   </h5>',
+                    '   <form class=\"mui-input-group\" id=\"q{{questionNum}}\" name=\"xdc-multiple-choice\" data-id=\"{{sqId}}\" data-isRequired=\"{{required}}\" data-optMaxNum=\"{{optMaxNum}}\" data-optMinNum=\"{{optMinNum}}\">',
+                    '       {{#options}}',
+                    '           <div class=\"mui-input-row mui-checkbox mui-left\">',
+                    '               <label>{{optionDes}}</label>',
+                    '               <input name=\"q{{questionNum}}\" value=\"{{optionOrder}}\" type=\"checkbox\"></input>',
+                    '           </div>',
+                    '       {{/options}}',
+                    '   </form>',
+                    footArea,
+                    '</div>'
+                ].join('');
+
+                var templateNumInput = [
+                    '<div class=\"mui-fullscreen hide\" id=\"q{{questionNum}}-box\" style=\"padding: 0 10px;\">',
+                    '   <h5>',
+                    '      {{questionNum}}.{{sqTitle}}',
+                    '      <font color=\"red\">(填空)</font>',
+                    '      {{#qImgUrl}}',
+                    '          <div class=\"qimg\">',
+                    '               <img src=\"' + baseUrl + '{{qImgUrl}}\" alt=\"{{aqTitle}}\">',
+                    '          </div>',
+                    '      {{/qImgUrl}}',
+                    '   </h5>',
+                    '   <form class=\"mui-input-group\" id=\"q{{questionNum}}\" name=\"xdc-self-define\" data-id=\"{{sqId}}\" data-isRequired=\"{{required}}\">',
+                    '       <div class=\"mui-input-row selfDefine-input\">',
+                    '           <textarea name=\"q{{questionNum}}\" maxlength=\"9\" placeholder=\"请在这里输入数字答案\" onkeyup=\"this.value=this.value.replace(/[^0-9.]/g,\"\")\"></textarea>',
+                    '       </div>',
+                    '   </form>',
+                    footArea,
+                    '</div>'
+                ].join('');
+
+                var templateTxtInput = [
+                    '<div class=\"mui-fullscreen hide\" id=\"q{{questionNum}}-box\" style=\"padding: 0 10px;\">',
+                    '   <h5>',
+                    '      {{questionNum}}.{{sqTitle}}',
+                    '      <font color=\"red\">(填空)</font>',
+                    '      {{#qImgUrl}}',
+                    '          <div class=\"qimg\">',
+                    '               <img src=\"' + baseUrl + '{{qImgUrl}}\" alt=\"{{aqTitle}}\">',
+                    '          </div>',
+                    '      {{/qImgUrl}}',
+                    '   </h5>',
+                    '   <form class=\"mui-input-group\" id=\"q{{questionNum}}\" name=\"xdc-self-define\" data-id=\"{{sqId}}\" data-isRequired=\"{{required}}\">',
+                    '       <div class=\"mui-input-row selfDefine-input\">',
+                    '           <textarea name=\"q{{questionNum}}\" maxlength=\"140\" placeholder=\"请在这里输入答案\"></textarea>',
+                    '       </div>',
+                    '   </form>',
+                    footArea,
+                    '</div>'
+                ].join('');
+            }
+
+            var title = document.getElementById("title");
+            var list = document.getElementById("list");
+            var titleFragment = Mustache.render(titleTemplate, data);
+            var listFragment = '';
+            for (var i = 0, length = data.questions.length; i < length; i++) {
+                var thisQuestion = data.questions[i];
+
+                // 根据是否为第一题、最后一题、其他题，显示特定的”上一题“、”下一题“、”提交“、”声明”
+                if (parseInt(thisQuestion.questionNum) == parseInt(data.questionQty)) {
+                    thisQuestion.isLastQuestion = true;
+                }  else if (parseInt(thisQuestion.questionNum) == 1) {
+                    thisQuestion.isFirstQuestion = true;
+                } else {
+                    if (thisQuestion.options.length > 0 && thisQuestion.options[0].optionLink === -1) {
+                        thisQuestion.isLastQuestion = true;
+                    } else {
+                        thisQuestion.isMiddleQuestion = true;
+                    }
+                }
+
+                // 根据questionType的值，渲染不同的模板
+                if (thisQuestion.questionType == 1) {
+                    listFragment += Mustache.render(templateSingle, thisQuestion);
+                } else if (thisQuestion.questionType == 2) {
+                    // optMinNum或optMaxNum为0时，表示不限制选项最少或最多的个数
+                    thisQuestion.optMinNum = thisQuestion.optMinNum || 0;
+                    thisQuestion.optMaxNum = thisQuestion.optMaxNum || 999;
+                    thisQuestion.chioceDesc = getMultiChioceDesc(thisQuestion.optMinNum, thisQuestion.optMaxNum, thisQuestion.optionNum);
+                    listFragment += Mustache.render(templateMuti, thisQuestion);
+                } else if (thisQuestion.questionType>=3&&thisQuestion.questionType<=12) {
+//                  listFragment += Mustache.render(templateNumInput, thisQuestion);
+//              } else {
+						switch(thisQuestion.questionType){
+							case 3:
+								placeholder+="请输入数字答案";
+								break;
+							case 4:
+								placeholder+="请输入文本答案";
+								break;
+							case 5:
+								placeholder+="请输入时间";
+								break;
+							case 8:
+								placeholder+="请输入文本答案";
+								break;
+							case 9:
+								placeholder+="请输入文本答案";
+								break;
+							case 10:
+								placeholder+="请输入手机号";
+								break;
+							case 11:
+								placeholder+="请输入整数答案";
+								break;
+							case 12:
+								placeholder+="请输入小数答案";
+								break;
+						}
+                    listFragment += Mustache.render(templateTxtInput, thisQuestion);
+                }
+            }
+            title.innerHTML = titleFragment;
+            list.innerHTML = listFragment;
+        }
+    })
+}
+
+/**
+ * 题目跳转功能中，单页显示题目，保存已答过的题目的集合
+ */
+window.questions = [];
+
+/**
+ * 题目跳转功能中，单页显示题目，每个题目容器box的显示/隐藏
+ * 如果当前为隐藏，则切换为显示
+ * 如果当前为显示，则切换为隐藏
+ *
+ * 输入：
+ *     para：
+ *         (1)可以为box的id，string型。
+ *         (2)可以为box的DOM对象，object型。
+ *  示例：
+ *      对于 <div class="mui-fullscreen hide" id="q2-box">XXX</div>，
+ *      可以以如下形式调用本函数：
+ *          toggleBox('q2');
+ *          toggleBox('q2-box');
+ *          var boxDom = document.getElementById('q2-box');  toggleBox(boxDom);
+ */
+function toggleBox(para) {
+    if (typeof para === 'string' && para.indexOf('-box') > 0) {
+        var boxDom = document.getElementById(para);
+    } else if (typeof para === 'string' && para.indexOf('-box') < 0) {
+        var boxDom = document.getElementById(para + '-box');
+    } else if (typeof para === 'object' && typeof para.classList !== 'undefined') {
+        var boxDom = para;
+    } else {
+        return;
+    }
+
+    var boxClassList = boxDom.classList;
+    if (boxClassList.contains('hide')) {
+        boxClassList.remove('hide');
+    } else {
+        boxClassList.add('hide');
+    }
+}
+
+/**
+ * 题目跳转功能中，单页显示题目，点击开始答题或返回
+ */
+function firstDo(e) {
+    // 隐藏题目介绍，显示第一题
+    toggleBox('title');
+    toggleBox('q1');
+}
+
+/**
+ * 题目跳转功能中，单页显示题目，点击上一题
+ */
+function prevDo(e) {
+    // 找到目标节点
+    var target = e.target;
+    while (target !== this) {
+        if (target.id.toLowerCase().indexOf('-box') > 0) {
+            break;
+        }
+        target = target.parentNode;
+    }
+    var currentBox = target;
+
+    // 上一题的id，更新已答过的题目的集合
+    var preveQuestionId = questions.pop();
+
+    // 隐藏本题，显示上一题
+    toggleBox(currentBox);
+    toggleBox(preveQuestionId);
+}
+
+/**
+ * 题目跳转功能中，单页显示题目，点击下一题
+ */
+function nextDo(e) {
+    // 找到目标节点
+    var target = e.target;
+    while (target !== this) {
+        if (target.id.toLowerCase().indexOf('-box') > 0) {
+            break;
+        }
+        target = target.parentNode;
+    }
+    var currentBox = target;
+
+    var currentQuestionId = currentBox.id.split('-')[0];
+    var checkedInput = document.getElementById(currentQuestionId)
+        .querySelector("input[name=" + currentQuestionId + "]:checked");
+    if (!checkedInput) {
+        mui.toast("本题为必答题，请您作答后再次提交");
+        return;
+    } else {
+        // 更新已答过的题目的集合
+        questions.push(currentQuestionId);
+
+        // 下一题的id。如果data-link为null，或者为'q0'，则不跳转，顺序答下一题
+        var nextQuestionId = checkedInput.getAttribute('data-linkto');
+        if (nextQuestionId === null || nextQuestionId === 'q0') {
+            var currentQuestionNumber = parseInt(currentQuestionId.split('q')[1]);
+            nextQuestionId = 'q' + (currentQuestionNumber + 1);
+        }
+
+        // 隐藏本题，显示下一题
+        toggleBox(currentBox);
+        toggleBox(nextQuestionId);
+    }
+}
+
+/**
+ * 点击提交
+ */
+function submitDo(e) {
+    var qnType = 1;
+    var qnId = getIdFromQueryString();
+    var deliveryId = getDeliveryIdFromQueryString();
+
+    // 点击提交答案统计
+    MtaH5.clickStat('2301');
+    addLog({
+        logType: 'qnAction',
+        action: 'submitAnswer',
+        deliveryId: deliveryId,
+        qnId: qnId,
+        qnType: qnType,
+        actResult: 'survey_result'
+    });
+
+    // 提交答案
+    var submitAnswer = getSubmitAnswer(qnType);
+    if (submitAnswer.success) {
+        saveAnswer(qnType, submitAnswer.data);
+    }
+}

@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newins.dao.NiSchoolDictMapper" >
+  <resultMap id="BaseResultMap" type="com.newins.model.NiSchoolDict" >
+    <id column="schoolId" property="schoolid" jdbcType="INTEGER" />
+    <result column="schoolName" property="schoolname" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="belongTo" property="belongto" jdbcType="VARCHAR" />
+    <result column="degreeLevel" property="degreelevel" jdbcType="VARCHAR" />
+    <result column="schoolClass" property="schoolclass" jdbcType="VARCHAR" />
+    <result column="schoolType" property="schooltype" jdbcType="VARCHAR" />
+    <result column="postgraduate" property="postgraduate" jdbcType="TINYINT" />
+    <result column="wanxSchoolCode" property="wanxschoolcode" jdbcType="VARCHAR" />
+    <result column="wanxSchoolName" property="wanxschoolname" jdbcType="VARCHAR" />
+    <result column="regionCode" property="regioncode" jdbcType="VARCHAR" />
+    <result column="regionName" property="regionname" jdbcType="VARCHAR" />
+    <result column="addTime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    schoolId, schoolName, province, belongTo, degreeLevel, schoolClass, schoolType,
+    postgraduate, wanxSchoolCode, wanxSchoolName, regionCode, regionName, addTime, 
+    comment
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.newins.model.NiSchoolDictExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ni_school_dict
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ni_school_dict
+    where schoolId = #{schoolid,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 根据条件查询 -->
+  <select id="selectByWanxSchoolName" parameterType="java.lang.String" resultType="com.newins.model.NiSchoolDict">
+  	      select
+	    <include refid="Base_Column_List" />
+	    from ni_school_dict
+	    where wanxSchoolName = #{wanxSchoolName}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ni_school_dict
+    where schoolId = #{schoolid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.newins.model.NiSchoolDictExample" >
+    delete from ni_school_dict
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.newins.model.NiSchoolDict" >
+    insert into ni_school_dict (schoolId, schoolName, province, 
+      belongTo, degreeLevel, schoolClass, 
+      schoolType,
+      postgraduate, wanxSchoolCode, wanxSchoolName, 
+      regionCode, regionName, addTime, 
+      comment)
+    values (#{schoolid,jdbcType=INTEGER}, #{schoolname,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{belongto,jdbcType=VARCHAR}, #{degreelevel,jdbcType=VARCHAR}, #{schoolclass,jdbcType=VARCHAR}, 
+      #{schooltype,jdbcType=VARCHAR}, 
+      #{postgraduate,jdbcType=TINYINT}, #{wanxschoolcode,jdbcType=VARCHAR}, #{wanxschoolname,jdbcType=VARCHAR}, 
+      #{regioncode,jdbcType=VARCHAR}, #{regionname,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP}, 
+      #{comment,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.newins.model.NiSchoolDict" >
+    insert into ni_school_dict
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="schoolid != null" >
+        schoolId,
+      </if>
+      <if test="schoolname != null" >
+        schoolName,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="belongto != null" >
+        belongTo,
+      </if>
+      <if test="degreelevel != null" >
+        degreeLevel,
+      </if>
+      <if test="schoolclass != null" >
+        schoolClass,
+      </if>
+      <if test="schooltype != null" >
+        schoolType,
+      </if>
+      <if test="postgraduate != null" >
+        postgraduate,
+      </if>
+      <if test="wanxschoolcode != null" >
+        wanxSchoolCode,
+      </if>
+      <if test="wanxschoolname != null" >
+        wanxSchoolName,
+      </if>
+      <if test="regioncode != null" >
+        regionCode,
+      </if>
+      <if test="regionname != null" >
+        regionName,
+      </if>
+      <if test="addtime != null" >
+        addTime,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="schoolid != null" >
+        #{schoolid,jdbcType=INTEGER},
+      </if>
+      <if test="schoolname != null" >
+        #{schoolname,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="belongto != null" >
+        #{belongto,jdbcType=VARCHAR},
+      </if>
+      <if test="degreelevel != null" >
+        #{degreelevel,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolclass != null" >
+        #{schoolclass,jdbcType=VARCHAR},
+      </if>
+      <if test="schooltype != null" >
+        #{schooltype,jdbcType=VARCHAR},
+      </if>
+      <if test="postgraduate != null" >
+        #{postgraduate,jdbcType=TINYINT},
+      </if>
+      <if test="wanxschoolcode != null" >
+        #{wanxschoolcode,jdbcType=VARCHAR},
+      </if>
+      <if test="wanxschoolname != null" >
+        #{wanxschoolname,jdbcType=VARCHAR},
+      </if>
+      <if test="regioncode != null" >
+        #{regioncode,jdbcType=VARCHAR},
+      </if>
+      <if test="regionname != null" >
+        #{regionname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.newins.model.NiSchoolDictExample" resultType="java.lang.Integer" >
+    select count(*) from ni_school_dict
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ni_school_dict
+    <set >
+      <if test="record.schoolid != null" >
+        schoolId = #{record.schoolid,jdbcType=INTEGER},
+      </if>
+      <if test="record.schoolname != null" >
+        schoolName = #{record.schoolname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.belongto != null" >
+        belongTo = #{record.belongto,jdbcType=VARCHAR},
+      </if>
+      <if test="record.degreelevel != null" >
+        degreeLevel = #{record.degreelevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.schoolclass != null" >
+        schoolClass = #{record.schoolclass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.schooltype != null" >
+        schoolType = #{record.schooltype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.postgraduate != null" >
+        postgraduate = #{record.postgraduate,jdbcType=TINYINT},
+      </if>
+      <if test="record.wanxschoolcode != null" >
+        wanxSchoolCode = #{record.wanxschoolcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wanxschoolname != null" >
+        wanxSchoolName = #{record.wanxschoolname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regioncode != null" >
+        regionCode = #{record.regioncode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regionname != null" >
+        regionName = #{record.regionname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addtime != null" >
+        addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.comment != null" >
+        comment = #{record.comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ni_school_dict
+    set schoolId = #{record.schoolid,jdbcType=INTEGER},
+      schoolName = #{record.schoolname,jdbcType=VARCHAR},
+      province = #{record.province,jdbcType=VARCHAR},
+      belongTo = #{record.belongto,jdbcType=VARCHAR},
+      degreeLevel = #{record.degreelevel,jdbcType=VARCHAR},
+      schoolClass = #{record.schoolclass,jdbcType=VARCHAR},
+      schoolType = #{record.schooltype,jdbcType=VARCHAR},
+      postgraduate = #{record.postgraduate,jdbcType=TINYINT},
+      wanxSchoolCode = #{record.wanxschoolcode,jdbcType=VARCHAR},
+      wanxSchoolName = #{record.wanxschoolname,jdbcType=VARCHAR},
+      regionCode = #{record.regioncode,jdbcType=VARCHAR},
+      regionName = #{record.regionname,jdbcType=VARCHAR},
+      addTime = #{record.addtime,jdbcType=TIMESTAMP},
+      comment = #{record.comment,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.newins.model.NiSchoolDict" >
+    update ni_school_dict
+    <set >
+      <if test="schoolname != null" >
+        schoolName = #{schoolname,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="belongto != null" >
+        belongTo = #{belongto,jdbcType=VARCHAR},
+      </if>
+      <if test="degreelevel != null" >
+        degreeLevel = #{degreelevel,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolclass != null" >
+        schoolClass = #{schoolclass,jdbcType=VARCHAR},
+      </if>
+      <if test="schooltype != null" >
+        schoolType = #{schooltype,jdbcType=VARCHAR},
+      </if>
+      <if test="postgraduate != null" >
+        postgraduate = #{postgraduate,jdbcType=TINYINT},
+      </if>
+      <if test="wanxschoolcode != null" >
+        wanxSchoolCode = #{wanxschoolcode,jdbcType=VARCHAR},
+      </if>
+      <if test="wanxschoolname != null" >
+        wanxSchoolName = #{wanxschoolname,jdbcType=VARCHAR},
+      </if>
+      <if test="regioncode != null" >
+        regionCode = #{regioncode,jdbcType=VARCHAR},
+      </if>
+      <if test="regionname != null" >
+        regionName = #{regionname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        addTime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where schoolId = #{schoolid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.newins.model.NiSchoolDict" >
+    update ni_school_dict
+    set schoolName = #{schoolname,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      belongTo = #{belongto,jdbcType=VARCHAR},
+      degreeLevel = #{degreelevel,jdbcType=VARCHAR},
+      schoolClass = #{schoolclass,jdbcType=VARCHAR},
+      schoolType = #{schooltype,jdbcType=VARCHAR},
+      postgraduate = #{postgraduate,jdbcType=TINYINT},
+      wanxSchoolCode = #{wanxschoolcode,jdbcType=VARCHAR},
+      wanxSchoolName = #{wanxschoolname,jdbcType=VARCHAR},
+      regionCode = #{regioncode,jdbcType=VARCHAR},
+      regionName = #{regionname,jdbcType=VARCHAR},
+      addTime = #{addtime,jdbcType=TIMESTAMP},
+      comment = #{comment,jdbcType=VARCHAR}
+    where schoolId = #{schoolid,jdbcType=INTEGER}
+  </update>
+</mapper>

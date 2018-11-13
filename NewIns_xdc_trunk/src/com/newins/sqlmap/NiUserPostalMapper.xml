@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newins.dao.NiUserPostalMapper" >
+  <resultMap id="BaseResultMap" type="com.newins.model.NiUserPostal" >
+    <id column="postalId" property="postalid" jdbcType="INTEGER" />
+    <result column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="recipientName" property="recipientname" jdbcType="VARCHAR" />
+    <result column="recipientPhone" property="recipientphone" jdbcType="VARCHAR" />
+    <result column="mailAddress" property="mailaddress" jdbcType="VARCHAR" />
+    <result column="postCode" property="postcode" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="uTime" property="utime" jdbcType="TIMESTAMP" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    postalId, userId, recipientName, recipientPhone, mailAddress, postCode, province, 
+    uTime, comment
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.newins.model.NiUserPostalExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ni_user_postal
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ni_user_postal
+    where postalId = #{postalid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ni_user_postal
+    where postalId = #{postalid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.newins.model.NiUserPostalExample" >
+    delete from ni_user_postal
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.newins.model.NiUserPostal" >
+    insert into ni_user_postal (postalId, userId, recipientName, 
+      recipientPhone, mailAddress, postCode, 
+      province, uTime, comment
+      )
+    values (#{postalid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{recipientname,jdbcType=VARCHAR}, 
+      #{recipientphone,jdbcType=VARCHAR}, #{mailaddress,jdbcType=VARCHAR}, #{postcode,jdbcType=VARCHAR}, 
+      #{province,jdbcType=VARCHAR}, #{utime,jdbcType=TIMESTAMP}, #{comment,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.newins.model.NiUserPostal" >
+    insert into ni_user_postal
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="postalid != null" >
+        postalId,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="recipientname != null" >
+        recipientName,
+      </if>
+      <if test="recipientphone != null" >
+        recipientPhone,
+      </if>
+      <if test="mailaddress != null" >
+        mailAddress,
+      </if>
+      <if test="postcode != null" >
+        postCode,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="utime != null" >
+        uTime,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="postalid != null" >
+        #{postalid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="recipientname != null" >
+        #{recipientname,jdbcType=VARCHAR},
+      </if>
+      <if test="recipientphone != null" >
+        #{recipientphone,jdbcType=VARCHAR},
+      </if>
+      <if test="mailaddress != null" >
+        #{mailaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="postcode != null" >
+        #{postcode,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="utime != null" >
+        #{utime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.newins.model.NiUserPostalExample" resultType="java.lang.Integer" >
+    select count(*) from ni_user_postal
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ni_user_postal
+    <set >
+      <if test="record.postalid != null" >
+        postalId = #{record.postalid,jdbcType=INTEGER},
+      </if>
+      <if test="record.userid != null" >
+        userId = #{record.userid,jdbcType=INTEGER},
+      </if>
+      <if test="record.recipientname != null" >
+        recipientName = #{record.recipientname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recipientphone != null" >
+        recipientPhone = #{record.recipientphone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mailaddress != null" >
+        mailAddress = #{record.mailaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.postcode != null" >
+        postCode = #{record.postcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.utime != null" >
+        uTime = #{record.utime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.comment != null" >
+        comment = #{record.comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ni_user_postal
+    set postalId = #{record.postalid,jdbcType=INTEGER},
+      userId = #{record.userid,jdbcType=INTEGER},
+      recipientName = #{record.recipientname,jdbcType=VARCHAR},
+      recipientPhone = #{record.recipientphone,jdbcType=VARCHAR},
+      mailAddress = #{record.mailaddress,jdbcType=VARCHAR},
+      postCode = #{record.postcode,jdbcType=VARCHAR},
+      province = #{record.province,jdbcType=VARCHAR},
+      uTime = #{record.utime,jdbcType=TIMESTAMP},
+      comment = #{record.comment,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.newins.model.NiUserPostal" >
+    update ni_user_postal
+    <set >
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="recipientname != null" >
+        recipientName = #{recipientname,jdbcType=VARCHAR},
+      </if>
+      <if test="recipientphone != null" >
+        recipientPhone = #{recipientphone,jdbcType=VARCHAR},
+      </if>
+      <if test="mailaddress != null" >
+        mailAddress = #{mailaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="postcode != null" >
+        postCode = #{postcode,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="utime != null" >
+        uTime = #{utime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where postalId = #{postalid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.newins.model.NiUserPostal" >
+    update ni_user_postal
+    set userId = #{userid,jdbcType=INTEGER},
+      recipientName = #{recipientname,jdbcType=VARCHAR},
+      recipientPhone = #{recipientphone,jdbcType=VARCHAR},
+      mailAddress = #{mailaddress,jdbcType=VARCHAR},
+      postCode = #{postcode,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      uTime = #{utime,jdbcType=TIMESTAMP},
+      comment = #{comment,jdbcType=VARCHAR}
+    where postalId = #{postalid,jdbcType=INTEGER}
+  </update>
+</mapper>

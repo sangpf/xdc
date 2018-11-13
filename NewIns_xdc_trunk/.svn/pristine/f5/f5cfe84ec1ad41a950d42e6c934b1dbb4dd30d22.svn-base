@@ -1,0 +1,121 @@
+package com.newins.model;
+/**
+ * 付费测评引导页信息
+ * @author Zhang
+ *
+ */
+public class BootPageInfo {
+	private String picPath;//问卷头图
+	private String qnName;//问卷名称
+	private String qnSummary;//问卷介绍
+	private int showType;//显示类型 1.整页显示 2.分页显示
+	private String discountInfo;//问卷优惠信息
+	private double price;//问卷价格
+	private String payTag1;//付费测评问卷标签1
+	private String payTag2;//付费测评问卷标签2
+	private String payTag3;//付费测评问卷标签3
+	private String authorName;//作者名称
+	private String introduce;//作者简介
+	private String headImg;//作者头像路径
+	private String subtitle;//问卷副标题
+	private int answerNumber;//参与人数
+	private int cornerFlag;//角棋类型
+	private int isHave;//是否有付费信息
+	//封装属性
+	public String getPicPath() {
+		return picPath;
+	}
+	public void setPicPath(String picPath) {
+		this.picPath = picPath;
+	}
+	public String getQnName() {
+		return qnName;
+	}
+	public void setQnName(String qnName) {
+		this.qnName = qnName;
+	}
+	public String getQnSummary() {
+		return qnSummary;
+	}
+	public void setQnSummary(String qnSummary) {
+		this.qnSummary = qnSummary;
+	}
+	public String getDiscountInfo() {
+		return discountInfo;
+	}
+	public void setDiscountInfo(String discountInfo) {
+		this.discountInfo = discountInfo;
+	}
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	public String getPayTag1() {
+		return payTag1;
+	}
+	public void setPayTag1(String payTag1) {
+		this.payTag1 = payTag1;
+	}
+	public String getPayTag2() {
+		return payTag2;
+	}
+	public void setPayTag2(String payTag2) {
+		this.payTag2 = payTag2;
+	}
+	public String getPayTag3() {
+		return payTag3;
+	}
+	public void setPayTag3(String payTag3) {
+		this.payTag3 = payTag3;
+	}
+	public String getAuthorName() {
+		return authorName;
+	}
+	public void setAuthorName(String authorName) {
+		this.authorName = authorName;
+	}
+	public String getIntroduce() {
+		return introduce;
+	}
+	public void setIntroduce(String introduce) {
+		this.introduce = introduce;
+	}
+	public String getHeadImg() {
+		return headImg;
+	}
+	public void setHeadImg(String headImg) {
+		this.headImg = headImg;
+	}
+	public String getSubtitle() {
+		return subtitle;
+	}
+	public void setSubtitle(String subtitle) {
+		this.subtitle = subtitle;
+	}
+	public int getAnswerNumber() {
+		return answerNumber;
+	}
+	public void setAnswerNumber(int answerNumber) {
+		this.answerNumber = answerNumber;
+	}
+	public int getCornerFlag() {
+		return cornerFlag;
+	}
+	public void setCornerFlag(int cornerFlag) {
+		this.cornerFlag = cornerFlag;
+	}
+	public int getIsHave() {
+		return isHave;
+	}
+	public void setIsHave(int isHave) {
+		this.isHave = isHave;
+	}
+	public int getShowType() {
+		return showType;
+	}
+	public void setShowType(int showType) {
+		this.showType = showType;
+	}
+}

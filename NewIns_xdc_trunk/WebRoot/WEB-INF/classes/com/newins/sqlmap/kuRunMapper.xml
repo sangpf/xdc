@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.KuRunDao">
+	<!-- 保存库润采集用户信息SQL -->
+	<insert id="SaveGather" parameterType="com.newins.model.KuRunGather">
+		insert into tb_user_collection(userId,city,age,province,sex) VALUES(#{userId},#{city},#{age},#{province},#{sex});
+	</insert>
+	<!-- 查询用户是否已填写过采集信息 -->
+	<select id="IsGather" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select count(*) from tb_user_collection where userId=#{userId};
+	</select>
+	<!-- 查询用户填写的采集信息-->
+	<select id="getGather" parameterType="java.lang.Integer" resultType="com.newins.model.KuRunGather">
+		select userId,city,age,province,sex from tb_user_collection where userId=#{userId};
+	</select>
+	<!-- 查询用户是否领过奖励 -->
+	<select id="checkKuRunAward" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+		select count(*) from ni_user_award_statistics where userId=#{0} and deliveryId=#{1};
+	</select>
+	<insert id="SaveKuRunSurvey" parameterType="com.newins.model.KuRunSurvey">
+		insert tb_survey_result (userId,state,surveyId,Etime) value(#{userId},#{state},#{surveyId},#{Etime})
+	</insert>
+</mapper>

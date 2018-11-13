@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.sqlmapping.myModelMapper">
+	<resultMap type="com.newins.model.MyModel" id="myModelMap">
+		<id property="id" column="id" />
+		<result property="str1" column="str1" />
+		<result property="str2" column="str2" />
+	</resultMap>
+
+	<select id="getModel" parameterType="int" resultMap="myModelMap">
+		select
+		id,str1,str2
+		from testTable where id=#{id}
+	</select>
+
+	<insert id="submitModel" parameterType="com.newins.model.MyModel" keyProperty="id">
+		INSERT INTO testTable(str1,str2) VALUES(#{str1},#{str2})
+	</insert>
+
+
+</mapper>

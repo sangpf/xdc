@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newins.dao.BlackListDao">
+	<!-- 查询学校黑名单 -->
+	<select id="getSchoolBlackList" resultType="java.lang.Integer">
+		select schoolId from ni_ad_blacklist
+	</select>
+	
+	<!-- 查询当前用户的学校id -->
+	<select id="userSchoolId" parameterType="java.lang.Integer" resultType="java.lang.Integer" >
+		select schoolId from ni_school_dict where wanxSchoolCode=#{wanxSchoolId}
+	</select>
+	
+	<!-- 获取指定替换广告id的广告信息 -->
+	<select id="getReplaceAdInfo" parameterType="java.lang.Integer" resultType="com.newins.model.AdInfo">
+		select
+				adId,
+				adTitle,
+				adImg,
+				adLink
+		from
+				ni_ad_info
+		where
+				adId=#{0}
+	</select>
+</mapper>

@@ -1,0 +1,70 @@
+<!DOCTYPE header('Access-Control-Allow-Origin:*') >
+<html manifest="newIns.manifest">	
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="format-detection" content="telephone=no">
+	    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+	    <meta name="apple-mobile-web-app-capable" content="yes">
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="css/mui/mui.css" rel="stylesheet"/>
+		<link rel="stylesheet" type="text/css" href="css/lib/font-awesome.min.css">
+   		<link rel="stylesheet" type="text/css" href="css/xdc/xdc_main.css">
+   		<link rel="stylesheet" type="text/css" href="css/xdc/kurun_list.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">投吧问卷</h1>
+		</header>
+		<div class="mui-content">
+		    <ul id="data-list-father" class="mui-table-view">
+		    		<!--<li class="mui-table-view-cell list-data">
+		    			<a href='+data[index].redirect_url+'>
+		    			<table border="1px" width="100%">
+		    				<tr>
+		    					<td width="40%">
+		    						<span class="list-data-title">
+		    							'+data[index].title+'
+		    						</span>
+		    					</td>
+		    					<td>
+		    						<span class="list-data-time">'+data[index].startTime+'</span>
+		    					</td width="40%">
+		    					<td width="10%">
+		    						<span class="list-data-more">....</span>
+		    					</td>
+		    				</tr>
+		    			</table>
+		    		</a>
+		    		</li>-->
+			</ul>
+		<!-- 列表为空，显示大师姐 -->
+        	<div class="list-empty" id="index-tab1-list-empty">
+            <img src="images/zan.png">
+            <p>亲，今日已没有可答问卷了！</p>
+        </div>
+		</div>
+		<!-- loading动画 -->
+	    <div id="over" class="over">
+	    		<iframe frameborder="0" scrolling="no" src="fireloading.html" width="100%" height="100%"></iframe>
+	    </div>
+	    <div id="layout" class="layout">
+	        <div class="loading">  
+	        </div>
+	        <p class="loading-text">Loading...</p>
+	    </div>
+	</body>
+	<script src="js/config.js"></script>
+	<script src="js/mui/mui.min.js"></script>
+	<script src="js/xdc/usefulFun.js"></script>
+	<script src="js/lib/jquery-1.10.2.js"></script>
+	<script src="js/xdc/kurun_list.js"></script>
+	<script>
+	    if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+	        window.applicationCache.update();
+	    }
+    </script>
+</html>

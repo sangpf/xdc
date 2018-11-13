@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.LogPersonalInfoDao">
+	<resultMap type="com.newins.model.LogPersonalInfo" id="logPersonalInfoMapper">
+	</resultMap>
+
+
+	<select id="getLogPersonalInfo" resultMap="logPersonalInfoMapper"
+		parameterType="java.lang.Integer">
+		SELECT ni_user_education.userId, regionId, regionName, schoolId,
+		schoolName,userName,gender,phone from ni_user_education, ni_user_base
+		WHERE ni_user_education.userId = #{userId} and ni_user_base.userId = #{userId}
+	</select>
+
+</mapper>

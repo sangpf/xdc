@@ -1,0 +1,53 @@
+
+############### 测试环境   玩校参数配置   ####################################
+####################################################################
+
+#baseURL=https://api.17wanxiao.com/api/
+#authorizeURL=https://api.17wanxiao.com/api/authorize
+#accessTokenURL=https://api.17wanxiao.com/api/accessToken
+#grant_type=authorization_code
+#response_type=code
+#client_id=70de8456b0784a4888fb936c4483090a
+#client_secret=61985E0825DC61F84CA4D9D5AB7A6B0B
+#redirect_uri=http://new-insight.cn/xdcLogin/login/wanxLogin_callback.do
+
+############## 负载均衡   玩校参数配置  新开普    ####################################
+###################################################################
+
+baseURL=https://open.17wanxiao.com/api/
+authorizeURL=https://open.17wanxiao.com/api/authorize
+accessTokenURL=https://open.17wanxiao.com/api/accessToken
+grant_type=authorization_code
+response_type=code
+client_id=22a3f664f8cd4bc386cb249e9d7d0eaa
+client_secret=DA7F614A5B9810A23DE96D98B3528080
+redirect_uri=http://newinsight.17wanxiao.com/xdcLogin/login/wanxLogin_callback.do
+
+############### 生产环境   玩校参数配置   ####################################
+####################################################################
+
+#baseURL=https://open.17wanxiao.com/api/
+#authorizeURL=https://open.17wanxiao.com/api/authorize
+#accessTokenURL=https://open.17wanxiao.com/api/accessToken
+#grant_type=authorization_code
+#response_type=code
+#client_id=8d4fb9537d9f493eb8d7b582bb53f16f
+#client_secret=7F2A8AC2544AE02CAED094C2FE195120
+#redirect_uri=http://xindongcha.cn:8082/xdcLogin/login/wanxLogin_callback.do
+
+############### 其他配置   ##############################################
+#####################################################################
+
+pay_notice_url=http://192.168.157.65:8080/campus_sdk/notice_url
+pay_appid=100
+pay_appsecret=cfaafb8bc9544802bcfc92d8cacedc0a
+pay_sourcetype=2
+pay_acccode=301002
+pay_merchant_olid=24
+
+############### 轮播图接口回调 重定向到首页的  #################################
+#####################################################################
+
+
+### 日志埋点需要
+version=1.1.1

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html manifest="newIns.manifest">
+
+<head>
+    <meta charset="utf-8">
+    <title>心发现</title>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="css/mui/mui.css">
+    <link rel="stylesheet" type="text/css" href="css/mui/mui.picker.min.css">
+    <link rel="stylesheet" type="text/css" href="css/mui/mui.example.imageviewer.css">
+    <link rel="stylesheet" type="text/css" href="css/lib/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/xdc/xdc_main.css">
+    <link rel="stylesheet" type="text/css" href="css/xdc/xdc_person_detail.css">
+</head>
+
+<body>
+    <div class="mui-content detail-content">
+        <ul class="mui-table-view" id="ul-basic">
+            <li class="mui-table-view-cell detail-portrait">
+                <img id="wanxHeadImgElem" src="" data-preview-src="" data-preview-group="1">
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right" onclick="handleClick(event, 'wanxNickName')">
+                    <h5>用户名</h5>
+                    <span id="wanxNickNameElem" class="mui-pull-right mui-ellipsis"></span>
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a id="genderElem" onclick="handleClick(event, 'gender')">
+                    <h5>性别</h5>
+                    <span class="detail-tag mui-pull-right" data-id="1">我是女生</span>
+                    <span class="detail-tag mui-pull-right" data-id="0">我是男生</span>
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a id="careerElem" onclick="handleClick(event, 'career')">
+                    <h5>职业</h5>
+                    <span class="detail-tag mui-pull-right" data-id="1">我是老师</span>
+                    <span class="detail-tag mui-pull-right" data-id="0">我是学生</span>
+                </a>
+            </li>
+        </ul>
+        <p class="detail-des detail-hide">同学请介绍一下自己吧，有粮票赠送哦</p>
+        <ul class="mui-table-view" id="ul-inSchool" data-todo="close">
+            <div class="detail-head">
+                <span class="detail-head-title">校内情况</span>
+                <span class="detail-head-subtitle  detail-hide">（填写每项送5个粮票）</span>
+                <span class="detail-head-angle mui-pull-right" onclick="toggleOpenOrClose('ul-inSchool')">
+                    <i class="icon-double-angle-up"></i>收起
+                </span>
+            </div>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right" onclick="handleClick(event, 'schoolName')">
+                    <h5>学校名称</h5>
+                    <span id="schoolNameElem" class="mui-pull-right mui-ellipsis"></span>
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right" onclick="handleClick(event, 'enrolDate')">
+                    <h5>入学时间</h5>
+                    <span id="enrolDateElem" class="mui-pull-right mui-ellipsis"></span>
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right" onclick="handleClick(event, 'degree')">
+                    <h5>学历</h5>
+                    <span id="degreeElem" class="mui-pull-right mui-ellipsis"></span>
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right" onclick="handleClick(event, 'grade')">
+                    <h5>年级</h5>
+                    <span id="gradeElem" class="mui-pull-right mui-ellipsis"></span>
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right" onclick="handleClick(event, 'college')">
+                    <h5>院系</h5>
+                    <span id="collegeElem" class="mui-pull-right mui-ellipsis"></span>
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right" onclick="handleClick(event, 'major')">
+                    <h5>专业</h5>
+                    <span id="majorElem" class="mui-pull-right mui-ellipsis"></span>
+                </a>
+            </li>
+        </ul>
+        <ul class="mui-table-view" id="ul-contact" data-todo="close">
+            <div class="detail-head">
+                <span class="detail-head-title">联系方式</span>
+                <span class="detail-head-subtitle  detail-hide">（填写每项送10个粮票）</span>
+                <span class="detail-head-angle mui-pull-right" onclick="toggleOpenOrClose('ul-contact')">
+                    <i class="icon-double-angle-up"></i>收起
+                </span>
+            </div>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right" onclick="handleClick(event, 'phone')">
+                    <h5>电话</h5>
+                    <span id="phoneElem" class="mui-pull-right mui-ellipsis"></span>
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right" onclick="handleClick(event, 'email')">
+                    <h5>邮箱</h5>
+                    <span id="emailElem" class="mui-pull-right mui-ellipsis"></span>
+                </a>
+            </li>
+        </ul>
+        <ul class="mui-table-view" id="ul-feature" data-todo="close">
+            <div class="detail-head">
+                <span class="detail-head-title">我的特点</span>
+                <span class="detail-head-subtitle  detail-hide">（填写每项送5个粮票）</span>
+                <span class="detail-head-angle mui-pull-right" onclick="toggleOpenOrClose('ul-feature')">
+                    <i class="icon-double-angle-up"></i>收起
+                </span>
+            </div>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right" onclick="handleClick(event, 'birthday')">
+                    <h5>我的生日</h5>
+                    <span id="birthdayElem" class="mui-pull-right mui-ellipsis"></span>
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right" onclick="handleClick(event, 'starSign')">
+                    <h5>我的星座</h5>
+                    <span id="starSignElem" class="mui-pull-right mui-ellipsis"></span>
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right" onclick="handleClick(event, 'bloodType')">
+                    <h5>我的血型</h5>
+                    <span id="bloodTypeElem" class="mui-pull-right mui-ellipsis"></span>
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right" onclick="handleClick(event, 'character')">
+                    <h5>我的性格</h5>
+                    <span id="characterElem" class="mui-pull-right mui-ellipsis"></span>
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right" onclick="handleClick(event, 'moral')">
+                    <h5>我的品格</h5>
+                    <span id="moralElem" class="mui-pull-right mui-ellipsis"></span>
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="mui-navigate-right" onclick="handleClick(event, 'loveCondition')">
+                    <h5>感情状态</h5>
+                    <span id="loveConditionElem" class="mui-pull-right mui-ellipsis"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- loading动画 -->
+	<div id="over" class="over">
+	  	<iframe frameborder="0" scrolling="no" src="fireloading.html" width="100%" height="100%"></iframe>
+	</div>
+	<div id="layout" class="layout">
+	  	<div class="loading">  
+	  	</div>
+	  	<p class="loading-text">Loading...</p>
+	</div>
+    <!-- 返回悬浮窗 -->
+    <span class="suspension back-to-prev" id="suspension"></span>
+    <!-- JS -->
+    <script src="js/mui/mui.min.js"></script>
+    <script src="js/mui/mui.picker.min.js"></script>
+    <script src="js/mui/mui.zoom.js"></script>
+    <script src="js/mui/mui.previewimage.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/xdc/usefulFun.js"></script>
+    <script src="js/xdc/validate.js"></script>
+    <script src="js/xdc/person_data.js"></script>
+    <script src="js/xdc/person_detail.js"></script>
+    <script>
+    if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+        window.applicationCache.update();
+    }
+    </script>
+</body>

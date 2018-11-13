@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.assess.Assess_model_multi_combination_Dao">
+
+	<select id="get_By_dimension" parameterType="hashmap" resultType="com.newins.model.assess.Assess_model_multi_combination">
+		SELECT * FROM ni_assess_model_multi_combination
+			WHERE 
+			aqnId = #{aqnId} 
+			AND dimension = #{dimension}
+	</select>
+	
+	<select id="get_combination_relation_Bydimension_combination" parameterType="hashmap" 
+			resultType="com.newins.model.assess.Assess_model_multi_combination_relation">
+		SELECT * FROM ni_assess_model_multi_combination_relation
+			WHERE aqnId = #{aqnId}
+			AND dimension_combination = #{combination_relation}
+	</select>							  
+
+</mapper>

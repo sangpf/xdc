@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newins.dao.NiTweetDao">
+	<resultMap type="com.newins.model.NiTweetModel" id="niTweetMap">
+		<result property="tweetId" column="tweetId"/>
+		<result property="tweetTitle" column="tweetTitle"/>
+		<result property="tag" column="tag"/>
+		<result property="author" column="author"/>
+		<result property="pTime" column="pTime"/>		
+	</resultMap>
+	<select id="niTweetList" resultMap="niTweetMap">
+		SELECT
+		ni_tweet.tweetId,
+		ni_tweet.tweetTitle,
+		ni_tweet.author,
+		ni_tweet.pTime,
+		ni_tweet.tag,
+		ni_tweet.picUrl,
+		ni_tweet.tweetUrl
+		FROM
+		ni_tweet
+		ORDER BY
+		ni_tweet.pTime DESC
+
+
+	</select>
+</mapper>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.LotteryAwardMapper">
+	<resultMap type="com.newins.model.LotteryAward" id="lotteryAwardMap">
+	</resultMap>
+
+	<select id="getLotteryAward" resultMap="lotteryAwardMap"
+		parameterType="java.util.Map">
+		select
+		<if test="awardRank == '1'.toString()"> award1Name as awardName,award1Rate as awardQty,award1Des
+			as awardDes,awardPic,ni_lottery_dict.comment as lotteryIntro
+		</if>
+		<if test="awardRank == '2'.toString()"> award2Name as awardName,award2Rate as awardQty,award2Des
+			as awardDes,awardPic,ni_lottery_dict.comment as lotteryIntro
+		</if>
+		<if test="awardRank == '3'.toString()"> award3Name as awardName,award3Rate as awardQty,award3Des
+			as awardDes,awardPic,ni_lottery_dict.comment as lotteryIntro
+		</if>
+		from ni_award,ni_lottery_dict
+		<if test="qnType == '1'.toString()">,ni_survey_delivery</if>
+		<if test="qnType == '2'.toString()">,ni_assess_delivery</if>
+		<if test="qnType == '3'.toString()">,ni_vote_delivery</if>
+		<where>
+			<if test="awardRank == '1'.toString()">ni_lottery_dict.award1Id=ni_award.awardId</if>
+			<if test="awardRank == '2'.toString()"> ni_lottery_dict.award2Id=ni_award.awardId </if>
+			<if test="awardRank == '3'.toString()">ni_lottery_dict.award3Id=ni_award.awardId </if>
+			<choose>
+
+				<when test="qnType == '1'.toString()">
+					and ni_survey_delivery.deliveryId=#{deliveryId}
+					and
+					ni_lottery_dict.lotteryId = ni_survey_delivery.lotteryId
+				</when>
+
+				<when test="qnType == '2'.toString()">
+					and ni_assess_delivery.deliveryId=#{deliveryId}
+					and
+					ni_lottery_dict.lotteryId = ni_assess_delivery.lotteryId
+				</when>
+
+				<when test="qnType == '3'.toString()">
+					and ni_vote_delivery.deliveryId=#{deliveryId}
+					and
+					ni_lottery_dict.lotteryId = ni_vote_delivery.lotteryId
+				</when>
+				<otherwise>
+				</otherwise>
+
+			</choose>
+		</where>
+
+	</select>
+
+	<select id="getLotteryPreferAward" resultMap="lotteryAwardMap"
+		parameterType="java.util.Map">
+		<if test="awardRank == '1'.toString()">
+			SELECT awardName,highAwardTotal as awardQty,awardPic,
+			ni_lottery_prefer_dict.comment as lotteryIntro from ni_award,
+			ni_lottery_prefer_dict WHERE awardId = (SELECT highAwardId from
+			ni_lottery_prefer_dict WHERE evaluateId= (SELECT evaluateId FROM
+			ni_survey_delivery WHERE deliveryId= #{deliveryId})) and
+			evaluateId = (SELECT
+			evaluateId FROM ni_survey_delivery WHERE deliveryId= #{deliveryId})
+		</if>
+		<if test="awardRank == '2'.toString()">
+			SELECT awardName,midAwardTotal as awardQty,awardPic,
+			ni_lottery_prefer_dict.comment as lotteryIntro from ni_award,
+			ni_lottery_prefer_dict WHERE awardId = (SELECT midAwardId from
+			ni_lottery_prefer_dict WHERE evaluateId= (SELECT evaluateId FROM
+			ni_survey_delivery WHERE deliveryId= #{deliveryId})) and
+			evaluateId = (SELECT
+			evaluateId FROM ni_survey_delivery WHERE deliveryId= #{deliveryId})
+		</if>
+		<if test="awardRank == '3'.toString()">
+			SELECT awardName,lowAwardTotal as awardQty,awardPic,
+			ni_lottery_prefer_dict.comment as lotteryIntro from ni_award,
+			ni_lottery_prefer_dict WHERE awardId = (SELECT lowAwardId from
+			ni_lottery_prefer_dict WHERE evaluateId= (SELECT evaluateId FROM
+			ni_survey_delivery WHERE deliveryId= #{deliveryId})) and
+			evaluateId = (SELECT
+			evaluateId FROM ni_survey_delivery WHERE deliveryId= #{deliveryId})
+		</if>
+	</select>
+</mapper>
+	

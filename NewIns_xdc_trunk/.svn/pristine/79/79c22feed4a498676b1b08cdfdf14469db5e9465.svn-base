@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.SubmitAssessAnswerDao">
+	<resultMap type="com.newins.model.AssessResult" id="assessResultMap">
+		<result property="totalScore" column="totalScore" />
+		<result property="resultSummary" column="resultSummary" />
+		<result property="resultDetail" column="resultDetail" />
+	</resultMap>
+	<resultMap type="com.newins.model.Assess" id="assessCollectedNum">
+		<result property="aqnId" column="aqnId" />
+		<result property="collectedNum" column="collectedNum" />
+		<result property="collectNum" column="collectNum" />
+	</resultMap>
+	
+	<!-- 新增到测评答案表 -->
+	<insert id="insertAssessAnswer" parameterType="java.util.List" useGeneratedKeys="true">
+		<selectKey resultType="long" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO
+		ni_assess_answer(userId,aqnId,aqId,choice,selfDefine,score,duration)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+			<choose>
+				<when
+					test="item.questionType=='1'.toString() or item.questionType=='2'.toString() or item.questionType=='6'.toString()">
+					
+					( #{item.userId},#{item.aqnId},#{item.aqId},#{item.qAnswer},"",
+					(select
+					<if test="item.qAnswer=='A'.toString()"> option1Score</if>
+					<if test="item.qAnswer=='B'.toString()"> option2Score</if>
+					<if test="item.qAnswer=='C'.toString()"> option3Score</if>
+					<if test="item.qAnswer=='D'.toString()"> option4Score</if>
+					<if test="item.qAnswer=='E'.toString()"> option5Score</if>
+					<if test="item.qAnswer=='F'.toString()"> option6Score</if>
+					<if test="item.qAnswer=='G'.toString()"> option7Score</if>
+					<if test="item.qAnswer=='H'.toString()"> option8Score</if>
+					<if test="item.qAnswer=='I'.toString()"> option9Score</if>
+					<if test="item.qAnswer=='J'.toString()"> option10Score</if>
+					<if test="item.qAnswer=='K'.toString()"> option11Score</if>
+					<if test="item.qAnswer=='L'.toString()"> option12Score</if>
+					<if test="item.qAnswer=='M'.toString()"> option13Score</if>
+					<if test="item.qAnswer=='N'.toString()"> option14Score</if>
+					<if test="item.qAnswer=='O'.toString()"> option15Score</if>
+					<if test="item.qAnswer=='P'.toString()"> option16Score</if>
+					<if test="item.qAnswer=='Q'.toString()"> option17Score</if>
+					<if test="item.qAnswer=='R'.toString()"> option18Score</if>
+					<if test="item.qAnswer=='S'.toString()"> option19Score</if>
+					<if test="item.qAnswer=='T'.toString()"> option20Score</if>
+					<if test="item.qAnswer=='U'.toString()"> option21Score</if>
+					<if test="item.qAnswer=='V'.toString()"> option22Score</if>
+					<if test="item.qAnswer=='W'.toString()"> option23Score</if>
+					<if test="item.qAnswer=='X'.toString()"> option24Score</if>
+					<if test="item.qAnswer=='Y'.toString()"> option25Score</if>
+					<if test="item.qAnswer=='Z'.toString()"> option26Score</if>
+					from ni_assess_question where
+					ni_assess_question.aqId=#{item.aqId}),
+					SEC_TO_TIME(#{item.duration})
+					)
+				</when>
+				<otherwise>
+					( #{item.userId}, #{item.aqnId},#{item.aqId},"",#{item.qAnswer},SEC_TO_TIME(#{item.duration}) )
+				</otherwise>
+			</choose>
+		</foreach>
+	</insert>
+	
+	<!-- 创建测评订单 -->
+	<insert id="initAssessOrder" parameterType="com.newins.model.AssessOrder" keyProperty="id">
+		INSERT INTO ni_assess_order
+		(userId,deliveryId,aqnId,sequenceNum,orderCTime,answerBTime,answerETime,orderStatus,awardId,awardMethod)
+		VALUES
+		(#{userId},#{deliveryId},#{aqnId}, 
+		ifnull( (SELECT MAX(sequenceNum)+1 from ni_assess_order ni_assess_order_rename where aqnId=#{aqnId}),1),
+		#{orderCTime},#{answerBTime},#{answerETime},#{orderStatus},#{awardId},#{awardMethod})
+	</insert>
+
+	<!-- 将测评结果写入订单中 -->
+	<update id="insertResultToOrder" parameterType="com.newins.model.AssessResult">
+		update
+		ni_assess_order set
+		totalScore=#{totalScore},resultSummary=#{resultSummary},resultDetail=#{resultDetail},percentageScore = #{percentageScore}
+		where userId=#{userId} and aqnId=#{aqnId}
+	</update>
+	
+	<!-- 查询简单测评结果 -->
+	<select id="getAssessResultFromSimple" resultMap="assessResultMap" parameterType="java.util.Map">
+		
+		select resultSummary, resultDetail, (
+			select sum(score) from ni_assess_answer where userId=#{userId} and aqnId=#{aqnId} ) as totalScore 
+		from
+		ni_assess_model_simple
+		where 
+		(select sum(score) from ni_assess_answer where userId=#{userId} and aqnId=#{aqnId} )
+		between intervalBegin and intervalEnd 
+		and aqnId=#{aqnId}
+
+	</select>
+	
+	<!-- 根据 问卷id 维度编号 查询多维度测评模型 -->
+	<select id="findAssessModelMulti_sum" parameterType="hashmap" resultType="com.newins.model.assess.ScoreByDimension">
+		
+		SELECT *
+		from ni_assess_model_multi_sum
+		WHERE 
+		ni_assess_model_multi_sum.aqnId = #{aqnId}
+		AND ni_assess_model_multi_sum.dimension = (
+			SELECT MAX(priority) maxPriority
+			FROM ni_assess_model_multi_sum
+			WHERE
+			ni_assess_model_multi_sum.aqnId = #{aqnId}
+			AND ni_assess_model_multi_sum.dimension IN 
+			<foreach collection="dimension_list" item="dimension" open="(" close=")" separator=",">
+				#{dimension}
+			</foreach>
+		)
+		
+	</select>
+	
+	<!-- 测评模型 查询每个维度 得分情况 -->
+	<select id="getScoreByDimension" parameterType="hashmap" resultType="com.newins.model.assess.ScoreByDimension">
+	<!-- 		
+	    这种查询方式有些问题, dimension返回的是第一个记录中的数据, maxScore如果有多个最大值,返回的是第一个, 但是我们想将最大值全部返回
+		SELECT MAX(totalScore) AS maxScore,dimension
+		FROM(
+				SELECT
+					ni_assess_question.dimension,
+					sum(ni_assess_answer.score) AS totalScore
+				FROM
+					ni_assess_answer,
+					ni_assess_question
+				WHERE
+					ni_assess_answer.userId = #{userId} and
+					ni_assess_answer.aqnId = #{aqnId}  and
+					ni_assess_answer.aqId = ni_assess_question.aqId
+				GROUP BY
+					ni_assess_question.dimension
+		) a -->
+	SELECT
+		ni_assess_question.dimension,
+		AVG(ni_assess_answer.score) AS score
+	FROM
+		ni_assess_answer,
+		ni_assess_question
+	WHERE
+		ni_assess_answer.userId = #{userId} and
+		ni_assess_answer.aqnId = #{aqnId}  and
+		ni_assess_answer.aqId = ni_assess_question.aqId
+	GROUP BY
+		ni_assess_question.dimension
+	</select>
+	
+	<!-- 多维度测评模型 所有用户答题 查询每个维度 得分情况 根据维度和用户分组 -->
+	<select id="getAllUserScoreByDimension" parameterType="hashmap" resultType="com.newins.model.assess.ScoreByDimension">
+		SELECT
+			ni_assess_question.dimension,
+			AVG(ni_assess_answer.score) AS score,
+			ni_assess_answer.userId
+		FROM
+			ni_assess_answer,
+			ni_assess_question
+		WHERE
+			ni_assess_answer.aqnId = #{aqnId}  and
+			ni_assess_answer.aqId = ni_assess_question.aqId
+		GROUP BY
+			ni_assess_question.dimension,
+			ni_assess_answer.userId
+	</select>
+	
+	<!-- 查询每个维度 所有用户得分平均分值  不进行用户的分组 -->
+	<select id="allUserScoreByDimension_noGroupByUser" parameterType="hashmap" resultType="com.newins.model.assess.ScoreByDimension">
+		SELECT
+			ni_assess_question.dimension,
+			AVG(ni_assess_answer.score) AS score
+		FROM
+			ni_assess_answer,
+			ni_assess_question
+		WHERE
+			ni_assess_answer.aqnId = #{aqnId} and
+			ni_assess_answer.aqId = ni_assess_question.aqId
+		GROUP BY
+			ni_assess_question.dimension
+	</select>
+	
+	<!-- 统计一份问卷有多少用户  答题 -->
+	<select id="getUserNum_accessAnswer" parameterType="hashmap" resultType="java.lang.Integer">
+		SELECT COUNT(1) AS totalUser FROM 
+		(
+		SELECT 
+		DISTINCT userId
+		FROM ni_assess_answer
+		WHERE
+		ni_assess_answer.aqnId = #{aqnId}
+		) a
+	</select>
+	
+	<select id="getTotalScoreByDimension" parameterType="hashmap" resultType="com.newins.model.assess.ScoreByDimension">
+		SELECT
+			ni_assess_question.dimension,
+			sum(ni_assess_answer.score) AS totalScore
+		FROM
+			ni_assess_answer,
+			ni_assess_question
+		WHERE
+			ni_assess_answer.userId = #{userId} and
+			ni_assess_answer.aqnId = #{aqnId}  and
+			ni_assess_answer.aqId = ni_assess_question.aqId
+		GROUP BY
+			ni_assess_question.dimension
+	
+	</select>
+	
+	<!-- 多维度组合输出模型, 查询当前用户每个维度的平均得分 -->
+	<select id="get_avg_Assess_model_multi_combination_score" parameterType="hashmap" resultType="com.newins.model.assess.ScoreByDimension">
+		SELECT
+			ni_assess_question.dimension,
+			SUM(ni_assess_answer.score) AS totalScore
+		FROM
+			ni_assess_answer,
+			ni_assess_question
+		WHERE
+			ni_assess_answer.userId = #{userId} and
+			ni_assess_answer.aqnId = #{aqnId} and
+			ni_assess_answer.aqId = ni_assess_question.aqId
+		GROUP BY
+			ni_assess_question.dimension
+		
+	</select>
+	
+	<!-- 查询多维度测评结果 -->
+	<select id="getAssessResultFromMultiSum" resultMap="assessResultMap" parameterType="java.util.Map">
+		SELECT resultSummary,resultDetail 
+		FROM
+		ni_assess_model_multi_sum 
+		WHERE 
+		aqnId = #{aqnId} 
+		and dimension =
+		(SELECT dimension FROM
+		(SELECT dimension,totalScore from
+		(select
+		dimension,sum(score) as totalScore
+		from
+		ni_assess_answer, ni_assess_question
+		where userId=#{userId} and
+		ni_assess_answer.aqnId=#{aqnId} and
+		ni_assess_answer.aqId=ni_assess_question.aqId
+		GROUP BY
+		ni_assess_question.dimension) a WHERE dimension !=0 and totalScore =
+		(SELECT MAX(totalScore)from (select dimension,sum(score) as totalScore
+		from
+		ni_assess_answer, ni_assess_question
+		where userId=#{userId} and
+		ni_assess_answer.aqnId=#{aqnId} and
+		ni_assess_answer.aqId=ni_assess_question.aqId
+		GROUP BY
+		ni_assess_question.dimension) c ) LIMIT 1) b)
+	</select>
+
+	<select id="getAssessResultFromOrder" resultMap="assessResultMap" parameterType="java.util.Map">
+		SELECT resultSummary,resultDetail 
+		FROM ni_assess_order 
+		where aqnId = #{aqnId} and userId = #{userId}
+	</select>
+	
+	<!-- 验证是否答题人数达到需要收集人数，如果达到将问卷状态改为6，数量完成 -->
+	<select id="getCollectedNumById" resultMap="assessCollectedNum" parameterType="int">
+		select ni_assess_delivery.collectNum,sum(case when
+		orderId is not NULL then 1 else 0
+		end) + IFNULL(collectedNum,0)
+		as
+		collectedNum
+		from
+		ni_assess_order,ni_assess_delivery
+		where
+		ni_assess_order.deliveryId=#{deliveryId} 
+		and ni_assess_delivery.deliveryId=#{deliveryId} 
+		AND ni_assess_delivery.channelId=1
+	</select>
+
+	<update id="changeDeliveryStatus" parameterType="int">
+		update
+		ni_assess_delivery set status =6 where deliveryId=#{deliveryId} AND ni_assess_delivery.channelId=1
+	</update>
+
+</mapper>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html manifest="newIns.manifest">
+
+<head>
+    <meta charset="utf-8">
+    <title>超级调查</title>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/mui/mui.css">
+    <link rel="stylesheet" href="css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="css/xdc/xdc_main.css">
+    <link rel="stylesheet" href="css/xdc/kurun_result.css">
+</head>
+
+<body>
+    <!-- 结果提示语 -->
+    <div class="global-header">
+        <h4 id="resultMsg"></h4>
+        <img src="images/complete.png" alt="complete">  
+    </div>
+    <!-- 显示核心题的结果图表-->
+    <div id="title" class="graph-title" style="display: none; margin-bottom: 0;"></div>
+    <div id="list" class="graph-list" style="display: none;"></div>
+    <!-- 知识题型得分 -->
+    <div class="scoreContainer" id="scoreContainer" style="display:none;">
+        <div class="scoreBody">
+            <div class="scoreLine">
+                <span class="scoreNum" id="totalScore">65</span>
+            </div>
+            <div class="scoreText"><span>得分</span></div>
+        </div>
+        <div class="scoreBody">
+            <div class="scoreLine">
+                <span class="scoreNum" id="scorePercent">85</span>%
+            </div>
+            <div class="scoreText"><span>领先</span></div>
+        </div>
+        <div class="scoreBody">
+            <div class="scoreLine">
+                <span class="scoreNum" id="correctAnswerNum">2</span>/<span id="questionQty">4</span>
+            </div>
+            <div class="scoreText"><span>正确率</span></div>
+        </div>
+        <div class="scoreBody">
+            <span class="toAnswer" id="jump-to-answer">查看答案 ></span>
+        </div>
+    </div>
+    <!-- 返回首页、看报告的按钮 -->
+    <div class="result-button">
+        <div class="mui-row">
+            <div class="mui-col-sm-4 mui-col-xs-4">
+                <a class="link-1" id="jump-to-index">
+                    <h4><img src="images/home.png">返回首页</h4>
+                    <p>再找找好玩内容</p>
+                </a>
+            </div>
+            <div class="mui-col-sm-4 mui-col-xs-4">
+                <a class="link-2" id="jump-to-report">
+                    <h4><img src="images/file.png">查看报告</h4>
+                    <p>大家都在想啥呢</p>
+                </a>
+            </div>
+            <div class="mui-col-sm-4 mui-col-xs-4">
+                <a class="link-3" id="donate-show">
+                    <h4><img src="images/donate.png">打赏粮票</h4>
+                    <p>已有0人打赏了</p>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- 投放信息区域 -->
+    <div class="awardArea" id="awardArea"></div>
+    <img id="ad-delivery" src="">
+    <div id="recommend"></div>
+    <div id="goodcommentArea"></div>
+    <div id="commentArea"></div>
+    <!-- 底部操作栏 -->
+    <footer class="footer-bar" id="footer">
+        <div class="footer-container">
+            <!-- 返回 -->
+            <a class="footerIcon icon-angle-left icon-large footer-back-btn" id="backBtn">
+                <span class="footer-back-text">返回</span>
+            </a>
+            <!-- 评论 -->
+            <a class="footerIcon footer-comment-container" id="writeComment">
+                <div class="footer-comment">说说你的看法</div>
+            </a>
+            <!-- 点赞 -->
+            <a class="footerIcon footer-icon icon-thumbs-up-alt" id="footThumbUp" tapped="false">
+                <span class="footer-thumb-num" id="footThumbNumUp"></span>
+            </a>
+            <!-- 踩 -->
+            <a class="footerIcon footer-icon icon-thumbs-down-alt" id="footThumbDown" tapped="false">
+                <span class="footer-thumb-num" id="footThumbNumDown"></span>
+            </a>
+        </div>
+    </footer>
+    <!-- 打赏悬浮窗 -->
+    <div class="mui-popup-backdrop mui-active donate" id="donate">
+        <div class="mui-popup mui-popup-in">
+            <div class="mui-popup-inner">
+                <div id="donate-panel">
+                    <div class="mui-row">
+                        <div class="mui-col-sm-6 mui-col-xs-6">
+                            <div class="donate-box" data-score="5">
+                                <p class="donate-p1">赏</p>
+                                <p class="donate-p2">5粮票</p>
+                            </div>
+                        </div>
+                        <div class="mui-col-sm-6 mui-col-xs-6">
+                            <div class="donate-box" data-score="10">
+                                <p class="donate-p1">赏</p>
+                                <p class="donate-p2">10粮票</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mui-row">
+                        <div class="mui-col-sm-6 mui-col-xs-6">
+                            <div class="donate-box" data-score="30">
+                                <p class="donate-p1">赏</p>
+                                <p class="donate-p2">30粮票</p>
+                            </div>
+                        </div>
+                        <div class="mui-col-sm-6 mui-col-xs-6">
+                            <div class="donate-box" data-score="50">
+                                <p class="donate-p1">赏</p>
+                                <p class="donate-p2">50粮票</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mui-row">
+                        <div class="mui-col-sm-6 mui-col-xs-6">
+                            <div class="donate-box" data-score="100">
+                                <p class="donate-p1">赏</p>
+                                <p class="donate-p2">100粮票</p>
+                            </div>
+                        </div>
+                        <div class="mui-col-sm-6 mui-col-xs-6">
+                            <div class="donate-box" data-score="500">
+                                <p class="donate-p1">赏</p>
+                                <p class="donate-p2">500粮票</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <img src="images/close.png" id="donate-hide">
+            </div>
+        </div>
+    </div>
+     <!-- loading动画 -->
+	<div id="over" class="over">
+	  <iframe frameborder="0" scrolling="no" src="fireloading.html" width="100%" height="100%"></iframe>
+	</div>
+	<div id="layout" class="layout">
+	  <div class="loading">  
+	  </div>
+	  <p class="loading-text">Loading...</p>
+	</div>
+    <!-- JS -->
+    <script type="text/javascript" src="http://pingjs.qq.com/h5/stats.js" name="MTAH5" sid="500158849" cid="500158852"></script>
+    <script src="js/mui/mui.min.js"></script>
+    <script src="js/lib/mustache.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/xdc/usefulFun.js"></script>
+    <script src="js/xdc/validate.js"></script>
+    <script src="js/xdc/kurun_result.js"></script>
+    <script>
+    if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+        window.applicationCache.update();
+    }
+    </script>
+</body>
+
+</html>

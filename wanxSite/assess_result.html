@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html manifest="newIns.manifest">
+
+<head>
+    <meta charset="utf-8">
+    <title>个人测评报告</title>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="css/mui/mui.css">
+    <link rel="stylesheet" type="text/css" href="css/lib/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/xdc/xdc_main.css">
+    <link rel="stylesheet" type="text/css" href="css/xdc/xdc_survey.css">
+</head>
+
+<body>
+	<!--顶部-->
+	<!--<div class="assessresulttitle">
+		<p class="aeeseeresult_text">个人测评报告</p>
+	</div>-->
+    <!-- 提示语 -->
+    <div class="assess_prompt_box">
+         <p class="assess_prompt_true">感谢您的参与!</p>
+         <img class="assess_prompt_img" src="images/assess_true.png" />
+    </div>
+    <div class="resultArea">
+	    <!--测评结果报告内容-->
+	    <div id="tabBar" class="assess-result-report"></div>
+	    <div id="result" class="assess-result-report" style="display: none;"></div>
+	    <div id="footBar" class="assess-result-report"></div>
+	</div>
+   	<!--问卷分享-->
+   	<div id="assess-share-box" class="assess-share-box">
+   		<div class="assess-shar-within">
+   			<div class="assess-shar-title">
+   				<!--<div class="assess-share-left-hr"></div>
+	   			<span class="assess-shar-title-text"><p>分享问卷</p></span>
+	   			<div class="assess-share-right-hr"></div>-->
+	   			<table border="0px" width="100%">
+	   				<tr>
+	   					<td width="40%"><hr class="assess-share-left-hr" /></td>
+	   					<td width="20%" class="assess-shar-title-text">分享问卷</td>
+	   					<td width="40%"><hr class="assess-share-right-hr" /></td>
+	   				</tr>
+	   			</table>
+   			</div>
+   			<div class="assess-active-img-box">
+   				<div class="mui-row">
+   					<div class="mui-col-sm-1 mui-col-xs-1 assess-share-row" onclick="shareWeixin()">
+   						<img class="assess-share-wxhy-img" src="images/weixn-hy.png" />
+   						<p class="assess-share-wxhy-text">微信好友</p>
+   					</div>
+   					<div class="mui-col-sm-1 mui-col-xs-1 assess-share-row" onclick="shareWeixinCircle()">
+   						<img class="assess-share-wxpyq-img" src="images/weixin-pyq.png" />
+   						<p class="assess-share-wxpyq-text">朋友圈</p>
+   					</div>
+   					<div class="mui-col-sm-1 mui-col-xs-1 assess-share-row" onclick="shareWeibo()">
+   						<img class="assess-share-xlwb-img" src="images/weibo.png"  />
+   						<p class="assess-share-xlwb-text">新浪微博</p>
+   					</div>
+   					<div class="mui-col-sm-1 mui-col-xs-1 assess-share-row" onclick="shareQQ()">
+   						<img class="assess-share-qq-img" src="images/QQ.png"  />
+   						<p class="assess-share-qq-text">QQ</p>
+   					</div>
+   					<div class="mui-col-sm-1 mui-col-xs-1 assess-share-row" onclick="shareWanxiaoCircle()">
+   						<img class="assess-share-wmxy-img" src="images/wmxy-logo.png"  />
+   						<p class="assess-share-wmxy-text">同学圈</p>
+   					</div>
+   				</div>
+   			</div>
+   		</div>
+   	</div>
+    <!-- 投放信息区域 -->
+    <img id="ad-delivery" src="">
+    <div id="recommend"></div>
+    <div id="goodcommentArea"></div>
+    <div id="commentArea"></div>
+    <!-- 底部操作栏 -->
+    <footer class="footer-bar" id="footer">
+        <div class="footer-container">
+            <!-- 返回 -->
+            <a class="footerIcon icon-angle-left icon-large footer-back-btn" id="backBtn">
+                <span class="footer-back-text">返回</span>
+            </a>
+            <!-- 评论 -->
+            <a class="footerIcon footer-comment-container" id="writeComment">
+                <div class="footer-comment">说说你的看法</div>
+            </a>
+            <!--评论数-->
+            <div class="footer-comment-number">
+            			<img src="images/comment.png" />
+            			<span id="footer-commentnum">0</span>
+            </div>
+            <!--返回到首页按钮-->
+            <div id="assess-tohome" class="footer-backtoHome-box">
+            		<img class="footer-backtoHome-img" src="images/backToHome-img.png" />
+            </div>
+        </div>
+    </footer>
+    <!-- 打赏悬浮窗 -->
+    <div class="mui-popup-backdrop mui-active donate" id="donate">
+        <div class="mui-popup mui-popup-in">
+            <div class="mui-popup-inner">
+                <div id="donate-panel">
+                    <div class="mui-row">
+                        <div class="mui-col-sm-6 mui-col-xs-6">
+                            <div class="donate-box" data-score="5">
+                                <p class="donate-p1">赏</p>
+                                <p class="donate-p2">5粮票</p>
+                            </div>
+                        </div>
+                        <div class="mui-col-sm-6 mui-col-xs-6">
+                            <div class="donate-box" data-score="10">
+                                <p class="donate-p1">赏</p>
+                                <p class="donate-p2">10粮票</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mui-row">
+                        <div class="mui-col-sm-6 mui-col-xs-6">
+                            <div class="donate-box" data-score="30">
+                                <p class="donate-p1">赏</p>
+                                <p class="donate-p2">30粮票</p>
+                            </div>
+                        </div>
+                        <div class="mui-col-sm-6 mui-col-xs-6">
+                            <div class="donate-box" data-score="50">
+                                <p class="donate-p1">赏</p>
+                                <p class="donate-p2">50粮票</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mui-row">
+                        <div class="mui-col-sm-6 mui-col-xs-6">
+                            <div class="donate-box" data-score="100">
+                                <p class="donate-p1">赏</p>
+                                <p class="donate-p2">100粮票</p>
+                            </div>
+                        </div>
+                        <div class="mui-col-sm-6 mui-col-xs-6">
+                            <div class="donate-box" data-score="500">
+                                <p class="donate-p1">赏</p>
+                                <p class="donate-p2">500粮票</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <img src="images/close.png" id="donate-hide">
+            </div>
+        </div>
+    </div>
+    <!-- loading动画 -->
+	<div id="over" class="over">
+	  <iframe frameborder="0" scrolling="no" src="fireloading.html" width="100%" height="100%"></iframe>
+	</div>
+	<div id="layout" class="layout">
+	  <div class="loading">  
+	  </div>
+	  <p class="loading-text">Loading...</p>
+	</div>
+    <!-- JS -->
+    <script type="text/javascript" src="http://pingjs.qq.com/h5/stats.js" name="MTAH5" sid="500158849" cid="500158852"></script>
+    <script src="js/mui/mui.min.js"></script>
+    <script src="js/lib/mustache.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/xdc/usefulFun.js"></script>
+    <script src="js/xdc/assess_result.js"></script>
+    <script src="js/lib/wanxiao-js-api-V1.1.8.js"></script>
+    <script>
+    if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+        window.applicationCache.update();
+    }
+    </script>
+</body>
+
+</html>

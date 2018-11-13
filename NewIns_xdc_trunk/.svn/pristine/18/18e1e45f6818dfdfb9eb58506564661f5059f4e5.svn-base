@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.AssessQuestionDao">
+	<resultMap type="com.newins.model.AssessQuestion" id="assessQuestionMap">
+		<result property="aqId" column="aqId" />
+		<result property="questionNum" column="questionNum" />
+		<result property="qImgUrl" column="qImgUrl" />
+		<result property="questionType" column="questionType" />
+		<result property="required" column="required" />
+		<result property="optionNum" column="optionNum" />
+		<result property="isSelfDefine" column="isSelfDefine" />
+		<result property="aqTitle" column="aqTitle" />
+		<result property="correctAnswer" column="correctAnswer" />
+	</resultMap>
+
+	<resultMap type="com.newins.model.AssessQuestionWithOption"
+		id="assessQuestionWithOptionMap">
+		<result column="aqId" property="aqId" jdbcType="INTEGER" />
+		<result column="aqTitle" property="aqTitle" jdbcType="VARCHAR" />
+		<result column="aqnId" property="aqnId" jdbcType="INTEGER" />
+		<result column="qImgUrl" property="qImgUrl" jdbcType="VARCHAR" />
+		<result column="questionNum" property="questionNum" jdbcType="TINYINT" />
+		<result column="viewOrder" property="viewOrder" jdbcType="TINYINT" />
+		<result column="questionType" property="questionType" jdbcType="TINYINT" />
+		<result column="required" property="required" jdbcType="BIT" />
+		<result column="optionNum" property="optionNum" jdbcType="TINYINT" />
+		<result column="isSelfDefine" property="isSelfDefine" jdbcType="BIT" />
+		<result column="correctAnswer" property="correctAnswer"
+			jdbcType="VARCHAR" />
+		<result column="option1Des" property="option1Des" jdbcType="VARCHAR" />
+		<result column="option1Link" property="option1Link" jdbcType="INTEGER" />
+		<result column="option1Feedback" property="option1Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option1TagId" property="option1TagId" jdbcType="INTEGER" />
+		<result column="option2Des" property="option2Des" jdbcType="VARCHAR" />
+		<result column="option2Link" property="option2Link" jdbcType="INTEGER" />
+		<result column="option2Feedback" property="option2Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option2TagId" property="option2TagId" jdbcType="INTEGER" />
+		<result column="option3Des" property="option3Des" jdbcType="VARCHAR" />
+		<result column="option3Link" property="option3Link" jdbcType="INTEGER" />
+		<result column="option3Feedback" property="option3Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option3TagId" property="option3TagId" jdbcType="INTEGER" />
+		<result column="option4Des" property="option4Des" jdbcType="VARCHAR" />
+		<result column="option4Link" property="option4Link" jdbcType="INTEGER" />
+		<result column="option4Feedback" property="option4Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option4TagId" property="option4TagId" jdbcType="INTEGER" />
+		<result column="option5Des" property="option5Des" jdbcType="VARCHAR" />
+		<result column="option5Link" property="option5Link" jdbcType="INTEGER" />
+		<result column="option5Feedback" property="option5Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option5TagId" property="option5TagId" jdbcType="INTEGER" />
+		<result column="option6Des" property="option6Des" jdbcType="VARCHAR" />
+		<result column="option6Link" property="option6Link" jdbcType="INTEGER" />
+		<result column="option6Feedback" property="option6Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option6TagId" property="option6TagId" jdbcType="INTEGER" />
+		<result column="option7Des" property="option7Des" jdbcType="VARCHAR" />
+		<result column="option7Link" property="option7Link" jdbcType="INTEGER" />
+		<result column="option7Feedback" property="option7Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option7TagId" property="option7TagId" jdbcType="INTEGER" />
+		<result column="option8Des" property="option8Des" jdbcType="VARCHAR" />
+		<result column="option8Link" property="option8Link" jdbcType="INTEGER" />
+		<result column="option8Feedback" property="option8Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option8TagId" property="option8TagId" jdbcType="INTEGER" />
+		<result column="option9Des" property="option9Des" jdbcType="VARCHAR" />
+		<result column="option9Link" property="option9Link" jdbcType="INTEGER" />
+		<result column="option9Feedback" property="option9Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option9TagId" property="option9TagId" jdbcType="INTEGER" />
+		<result column="option10Des" property="option10Des" jdbcType="VARCHAR" />
+		<result column="option10Link" property="option10Link" jdbcType="INTEGER" />
+		<result column="option10Feedback" property="option10Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option10TagId" property="option10TagId"
+			jdbcType="INTEGER" />
+		<result column="option11Des" property="option11Des" jdbcType="VARCHAR" />
+		<result column="option11Link" property="option11Link" jdbcType="INTEGER" />
+		<result column="option11Feedback" property="option11Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option11TagId" property="option11TagId"
+			jdbcType="INTEGER" />
+		<result column="option12Des" property="option12Des" jdbcType="VARCHAR" />
+		<result column="option12Link" property="option12Link" jdbcType="INTEGER" />
+		<result column="option12Feedback" property="option12Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option12TagId" property="option12TagId"
+			jdbcType="INTEGER" />
+		<result column="option13Des" property="option13Des" jdbcType="VARCHAR" />
+		<result column="option13Link" property="option13Link" jdbcType="INTEGER" />
+		<result column="option13Feedback" property="option13Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option13TagId" property="option13TagId"
+			jdbcType="INTEGER" />
+		<result column="option14Des" property="option14Des" jdbcType="VARCHAR" />
+		<result column="option14Link" property="option14Link" jdbcType="INTEGER" />
+		<result column="option14Feedback" property="option14Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option14TagId" property="option14TagId"
+			jdbcType="INTEGER" />
+		<result column="option15Des" property="option15Des" jdbcType="VARCHAR" />
+		<result column="option15Link" property="option15Link" jdbcType="INTEGER" />
+		<result column="option15Feedback" property="option15Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option15TagId" property="option15TagId"
+			jdbcType="INTEGER" />
+		<result column="option16Des" property="option16Des" jdbcType="VARCHAR" />
+		<result column="option16Link" property="option16Link" jdbcType="INTEGER" />
+		<result column="option16Feedback" property="option16Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option16TagId" property="option16TagId"
+			jdbcType="INTEGER" />
+		<result column="option17Des" property="option17Des" jdbcType="VARCHAR" />
+		<result column="option17Link" property="option17Link" jdbcType="INTEGER" />
+		<result column="option17Feedback" property="option17Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option17TagId" property="option17TagId"
+			jdbcType="INTEGER" />
+		<result column="option18Des" property="option18Des" jdbcType="VARCHAR" />
+		<result column="option18Link" property="option18Link" jdbcType="INTEGER" />
+		<result column="option18Feedback" property="option18Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option18TagId" property="option18TagId"
+			jdbcType="INTEGER" />
+		<result column="option19Des" property="option19Des" jdbcType="VARCHAR" />
+		<result column="option19Link" property="option19Link" jdbcType="INTEGER" />
+		<result column="option19Feedback" property="option19Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option19TagId" property="option19TagId"
+			jdbcType="INTEGER" />
+		<result column="option20Des" property="option20Des" jdbcType="VARCHAR" />
+		<result column="option20Link" property="option20Link" jdbcType="INTEGER" />
+		<result column="option20Feedback" property="option20Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option20TagId" property="option20TagId"
+			jdbcType="INTEGER" />
+		<result column="option21Des" property="option21Des" jdbcType="VARCHAR" />
+		<result column="option21Link" property="option21Link" jdbcType="INTEGER" />
+		<result column="option21Feedback" property="option21Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option21TagId" property="option21TagId"
+			jdbcType="INTEGER" />
+		<result column="option22Des" property="option22Des" jdbcType="VARCHAR" />
+		<result column="option22Link" property="option22Link" jdbcType="INTEGER" />
+		<result column="option22Feedback" property="option22Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option22TagId" property="option22TagId"
+			jdbcType="INTEGER" />
+		<result column="option23Des" property="option23Des" jdbcType="VARCHAR" />
+		<result column="option23Link" property="option23Link" jdbcType="INTEGER" />
+		<result column="option23Feedback" property="option23Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option23TagId" property="option23TagId"
+			jdbcType="INTEGER" />
+		<result column="option24Des" property="option24Des" jdbcType="VARCHAR" />
+		<result column="option24Link" property="option24Link" jdbcType="INTEGER" />
+		<result column="option24Feedback" property="option24Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option24TagId" property="option24TagId"
+			jdbcType="INTEGER" />
+		<result column="option25Des" property="option25Des" jdbcType="VARCHAR" />
+		<result column="option25Link" property="option25Link" jdbcType="INTEGER" />
+		<result column="option25Feedback" property="option25Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option25TagId" property="option25TagId"
+			jdbcType="INTEGER" />
+		<result column="option26Des" property="option26Des" jdbcType="VARCHAR" />
+		<result column="option26Link" property="option26Link" jdbcType="INTEGER" />
+		<result column="option26Feedback" property="option26Feedback"
+			jdbcType="VARCHAR" />
+		<result column="option26TagId" property="option26TagId"
+			jdbcType="INTEGER" />
+		<result column="comment" property="comment" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="loadAssessQuestion" resultMap="assessQuestionMap"
+		parameterType="int">
+		SELECT
+		ni_assess_question.questionNum,
+		ni_assess_question.qImgUrl,
+		ni_assess_question.questionType,
+		ni_assess_question.required,
+		ni_assess_question.optionNum,
+		ni_assess_question.isSelfDefine,
+		ni_assess_question.aqTitle,
+		ni_assess_question.correctAnswer
+		FROM
+		ni_assess_question
+		WHERE
+		ni_assess_question.aqnId = #{aqnId}
+
+	</select>
+
+	<select id="loadAssessQuestionWithOption" resultMap="assessQuestionWithOptionMap"
+		parameterType="int">
+		select * from ni_assess_question where aqnId=#{aqnId}
+	</select>
+
+
+</mapper>

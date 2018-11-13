@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.SurveyResultMapper">
+	<resultMap type="com.newins.model.SurveyAnswer" id="SurveyAnswer">
+		<result property="userId" column="userId" />
+		<result property="sqId" column="sqId" />
+		<result property="sqnId" column="sqnId" />
+		<result property="choice" column="choice" />
+		<result property="selfDefine" column="selfDefine" />
+		<result property="duration" column="duration" />
+		<result property="comments" column="comments" />
+	</resultMap>
+
+	<select id="getSurveyAnswerList" resultMap="SurveyAnswer"
+		parameterType="java.util.Map">
+		select choice,selfDefine from ni_survey_answer where userId=#{userId} and sqnId=#{sqnId}
+	</select>
+	
+	<select id="getSurveyAnswer" resultMap="SurveyAnswer"
+		parameterType="java.util.Map">
+		select choice,selfDefine from ni_survey_answer where userId=#{userId} and sqnId=#{sqnId} and sqId = #{sqId}
+	</select>
+
+</mapper>

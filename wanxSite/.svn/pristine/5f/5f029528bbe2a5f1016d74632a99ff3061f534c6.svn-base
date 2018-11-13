@@ -1,0 +1,181 @@
+/**
+ * 首页的CSS样式文件
+ */
+
+
+/* 首页宫格 */
+
+#index-grid {
+    background-color: #fff;
+    padding: 15px 20px;
+    margin: 0;
+}
+
+.index-grid-row-1 {
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+#index-grid li {
+    border: 0;
+    padding: 0;
+    width: 20%;
+    min-height: 1px;
+}
+
+#index-grid a {
+    padding: 0;
+}
+
+#index-grid .mui-media-body {
+    color: #000;
+    margin-top: 5px;
+    font-size: 13px;
+    line-height: 16px;
+    height: 16px;
+}
+
+#index-grid li .bg-placeholder {
+    width: 100%;
+    height: 41px;
+    display: inline-block;
+    background-image: url(../../images/index.png);
+    background-repeat: no-repeat;
+    background-size: 40px;
+}
+
+.index-grid-row-1 li:nth-child(1) .bg-placeholder {
+    background-position: center 0;
+}
+
+.index-grid-row-1 li:nth-child(2) .bg-placeholder {
+    background-position: center -70px;
+}
+
+.index-grid-row-1 li:nth-child(3) .bg-placeholder {
+    background-position: center -143px;
+}
+
+.index-grid-row-1 li:nth-child(4) .bg-placeholder {
+    background-position: center -215px;
+}
+
+.index-grid-row-1 li:nth-child(5) .bg-placeholder {
+    background-position: center -290px;
+}
+
+.index-grid-row-2 li:nth-child(1) .bg-placeholder {
+    background-position: center -361px;
+}
+
+.index-grid-row-2 li:nth-child(2) .bg-placeholder {
+    background-position: center -433px;
+}
+
+.index-grid-row-2 li:nth-child(3) .bg-placeholder {
+    background-position: center -505px;
+}
+
+.index-grid-row-2 li:nth-child(4) .bg-placeholder {
+    background-position: center -577px;
+}
+
+.index-grid-row-2 li:nth-child(5) .bg-placeholder {
+    background-position: center -651px;
+}
+
+
+/* 首页中部的按钮 */
+
+/*.index-button .bg-placeholder {
+    background-image: url(../../images/index.png);
+}*/
+
+.index-button a.link-1 {
+    border-right: 1px solid #3c5491;
+}
+
+/*.index-button a.link-1 .bg-placeholder {
+    background-position: left -545px;
+}
+
+.index-button a.link-2 .bg-placeholder {
+    background-position: 6px -598px;
+}*/
+
+.index-button a.link-1 .bg-placeholder2 {
+    background-image: url(../../images/my.png);
+}
+
+.index-button a.link-2 .bg-placeholder2 {
+    background-image: url(../../images/vip.png);
+}
+
+
+
+
+.index-button h4 {
+    position: relative;
+}
+
+.index-button .red-point {
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: red;
+    position: absolute;
+    left: 35px;
+    top: -5px;
+}
+
+
+/* 轮播图 */
+#slider {
+    margin-bottom: 5px;
+}
+
+
+/* 侧滑tab */
+
+#index-slide-tab .fixed-top {
+    position: fixed;
+    top: 0;
+    z-index: 2;
+}
+
+#index-slide-tab .mui-slider-progress-bar {
+    background-color: #ffa11a;
+}
+
+#index-slide-tab-head .mui-slider-indicator{
+    background-color: #fff;
+}
+
+#index-slide-tab .mui-control-item.mui-active {
+    color: #ffa11a;
+}
+
+#index-slide-tab .mui-slider-item {
+    border: none;
+}
+
+#index-slide-tab .mui-loading {
+    margin: 50px 0;
+}
+
+#tap-loaddata .mui-control-item.mui-active{
+	border-bottom: 2px solid orange;
+}
+/* 热点推荐 */
+
+#index-banner {
+    background-image: url(../../images/index.png);
+    background-position: 16px -641px;
+}
+/*十宫格有奖合作问卷的赏字*/
+.syuu{
+	color: red;
+	font-size: 0.1px;
+}

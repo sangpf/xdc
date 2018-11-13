@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.xdc.login.dao.NiUserBaseMapper">
+
+	<select id="selectByPrimaryKey" resultType="cn.xdc.login.po.NiUserBase"
+		parameterType="java.lang.Integer">
+
+		select *
+		from ni_user_base
+		where userId = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		ni_user_base
+		where userId = #{id}
+	</delete>
+
+	<insert id="insert" parameterType="cn.xdc.login.po.NiUserBase">
+		insert into ni_user_base
+		(userId, userName, gender,
+		race, nationality, birthplace,
+		idCard,
+		politicsStatus, career,
+		address, birthday, marriage,
+		hasChildren,
+		workUnit, jobPosition,
+		jobTitle, phone, qq,
+		weixin, email, userChannel,
+		userCTime, userFirstCTime, comment
+		)
+		values (#{userid}, #{username},
+		#{gender},
+		#{race}, #{nationality}, #{birthplace},
+		#{idcard},
+		#{politicsstatus}, #{career},
+		#{address}, #{birthday}, #{marriage},
+		#{haschildren}, #{workunit}, #{jobposition},
+		#{jobtitle}, #{phone},
+		#{qq},
+		#{weixin}, #{email}, #{userchannel},
+		#{userctime},
+		#{userfirstctime}, #{comment}
+		)
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="cn.xdc.login.po.NiUserBase">
+		update ni_user_base
+		<set>
+			<if test="username != null">
+				userName = #{username},
+			</if>
+			<if test="gender != null">
+				gender = #{gender},
+			</if>
+			<if test="race != null">
+				race = #{race},
+			</if>
+			<if test="nationality != null">
+				nationality = #{nationality},
+			</if>
+			<if test="birthplace != null">
+				birthplace = #{birthplace},
+			</if>
+			<if test="idcard != null">
+				idCard = #{idcard},
+			</if>
+			<if test="politicsstatus != null">
+				politicsStatus = #{politicsstatus},
+			</if>
+			<if test="career != null">
+				career = #{career},
+			</if>
+			<if test="address != null">
+				address = #{address},
+			</if>
+			<if test="birthday != null">
+				birthday = #{birthday},
+			</if>
+			<if test="marriage != null">
+				marriage = #{marriage},
+			</if>
+			<if test="haschildren != null">
+				hasChildren = #{haschildren},
+			</if>
+			<if test="workunit != null">
+				workUnit = #{workunit},
+			</if>
+			<if test="jobposition != null">
+				jobPosition = #{jobposition},
+			</if>
+			<if test="jobtitle != null">
+				jobTitle = #{jobtitle},
+			</if>
+			<if test="phone != null">
+				phone = #{phone},
+			</if>
+			<if test="qq != null">
+				qq = #{qq},
+			</if>
+			<if test="weixin != null">
+				weixin = #{weixin},
+			</if>
+			<if test="email != null">
+				email = #{email},
+			</if>
+			<if test="userchannel != null">
+				userChannel = #{userchannel},
+			</if>
+			<if test="userctime != null">
+				userCTime = #{userctime},
+			</if>
+			<if test="userfirstctime != null">
+				userFirstCTime = #{userfirstctime},
+			</if>
+			<if test="comment != null">
+				comment = #{comment},
+			</if>
+		</set>
+		where userId = #{userid}
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="cn.xdc.login.po.NiUserBase">
+		update
+		ni_user_base
+		set userName = #{username},
+		gender = #{gender},
+		race =
+		#{race},
+		nationality = #{nationality},
+		birthplace = #{birthplace},
+		idCard = #{idcard},
+		politicsStatus = #{politicsstatus},
+		career =
+		#{career},
+		address = #{address},
+		birthday = #{birthday},
+		marriage =
+		#{marriage},
+		hasChildren = #{haschildren},
+		workUnit = #{workunit},
+		jobPosition = #{jobposition},
+		jobTitle = #{jobtitle},
+		phone = #{phone},
+		qq = #{qq},
+		weixin = #{weixin},
+		email = #{email},
+		userChannel =
+		#{userchannel},
+		userCTime = #{userctime},
+		userFirstCTime =
+		#{userfirstctime},
+		comment = #{comment}
+		where userId = #{userid}
+	</update>
+
+</mapper>

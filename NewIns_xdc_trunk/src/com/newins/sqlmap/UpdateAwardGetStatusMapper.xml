@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace = "com.newins.dao.UpdateAwardGetStatusMapper">
+  	
+  	
+  	
+  <update id="updateAwardGetAndPayStatus">
+  	update
+  		<if test="qnType == '1'.toString()"> ni_survey_order</if>
+		<if test="qnType == '2'.toString()"> ni_assess_order</if>
+		<if test="qnType == '3'.toString()"> ni_vote_order</if> 
+	set awardGetStatus = #{awardGetStatus},awardPayStatus = #{awardPayStatus}
+	  	<if test="awardGetStatus == '2'.toString()">,awardGetTime = now()</if>
+	  	<if test="awardPayStatus == '2'.toString()">,awardPayTime = now()</if>	
+	where userId = #{userId} and
+		<if test="qnType == '1'.toString()"> sqnId = #{qnId}</if>
+		<if test="qnType == '2'.toString()"> aqnId = #{qnId}</if>
+		<if test="qnType == '3'.toString()"> vqnId = #{qnId}</if> 
+ </update>
+
+  </mapper>

@@ -1,0 +1,421 @@
+var turnplate = {
+    restaraunts: [], //大转盘奖品名称
+    colors: [], //大转盘奖品区块对应背景颜色
+    outsideRadius: 192, //大转盘外圆的半径
+    textRadius: 155, //大转盘奖品位置距离圆心的距离
+    insideRadius: 68, //大转盘内圆的半径
+    startAngle: 0, //开始角度
+    bRotate: false //false:停止;ture:旋转
+};
+var $prize = $('.prize-list').find('div');
+//获奖提示
+var awardcomment;
+//奖励数量
+var awardNum;
+//奖励id
+var awardId;
+//奖励等级
+var lotteryRank=0;
+//取出本地保存的deliveryId参数
+var kurun_deliveryId=localStorage.getItem('data_survey');
+// 动态添加大转盘的奖品与奖品区域背景颜色
+turnplate.restaraunts = ["谢谢参与", "一等奖", "三等奖", "谢谢参与", "二等奖", "谢谢参与", "三等奖 ", "谢谢参与", "二等奖", "三等奖"];
+turnplate.colors = ["#FFF4D6", "#FFFFFF", "#FFF4D6", "#FFFFFF", "#FFF4D6", "#FFFFFF", "#FFF4D6", "#FFFFFF", "#FFF4D6", "#FFFFFF"];
+
+(function() {
+
+    // mui初始化
+    mui.init({
+        swipeBack: true,
+        beforeback: function() {
+            mui.confirm('亲！真的要放弃本次抽奖吗？', '', ['残忍放弃', '我要继续'], function(e) {
+                if (e.index == 0) {
+                    jumpTo('index');
+                }
+            })
+            return false;
+        }
+    })
+
+    // 监听点击指针
+    document.getElementById('pointer').addEventListener('tap', function() {
+    		mui.ajax(baseUrl+'/wanx/checkKuRunAward',{
+				data:{
+					deliveryId:kurun_deliveryId
+				},
+				type:'GET',
+				dataType:'json',
+				timeout:10000,
+				success:function(data){
+					if(data==1){
+						//进入这里表示已经抽过奖了
+						mui.toast('您已经抽过奖了')
+					}else if(data==0){
+						//进入这里表示可以继续抽奖
+						 handlePointerClick();
+					}
+				},
+				error:function(){
+					//接口请求错误
+					mui.toast("网络错误....")
+				}
+				
+			});
+      
+    });
+
+    // 渲染轮盘
+    drawRouletteWheel();
+    
+    // 加载奖品信息
+    loadLotteryAward();
+})()
+
+/**
+ * 渲染轮盘
+ */
+function drawRouletteWheel() {
+    var canvas = document.getElementById("wheelcanvas");
+    if (canvas.getContext) {
+        //根据奖品个数计算圆周角度
+        var arc = Math.PI / (turnplate.restaraunts.length / 2);
+        var ctx = canvas.getContext("2d");
+        //在给定矩形内清空一个矩形
+        ctx.clearRect(0, 0, 422, 422);
+        //strokeStyle 属性设置或返回用于笔触的颜色、渐变或模式
+        ctx.strokeStyle = "#FFBE04";
+        //font 属性设置或返回画布上文本内容的当前字体属性
+        ctx.font = '16px Microsoft YaHei';
+        for (var i = 0; i < turnplate.restaraunts.length; i++) {
+            var angle = turnplate.startAngle + i * arc;
+            ctx.fillStyle = turnplate.colors[i];
+            ctx.beginPath();
+            //arc(x,y,r,起始角,结束角,绘制方向) 方法创建弧/曲线（用于创建圆或部分圆）
+            ctx.arc(211, 211, turnplate.outsideRadius, angle, angle + arc, false);
+            ctx.arc(211, 211, turnplate.insideRadius, angle + arc, angle, true);
+            ctx.stroke();
+            ctx.fill();
+            //锁画布(为了保存之前的画布状态)
+            ctx.save();
+            //----绘制奖品开始----
+            ctx.fillStyle = "#E5302F";
+            var text = turnplate.restaraunts[i];
+            var line_height = 17;
+            //translate方法重新映射画布上的 (0,0) 位置
+            ctx.translate(211 + Math.cos(angle + arc / 2) * turnplate.textRadius, 211 + Math.sin(angle + arc / 2) * turnplate.textRadius);
+            //rotate方法旋转当前的绘图
+            ctx.rotate(angle + arc / 2 + Math.PI / 2);
+            /** 下面代码根据奖品类型、奖品名称长度渲染不同效果，如字体、颜色、图片效果。(具体根据实际情况改变) **/
+            if (text.indexOf("M") > 0) { //流量包
+                var texts = text.split("M");
+                for (var j = 0; j < texts.length; j++) {
+                    ctx.font = j == 0 ? 'bold 20px Microsoft YaHei' : '16px Microsoft YaHei';
+                    if (j == 0) {
+                        ctx.fillText(texts[j] + "M", -ctx.measureText(texts[j] + "M").width / 2, j * line_height);
+                    } else {
+                        ctx.fillText(texts[j], -ctx.measureText(texts[j]).width / 2, j * line_height);
+                    }
+                }
+            } else if (text.indexOf("M") == -1 && text.length > 6) { //奖品名称长度超过一定范围
+                text = text.substring(0, 6) + "||" + text.substring(6);
+                var texts = text.split("||");
+                for (var j = 0; j < texts.length; j++) {
+                    ctx.fillText(texts[j], -ctx.measureText(texts[j]).width / 2, j * line_height);
+                }
+            } else {
+                //在画布上绘制填色的文本。文本的默认颜色是黑色
+                //measureText()方法返回包含一个对象，该对象包含以像素计的指定字体宽度
+                ctx.fillText(text, -ctx.measureText(text).width / 2, 0);
+            }
+            //添加对应图标
+            if (text.indexOf("闪币") > 0) {
+                var img = document.getElementById("shan-img");
+                ctx.drawImage(img, -15, 10);
+            } else if (text.indexOf("谢谢参与") >= 0) {
+                var img = document.getElementById("sorry-img");
+                ctx.drawImage(img, -15, 10);
+            }
+            //把当前画布返回（调整）到上一个save()状态之前
+            ctx.restore();
+            //----绘制奖品结束----
+        }
+    }
+}
+
+/**
+ * 加载奖品信息。
+ * 包括：一二三等奖的名称、数量、图片，活动规则
+ */
+function loadLotteryAward() {
+	//一等奖
+     $prize.eq(0).find('.prize-name').html('完校100粮票')
+     $prize.eq(0).find('.prize-num').html('∞')
+     $prize.eq(0).find('img').attr('src','images/lp.png')
+    //二等奖
+    $prize.eq(1).find('.prize-name').html('完校50粮票')
+    $prize.eq(1).find('.prize-num').html('∞')
+    $prize.eq(1).find('img').attr('src','images/lp.png')
+    //三等奖
+    $prize.eq(2).find('.prize-name').html('完20粮票')
+    $prize.eq(2).find('.prize-num').html('∞')
+    $prize.eq(2).find('img').attr('src','images/lp.png')
+}
+
+/**
+ * 轮盘指针的click函数
+ * 产生随机数
+ */
+function handlePointerClick() {
+    				//调用抽奖函数接收返回值
+      			var rank=LotteryAlgorithm();
+      			if(rank==1&&rank!=0&&rank!=2&&rank!=3){
+					//进入这里说明用户中了一等奖
+					awardcomment='获得完校100粮票';
+					awardNum=100;
+					awardId=10074;
+					lotteryRank=1;
+				}else if(rank==2&&rank!=0&&rank!=1&&rank!=3){
+					//进入这里说明用户中了二等奖
+					awardcomment='获得完校50粮票';
+					awardNum=50;
+					awardId=10075;
+					lotteryRank=2;
+				}else if(rank==3&&rank!=0&&rank!=1&&rank!=2){
+					//进入这里说明用户中了二等奖
+					awardcomment='获得完校20粮票';
+					awardNum=20;
+					awardId=10076;
+					lotteryRank=3;
+				}else if(rank!=1&&rank!=2&&rank!=3){
+					rank=0;
+				}
+                // 根据几等奖，旋转转盘
+                rotateByRank(rank);
+				
+
+}
+
+/**
+ * 根据几等奖，旋转轮盘。
+ *
+ * 输入：
+ *     rank: 奖励等级。
+ *         中奖：rank = 1,2,3
+ *         未中奖：rank = 0
+ */
+function rotateByRank(rank) {
+
+    // 产生随机数。范围： n <= 随机数 <= m
+    var rnd = function(n, m) {
+        do {
+            var random = Math.floor(Math.random() * (m - n + 1) + n);
+        } while (random < 1 || random > 9);
+        return random;
+    }
+
+    // 根据奖励等级，计算轮盘旋转参数
+    if (rank == 1) {
+        var item = 1;
+    } else if (rank == 2) {
+        var random = rnd(1, 2)
+        var secondAwardArray = new Array(4, 8);
+        var item = secondAwardArray[random - 1];
+    } else if (rank == 3) {
+        var random = rnd(1, 2)
+        var thirdAwardArray = new Array(2, 6, 9);
+        var item = thirdAwardArray[random - 1];
+    } else if (rank == 0) {
+        var random = rnd(1, 4)
+        var noAwardArray = new Array(0, 3, 5, 7);
+        var item = noAwardArray[random - 1];
+    }
+    var angles = 36 + item * (360 / turnplate.restaraunts.length) - (360 / (turnplate.restaraunts.length * 2));
+    if (angles < 270) {
+        angles = 270 - angles;
+    } else {
+        angles = 360 - angles + 270;
+    }
+
+    // 旋转轮盘
+    $('#wheelcanvas').stopRotate();
+    $('#wheelcanvas').rotate({
+        angle: 0,
+        animateTo: angles + 1800,
+        duration: 8000,
+        callback: function() {
+            turnplate.bRotate = !turnplate.bRotate;
+            
+            stopRotateCallback(rank);
+        }
+    });
+}
+
+/**
+ * 轮盘停止转动时的回调函数。用来提示用户是否中奖、是否领奖
+ */
+function stopRotateCallback(rank) {
+
+    // 没有中奖的逻辑
+    var zeroAward = function() {
+        mui.alert('您没有中奖', '很遗憾', '确认', function() {
+       	 	//没有中奖也要增加一条没有中奖的记录，方便查询用户是否抽过奖
+        			//调用领奖统计接口
+            		mui.ajax(baseUrl+'/wanx/addAwardStatistics', {
+				        data: {
+				            userId: 1,
+				            awardId:0,
+				            awardMethod:2,
+				            awardCause: 1,
+				            deliveryId:kurun_deliveryId,
+				            qnType:1,
+				            lotteryRank:lotteryRank,
+				            redeemCodeId:0
+				        },
+				        dataType: 'json',
+				        type: 'get',
+				        timeout: 10000,
+				        success: function(data) {
+				        		//跳转到首页
+            					jumpTo('index');
+				        },
+				        error: function() {
+				            mui.toast('网络错误...');
+				    }
+           });
+        		
+        });
+    }
+
+    // 放弃领奖的逻辑
+    var cancelAward = function() {
+        // 跳转到首页
+        jumpTo('index');
+    }
+
+    // 确认领奖的逻辑
+    var confirmAward = function() {
+//  		//判断用户中的是几等奖减去响应的奖励数量
+//  		if(awardNum==100){
+//  			//进入这里表示是一等奖
+//  			localStorage.setItem('oneNum',$prize.eq(0).find('.prize-num').html()-1)
+//  			$prize.eq(0).find('.prize-num').html(localStorage.getItem('oneNum'))
+//  		}else if(awardNum==50){
+//  			//进入这里表示是二等奖
+//  			localStorage.setItem('twoNum',$prize.eq(1).find('.prize-num').html()-1)
+//  			$prize.eq(1).find('.prize-num').html(localStorage.getItem('oneNum'))
+//  		}else  if(awardNum==20){
+//  			//进入这里表示是二等奖
+//  			localStorage.setItem('threeNum',$prize.eq(2).find('.prize-num').html()-1)
+//  			$prize.eq(2).find('.prize-num').html(localStorage.getItem('oneNum'))
+//  		}
+//  		//判断奖励是否已发完
+//  		if($prize.eq(0).find('.prize-num').html()==0){
+//  			mui.toast("非常抱歉一等奖已经发完！")
+//  			 // 跳转到首页
+//      		jumpTo('index');
+//  		}else if($prize.eq(1).find('.prize-num').html()==0){
+//  			mui.toast("非常抱歉二等奖已经发完！")
+//  			 // 跳转到首页
+//      		jumpTo('index');
+//  		}else if($prize.eq(2).find('.prize-num').html()==0){
+//  			mui.toast("非常抱歉三等奖已经发完！")
+//  			// 跳转到首页
+//      		jumpTo('index');
+//  		}
+        // 玩校积分: 添加粮票积分，状态：2已领取  2已发放
+            addWanxScore(awardNum, function() {
+            		//调用领奖统计接口
+            		mui.ajax(baseUrl+'/wanx/addAwardStatistics', {
+				        data: {
+				            userId: 1,
+				            awardId:awardId,
+				            awardMethod:2,
+				            awardCause: 1,
+				            deliveryId:kurun_deliveryId,
+				            qnType:1,
+				            lotteryRank:lotteryRank,
+				            redeemCodeId:0
+				        },
+				        dataType: 'json',
+				        type: 'get',
+				        timeout: 10000,
+				        success: function(data) {},
+				        error: function() {
+				            mui.toast('网络错误...');
+				        }
+				    });
+                mui.toast('领取成功...');
+            })
+    }
+
+    if (rank == 0) {
+        zeroAward();
+    } else {
+        mui.confirm(awardcomment,'恭喜您', ['放弃领奖', '确认领奖'], function(e) {
+            if (e.index == 0) {
+                cancelAward();
+            } else if (e.index == 1) {
+            		//进入这里表示确认领奖，调用领奖接口
+                confirmAward();
+            }
+        });
+    }
+}   
+/**
+ * 查询用户是否已经抽过奖
+ */
+function checkUser(){
+	//ajax调用后台接口
+	mui.ajax(baseUrl+'/wanx/checkKuRunAward',{
+		data:{
+			deliveryId:kurun_deliveryId
+		},
+		type:'GET',
+		dataType:'json',
+		timeout:10000,
+		success:function(data){
+			checkResult=data;
+		},
+		error:function(){
+			//接口请求错误
+			mui.toast("网络错误....")
+		}
+		
+	});
+}
+
+/**
+ * 抽奖算法生成随机数
+ */
+function LotteryAlgorithm(){
+	
+	//1.生成奖励随机数
+	var firstprize=parseInt((Math.random()*100));
+	//2.如果一等奖随机数在1-10之间就说明中了一等奖
+	//一等奖的中奖几率是百分之10
+	if(firstprize>=1&&firstprize<=10){
+		//进入这里说明中了一等奖，返回一等奖代表的数字1
+		return 1;
+	}else{
+		//进入这里表示没有中一等奖
+		//1.再次调用产生二等奖随机数
+		firstprize=parseInt((Math.random()*100));
+		//2.如果随机数在1-20之间就说明中了二等奖
+		if(firstprize>=1&&firstprize<=20){
+			//进入这里说明中了二等奖，返回二等奖代表的数字2
+			return 2;
+		}else{
+			//进入这里表示二等奖也没中
+			//1.再再次调用产生三等奖随机数
+			firstprize=parseInt((Math.random()*100));
+			//2.如果随机数在1-30之间就说明中了三等奖
+			if(firstprize>=1&&firstprize<=20){
+				//进入这里说明中了三等奖，返回代表三等奖代表的数字3
+				return 3;
+			}else{
+				//进入这里说明本次抽奖结束什么奖都没有中，就返回0
+				return 0;
+			}
+		}
+	}
+}

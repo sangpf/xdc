@@ -1,0 +1,40 @@
+/**
+ * 
+ */
+package com.newins.service.imp;
+
+import java.util.HashMap;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.newins.dao.CheckAwardGetStatusMapper;
+import com.newins.model.AssessOrder;
+import com.newins.model.SurveyOrder;
+import com.newins.service.CheckAwardGetStatusService;
+
+/**@Description  
+ * @author Guan
+ * @time 2016年8月23日 上午10:17:50
+ */
+@Service(value = "CheckAwardGetStatusService")
+public class CheckAwardGetStatusServiceImp implements CheckAwardGetStatusService {
+	private static Logger log = Logger.getLogger(CheckAwardGetStatusServiceImp.class);
+	@Autowired
+	private CheckAwardGetStatusMapper checkAwardGetStatusMapper;
+	public SurveyOrder checkAwardGetStatusService(int userId,int sqnId){
+		log.info("This is checkAwardGetStatusService");
+		HashMap<String, Object> hashMap = new HashMap<String, Object>();
+		hashMap.put("userId", userId);
+		hashMap.put("sqnId", sqnId);
+		return checkAwardGetStatusMapper.checkAwardGetStatus(hashMap);
+	}
+	@Override
+	public AssessOrder checkAssessAwardGetStatus(int userId,int sqnId) {
+		HashMap<String, Object> assesshashMap = new HashMap<String, Object>();
+		assesshashMap.put("userId", userId);
+		assesshashMap.put("sqnId", sqnId);
+		return checkAwardGetStatusMapper.checkAssessAwardGetStatus(assesshashMap);
+	}
+}

@@ -1,0 +1,159 @@
+/**
+ * 回复页的CSS文件
+ */
+
+.comHead {
+    background-color: #f8f8f8;
+    height: 44px;
+    line-height: 44px;
+    font-size: 18px;
+    text-align: center;
+    border-bottom: 1px solid #d5d5d5;
+}
+
+.comItem {
+    width: 33%;
+    float: left;
+    padding: 0px 5px;
+}
+
+.comLeft {
+    text-align: left;
+    color: #ff7b00;
+}
+
+.comRight {
+    text-align: right;
+    color: #ff7b00;
+}
+
+.comInner {
+    height: 162px;
+    font-size: 15px;
+    padding: 10px;
+    background-color: #fff;
+    border: 0px;
+    border-bottom: 1px solid #d5d5d5;
+}
+
+.face-icon {
+    cursor: pointer;
+    background: url(../../images/face.png) center center no-repeat;
+    background-size: cover;
+    width: 24px;
+    height: 24px;
+    margin-left: 15px;
+}
+
+
+/* Emoji 表情相关 */
+
+#emotions {
+    left: 0;
+    margin: 30px 10px;
+    width: 95%;
+    font-size: 12px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 8px gray;
+    padding: 10px 0;
+    position: absolute;
+    border: 1px solid #E8E8E8;
+}
+
+#emotions span {
+    color: #9ABBC8;
+    padding: 2px 7px;
+    text-decoration: none;
+}
+
+#emotions img {
+    border: 0;
+}
+
+#emotions div {
+    margin: 5px 10px;
+    padding: 1px;
+    overflow: hidden;
+}
+
+#emotions #prev,
+#emotions #next {
+    margin-left: 3px;
+    line-height: 15px;
+    display: block;
+    float: left;
+    background: #eee;
+}
+
+#emotions .categorys {
+    color: #ccc;
+    height: 30px;
+    color: #9ABBC8;
+    overflow: hidden;
+}
+
+#emotions .categorys span {
+    border: 2px solid #e8e8e8;
+    border-right: none;
+    display: inline-block;
+}
+
+#emotions .categorys span:last-child {
+    border-right: 2px solid #e8e8e8;
+}
+
+#emotions .categorys span:hover {
+    text-decoration: none;
+}
+
+#emotions .categorys span.current {
+    cursor: default;
+    border-bottom: none;
+    border-bottom: 2px solid #99cc66;
+    background: #F0F0F0;
+}
+
+#emotions .container {
+    padding: 1px;
+    overflow: hidden;
+    min-height: auto;
+    overflow-y: auto;
+    max-height: 180px;
+}
+
+#emotions .container span {
+    float: left;
+    width: 26px;
+    height: 22px;
+    text-align: center;
+    padding: 7px 2px;
+    margin: -1px 0 0 -1px;
+    border: 1px solid #e8e8e8;
+    line-height: 46px;
+}
+
+#emotions .container span:hover {
+    z-index: 2;
+    position: relative;
+    border: 1px solid #0095cd;
+}
+
+#emotions .page {
+    text-align: right;
+}
+
+#emotions .page a.current {
+    color: #666;
+    background-color: #fff;
+}
+
+#emotions .page a {
+    margin-left: 3px;
+    color: #0078B6;
+    background-color: #f3f3f3;
+}
+
+#emotions .page a:hover {
+    background-color: #e7e7e7;
+}

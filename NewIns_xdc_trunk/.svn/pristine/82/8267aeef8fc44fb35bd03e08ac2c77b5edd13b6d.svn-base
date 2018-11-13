@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newins.dao.ThumbUpAndDownMapper">
+
+	<update id="updateThumbUpAndDown">
+		<if test="qnType == '1'.toString()">
+		UPDATE ni_survey_delivery SET thumbUp=#{thumbUp},thumbDown=#{thumbDown}
+		WHERE deliveryId=#{deliveryId} AND ni_survey_delivery.channelId=1
+		</if>
+		<if test="qnType == '2'.toString()">
+		UPDATE ni_assess_delivery SET thumbUp=#{thumbUp},thumbDown=#{thumbDown}
+		WHERE deliveryId=#{deliveryId} AND ni_assess_delivery.channelId=1
+		</if>
+		<if test="qnType == '3'.toString()">
+		UPDATE ni_vote_delivery SET thumbUp=#{thumbUp},thumbDown=#{thumbDown}
+		WHERE deliveryId=#{deliveryId} AND ni_vote_delivery.channelId=1
+		</if>
+	</update>
+
+
+</mapper>

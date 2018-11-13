@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.SuperSurveyDao">
+	<resultMap type="com.newins.model.SuperSurvey" id="superSurveyMap">
+		<result property="qnId" column="qnId" />
+		<result property="qnType" column="qnType" />
+		<result property="collectedNum" column="collectedNum" />
+		<result property="collectNum" column="collectNum" />
+		<result property="winnerNum" column="winnerNum" />
+		<result property="awardId" column="awardId" />
+		<result property="awardName" column="awardName" />
+		<result property="awardNum" column="awardNum" />
+		<result property="showDes" column="showDes" />
+		<result property="bTime" column="bTime" />
+		<result property="eTime" column="eTime" />
+		<result property="showTitle" column="showTitle" />
+		<result property="publisher" column="publisherName" />
+		<result property="qnSummary" column="qnSummary" />
+		<result property="img" column="img" />
+		<result property="tag1Str" column="tag1Str" />
+		<result property="tag2Str" column="tag2Str" />
+		<result property="tag3Str" column="tag3Str" />
+		<result property="tag4Str" column="tag4Str" />
+		<result property="tag5Str" column="tag5Str" />
+		<result property="adId" column="adId" />
+		<result property="lotteryId" column="lotteryId" />
+		<result property="adImg" column="adImg" />
+		<result property="adLink" column="adLink" />
+		<result property="awardLink" column="awardLink" />
+		<result property="awardType" column="awardType" />
+		<result property="qnClassName" column="qnClassName" />
+		<result property="sqnCategory" column="sqnCategory"/>
+	</resultMap>
+
+	<select id="getSuperSurvey" resultMap="superSurveyMap">
+		SELECT * FROM(
+		SELECT
+		distinct(ni_super_wanx.deliveryId),
+		ni_super_wanx.qnType,
+		ni_super_wanx.qnId,
+		ni_super_wanx.isTop,
+		ni_super_wanx.showOrder,
+		ni_survey_delivery.bTime,
+		ni_survey_delivery.eTime,
+		ni_survey_delivery.collectNum,
+		ni_survey_delivery.showTitle,
+		ni_survey_delivery.showDes,
+		ni_survey_delivery.img,
+		ni_survey_delivery.collectedNum,
+		ni_survey_delivery.tag1Str,
+		ni_survey_delivery.tag2Str,
+		ni_survey_delivery.tag3Str,
+		ni_survey_delivery.tag4Str,
+		ni_survey_delivery.tag5Str,
+		ni_survey_delivery.adId,
+		ni_survey_delivery.lotteryId,
+		ni_survey_questionnaire.publisherName,
+		ni_survey_questionnaire.sqnSummary as qnSummary,
+		ni_award.awardNum,
+		ni_award.awardName,
+		ni_award.awardId,
+		ni_ad_info.adImg,
+		ni_ad_info.adLink,
+		ni_award_pool.awardLink,
+		ni_award_pool.awardType
+		FROM
+		ni_survey_delivery ,
+		ni_super_wanx ,
+		ni_survey_questionnaire ,
+		ni_award,
+		ni_ad_info,
+		ni_award_pool
+		WHERE
+		ni_survey_delivery.deliveryId = ni_super_wanx.deliveryId AND
+		ni_survey_delivery.award1Id = ni_award.awardId AND
+		ni_super_wanx.qnType=1 AND
+		ni_super_wanx.qnId =
+		ni_survey_questionnaire.sqnId AND
+		ni_survey_delivery.status=2 AND
+		ni_super_wanx.pageStatus=3 AND
+		ni_survey_delivery.adId=ni_ad_info.adId AND
+		ni_award.awardPoolId=ni_award_pool.awardPoolId AND
+		ni_survey_delivery.channelId=1
+
+		UNION
+
+		SELECT
+		distinct(ni_super_wanx.deliveryId),
+		ni_super_wanx.qnType,
+		ni_super_wanx.qnId,
+		ni_super_wanx.isTop,
+		ni_super_wanx.showOrder,
+		ni_vote_delivery.bTime,
+		ni_vote_delivery.eTime,
+		ni_vote_delivery.collectNum,
+		ni_vote_delivery.showTitle,
+		ni_vote_delivery.showDes,
+		ni_vote_delivery.img,
+		ni_vote_delivery.collectedNum,
+		ni_vote_delivery.tag1Str,
+		ni_vote_delivery.tag2Str,
+		ni_vote_delivery.tag3Str,
+		ni_vote_delivery.tag4Str,
+		ni_vote_delivery.tag5Str,
+		ni_vote_delivery.adId,
+		ni_vote_delivery.lotteryId,
+		ni_vote_questionnaire.publisherName,
+		ni_vote_questionnaire.vqnSummary
+		as qnSummary,
+		ni_award.awardNum,
+		ni_award.awardName,
+		ni_award.awardId,
+		ni_ad_info.adImg,
+		ni_ad_info.adLink,
+		ni_award_pool.awardLink,
+		ni_award_pool.awardType
+		FROM
+		ni_vote_delivery ,
+		ni_super_wanx ,
+		ni_vote_questionnaire ,
+		ni_award,
+		ni_ad_info,
+		ni_award_pool
+		WHERE
+		ni_vote_delivery.deliveryId =
+		ni_super_wanx.deliveryId AND
+		ni_vote_delivery.award1Id =
+		ni_award.awardId AND
+		ni_super_wanx.qnType=3 AND
+		ni_super_wanx.qnId =
+		ni_vote_questionnaire.vqnId AND
+		ni_vote_delivery.channelId=1 AND
+		ni_vote_delivery.status=2 AND
+		ni_super_wanx.pageStatus=3 AND
+		ni_vote_delivery.adId=ni_ad_info.adId AND
+		ni_award.awardPoolId=ni_award_pool.awardPoolId) a
+		order
+		by
+		isTop,showOrder
+
+
+	</select>
+	<select id="getSuperOrderByQnId" resultMap="superSurveyMap"
+		parameterType="int">
+		select sum(case when
+		awardId !=0 then 1 else 0
+		end) as
+		winnerNum,sum(case when
+		orderId is not NULL then 1 else 0 end)+IFNULL(collectedNum,0)
+		as
+		collectedNum
+		from
+		<if test="qnType == '1'.toString()">ni_survey_order,ni_survey_delivery</if>
+		<if test="qnType == '3'.toString()"> ni_vote_order,ni_vote_delivery</if>	
+		where
+		<if test="qnType == '1'.toString()"> ni_survey_order.deliveryId=#{deliveryId} AND ni_survey_delivery.deliveryId=#{deliveryId} AND ni_survey_delivery.channelId=1</if>
+		<if test="qnType == '3'.toString()"> ni_vote_order.deliveryId=#{deliveryId} AND ni_vote_delivery.deliveryId=#{deliveryId} AND ni_vote_delivery.channelId=1</if>
+	</select>
+
+	<select id="getSurveyList" resultMap="superSurveyMap" parameterType = "java.lang.String">
+	SELECT
+		distinct(ni_super_wanx.deliveryId),
+		ni_super_wanx.qnType,
+		ni_super_wanx.qnId,
+		ni_super_wanx.isTop,
+		ni_super_wanx.showOrder,
+		ni_survey_delivery.bTime,
+		ni_survey_delivery.eTime,
+		ni_survey_delivery.collectNum,
+		ni_survey_delivery.showTitle,
+		ni_survey_delivery.showDes,
+		ni_survey_delivery.img,
+		ni_survey_delivery.collectedNum,
+		ni_survey_delivery.tag1Str,
+		ni_survey_delivery.tag2Str,
+		ni_survey_delivery.tag3Str,
+		ni_survey_delivery.tag4Str,
+		ni_survey_delivery.tag5Str,
+		ni_survey_delivery.adId,
+		ni_survey_delivery.lotteryId,
+		ni_survey_questionnaire.publisherName,
+		ni_survey_questionnaire.sqnSummary as qnSummary,
+		ni_survey_questionnaire.sqnCategory,
+		ni_award.awardNum,
+		ni_award.awardName,
+		ni_award.awardId,
+		ni_ad_info.adImg,
+		ni_ad_info.adLink,
+		ni_award_pool.awardLink,
+		ni_award_pool.awardType,
+		ni_sqnclass_dict.sqnClassName as qnClassName
+		FROM
+		ni_survey_delivery ,
+		ni_super_wanx ,
+		ni_survey_questionnaire ,
+		ni_award,
+		ni_ad_info,
+		ni_award_pool,
+		ni_sqnclass_dict
+		WHERE
+		ni_survey_delivery.deliveryId = ni_super_wanx.deliveryId AND
+		ni_survey_delivery.award1Id = ni_award.awardId AND
+		ni_super_wanx.qnType=1 AND
+		ni_super_wanx.qnId =
+		ni_survey_questionnaire.sqnId AND
+		ni_survey_delivery.status=2 AND
+		ni_super_wanx.pageStatus=3 AND
+		ni_survey_delivery.adId=ni_ad_info.adId AND
+		ni_award.awardPoolId=ni_award_pool.awardPoolId AND
+		ni_survey_questionnaire.sqnClassId = ni_sqnclass_dict.sqnClassId AND
+		ni_super_wanx.superListCategory = #{superListCategory} AND
+		ni_survey_delivery.channelId=1
+	</select>
+
+	<select id="getVoteList" resultMap="superSurveyMap">
+	SELECT
+		distinct(ni_super_wanx.deliveryId),
+		ni_super_wanx.qnType,
+		ni_super_wanx.qnId,
+		ni_super_wanx.isTop,
+		ni_super_wanx.showOrder,
+		ni_vote_delivery.bTime,
+		ni_vote_delivery.eTime,
+		ni_vote_delivery.collectNum,
+		ni_vote_delivery.showTitle,
+		ni_vote_delivery.showDes,
+		ni_vote_delivery.img,
+		ni_vote_delivery.collectedNum,
+		ni_vote_delivery.tag1Str,
+		ni_vote_delivery.tag2Str,
+		ni_vote_delivery.tag3Str,
+		ni_vote_delivery.tag4Str,
+		ni_vote_delivery.tag5Str,
+		ni_vote_delivery.adId,
+		ni_vote_delivery.lotteryId,
+		ni_vote_questionnaire.publisherName,
+		ni_vote_questionnaire.vqnSummary
+		as qnSummary,
+		ni_award.awardNum,
+		ni_award.awardName,
+		ni_award.awardId,
+		ni_ad_info.adImg,
+		ni_ad_info.adLink,
+		ni_award_pool.awardLink,
+		ni_award_pool.awardType,
+		ni_vqnclass_dict.vqnClassName as qnClassName
+		FROM
+		ni_vote_delivery ,
+		ni_super_wanx ,
+		ni_vote_questionnaire ,
+		ni_award,
+		ni_ad_info,
+		ni_award_pool,
+		ni_vqnclass_dict
+		WHERE
+		ni_vote_delivery.deliveryId =
+		ni_super_wanx.deliveryId AND
+		ni_vote_delivery.award1Id =
+		ni_award.awardId AND
+		ni_super_wanx.qnType=3 AND
+		ni_super_wanx.qnId =
+		ni_vote_questionnaire.vqnId AND
+		ni_vote_delivery.status=2 AND
+		ni_super_wanx.pageStatus=3 AND
+		ni_vote_delivery.adId=ni_ad_info.adId AND
+		ni_award.awardPoolId=ni_award_pool.awardPoolId AND
+		ni_vote_questionnaire.vqnClassId = ni_vqnclass_dict.vqnClassId AND
+		ni_super_wanx.superListCategory = #{superListCategory} AND
+		ni_vote_delivery.channelId=1
+	</select>
+</mapper>

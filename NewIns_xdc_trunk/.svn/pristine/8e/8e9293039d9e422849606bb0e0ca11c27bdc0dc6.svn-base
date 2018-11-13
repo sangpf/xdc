@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newins.dao.NiUserEducationMapper" >
+  <resultMap id="BaseResultMap" type="com.newins.model.NiUserEducation" >
+    <id column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="degree" property="degree" jdbcType="TINYINT" />
+    <result column="registerStatus" property="registerstatus" jdbcType="TINYINT" />
+    <result column="schoolId" property="schoolid" jdbcType="INTEGER" />
+    <result column="schoolName" property="schoolname" jdbcType="VARCHAR" />
+    <result column="regionId" property="regionid" jdbcType="INTEGER" />
+    <result column="regionName" property="regionname" jdbcType="VARCHAR" />
+    <result column="college" property="college" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="major" property="major" jdbcType="VARCHAR" />
+    <result column="className" property="classname" jdbcType="VARCHAR" />
+    <result column="userSn" property="usersn" jdbcType="VARCHAR" />
+    <result column="role" property="role" jdbcType="TINYINT" />
+    <result column="bindCard" property="bindcard" jdbcType="TINYINT" />
+    <result column="bindStudent" property="bindstudent" jdbcType="TINYINT" />
+    <result column="wanxScore" property="wanxscore" jdbcType="INTEGER" />
+    <result column="wanxAccount" property="wanxaccount" jdbcType="VARCHAR" />
+    <result column="enrolDate" property="enroldate" jdbcType="DATE" />
+    <result column="graduateDate" property="graduatedate" jdbcType="DATE" />
+    <result column="leaveStatus" property="leavestatus" jdbcType="TINYINT" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    userId, degree, registerStatus, schoolId, schoolName, regionId, regionName, college, 
+    department, major, className, userSn, role, bindCard, bindStudent, wanxScore, wanxAccount, 
+    enrolDate, graduateDate, leaveStatus, comment
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.newins.model.NiUserEducationExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ni_user_education
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ni_user_education
+    where userId = #{userid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ni_user_education
+    where userId = #{userid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.newins.model.NiUserEducationExample" >
+    delete from ni_user_education
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.newins.model.NiUserEducation" >
+    insert into ni_user_education (userId, degree, registerStatus, 
+      schoolId, schoolName, regionId, 
+      regionName, college, department, 
+      major, className, userSn, 
+      role, bindCard, bindStudent, 
+      wanxScore, wanxAccount, enrolDate, 
+      graduateDate, leaveStatus, comment
+      )
+    values (#{userid,jdbcType=INTEGER}, #{degree,jdbcType=TINYINT}, #{registerstatus,jdbcType=TINYINT}, 
+      #{schoolid,jdbcType=INTEGER}, #{schoolname,jdbcType=VARCHAR}, #{regionid,jdbcType=INTEGER}, 
+      #{regionname,jdbcType=VARCHAR}, #{college,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, 
+      #{major,jdbcType=VARCHAR}, #{classname,jdbcType=VARCHAR}, #{usersn,jdbcType=VARCHAR}, 
+      #{role,jdbcType=TINYINT}, #{bindcard,jdbcType=TINYINT}, #{bindstudent,jdbcType=TINYINT}, 
+      #{wanxscore,jdbcType=INTEGER}, #{wanxaccount,jdbcType=VARCHAR}, #{enroldate,jdbcType=DATE}, 
+      #{graduatedate,jdbcType=DATE}, #{leavestatus,jdbcType=TINYINT}, #{comment,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.newins.model.NiUserEducation" >
+    insert into ni_user_education
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="degree != null" >
+        degree,
+      </if>
+      <if test="registerstatus != null" >
+        registerStatus,
+      </if>
+      <if test="schoolid != null" >
+        schoolId,
+      </if>
+      <if test="schoolname != null" >
+        schoolName,
+      </if>
+      <if test="regionid != null" >
+        regionId,
+      </if>
+      <if test="regionname != null" >
+        regionName,
+      </if>
+      <if test="college != null" >
+        college,
+      </if>
+      <if test="department != null" >
+        department,
+      </if>
+      <if test="major != null" >
+        major,
+      </if>
+      <if test="classname != null" >
+        className,
+      </if>
+      <if test="usersn != null" >
+        userSn,
+      </if>
+      <if test="role != null" >
+        role,
+      </if>
+      <if test="bindcard != null" >
+        bindCard,
+      </if>
+      <if test="bindstudent != null" >
+        bindStudent,
+      </if>
+      <if test="wanxscore != null" >
+        wanxScore,
+      </if>
+      <if test="wanxaccount != null" >
+        wanxAccount,
+      </if>
+      <if test="enroldate != null" >
+        enrolDate,
+      </if>
+      <if test="graduatedate != null" >
+        graduateDate,
+      </if>
+      <if test="leavestatus != null" >
+        leaveStatus,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="degree != null" >
+        #{degree,jdbcType=TINYINT},
+      </if>
+      <if test="registerstatus != null" >
+        #{registerstatus,jdbcType=TINYINT},
+      </if>
+      <if test="schoolid != null" >
+        #{schoolid,jdbcType=INTEGER},
+      </if>
+      <if test="schoolname != null" >
+        #{schoolname,jdbcType=VARCHAR},
+      </if>
+      <if test="regionid != null" >
+        #{regionid,jdbcType=INTEGER},
+      </if>
+      <if test="regionname != null" >
+        #{regionname,jdbcType=VARCHAR},
+      </if>
+      <if test="college != null" >
+        #{college,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="major != null" >
+        #{major,jdbcType=VARCHAR},
+      </if>
+      <if test="classname != null" >
+        #{classname,jdbcType=VARCHAR},
+      </if>
+      <if test="usersn != null" >
+        #{usersn,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null" >
+        #{role,jdbcType=TINYINT},
+      </if>
+      <if test="bindcard != null" >
+        #{bindcard,jdbcType=TINYINT},
+      </if>
+      <if test="bindstudent != null" >
+        #{bindstudent,jdbcType=TINYINT},
+      </if>
+      <if test="wanxscore != null" >
+        #{wanxscore,jdbcType=INTEGER},
+      </if>
+      <if test="wanxaccount != null" >
+        #{wanxaccount,jdbcType=VARCHAR},
+      </if>
+      <if test="enroldate != null" >
+        #{enroldate,jdbcType=DATE},
+      </if>
+      <if test="graduatedate != null" >
+        #{graduatedate,jdbcType=DATE},
+      </if>
+      <if test="leavestatus != null" >
+        #{leavestatus,jdbcType=TINYINT},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.newins.model.NiUserEducationExample" resultType="java.lang.Integer" >
+    select count(*) from ni_user_education
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ni_user_education
+    <set >
+      <if test="record.userid != null" >
+        userId = #{record.userid,jdbcType=INTEGER},
+      </if>
+      <if test="record.degree != null" >
+        degree = #{record.degree,jdbcType=TINYINT},
+      </if>
+      <if test="record.registerstatus != null" >
+        registerStatus = #{record.registerstatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.schoolid != null" >
+        schoolId = #{record.schoolid,jdbcType=INTEGER},
+      </if>
+      <if test="record.schoolname != null" >
+        schoolName = #{record.schoolname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regionid != null" >
+        regionId = #{record.regionid,jdbcType=INTEGER},
+      </if>
+      <if test="record.regionname != null" >
+        regionName = #{record.regionname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.college != null" >
+        college = #{record.college,jdbcType=VARCHAR},
+      </if>
+      <if test="record.department != null" >
+        department = #{record.department,jdbcType=VARCHAR},
+      </if>
+      <if test="record.major != null" >
+        major = #{record.major,jdbcType=VARCHAR},
+      </if>
+      <if test="record.classname != null" >
+        className = #{record.classname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usersn != null" >
+        userSn = #{record.usersn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.role != null" >
+        role = #{record.role,jdbcType=TINYINT},
+      </if>
+      <if test="record.bindcard != null" >
+        bindCard = #{record.bindcard,jdbcType=TINYINT},
+      </if>
+      <if test="record.bindstudent != null" >
+        bindStudent = #{record.bindstudent,jdbcType=TINYINT},
+      </if>
+      <if test="record.wanxscore != null" >
+        wanxScore = #{record.wanxscore,jdbcType=INTEGER},
+      </if>
+      <if test="record.wanxaccount != null" >
+        wanxAccount = #{record.wanxaccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.enroldate != null" >
+        enrolDate = #{record.enroldate,jdbcType=DATE},
+      </if>
+      <if test="record.graduatedate != null" >
+        graduateDate = #{record.graduatedate,jdbcType=DATE},
+      </if>
+      <if test="record.leavestatus != null" >
+        leaveStatus = #{record.leavestatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.comment != null" >
+        comment = #{record.comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ni_user_education
+    set userId = #{record.userid,jdbcType=INTEGER},
+      degree = #{record.degree,jdbcType=TINYINT},
+      registerStatus = #{record.registerstatus,jdbcType=TINYINT},
+      schoolId = #{record.schoolid,jdbcType=INTEGER},
+      schoolName = #{record.schoolname,jdbcType=VARCHAR},
+      regionId = #{record.regionid,jdbcType=INTEGER},
+      regionName = #{record.regionname,jdbcType=VARCHAR},
+      college = #{record.college,jdbcType=VARCHAR},
+      department = #{record.department,jdbcType=VARCHAR},
+      major = #{record.major,jdbcType=VARCHAR},
+      className = #{record.classname,jdbcType=VARCHAR},
+      userSn = #{record.usersn,jdbcType=VARCHAR},
+      role = #{record.role,jdbcType=TINYINT},
+      bindCard = #{record.bindcard,jdbcType=TINYINT},
+      bindStudent = #{record.bindstudent,jdbcType=TINYINT},
+      wanxScore = #{record.wanxscore,jdbcType=INTEGER},
+      wanxAccount = #{record.wanxaccount,jdbcType=VARCHAR},
+      enrolDate = #{record.enroldate,jdbcType=DATE},
+      graduateDate = #{record.graduatedate,jdbcType=DATE},
+      leaveStatus = #{record.leavestatus,jdbcType=TINYINT},
+      comment = #{record.comment,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.newins.model.NiUserEducation" >
+    update ni_user_education
+    <set >
+      <if test="degree != null" >
+        degree = #{degree,jdbcType=TINYINT},
+      </if>
+      <if test="registerstatus != null" >
+        registerStatus = #{registerstatus,jdbcType=TINYINT},
+      </if>
+      <if test="schoolid != null" >
+        schoolId = #{schoolid,jdbcType=INTEGER},
+      </if>
+      <if test="schoolname != null" >
+        schoolName = #{schoolname,jdbcType=VARCHAR},
+      </if>
+      <if test="regionid != null" >
+        regionId = #{regionid,jdbcType=INTEGER},
+      </if>
+      <if test="regionname != null" >
+        regionName = #{regionname,jdbcType=VARCHAR},
+      </if>
+      <if test="college != null" >
+        college = #{college,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        department = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="major != null" >
+        major = #{major,jdbcType=VARCHAR},
+      </if>
+      <if test="classname != null" >
+        className = #{classname,jdbcType=VARCHAR},
+      </if>
+      <if test="usersn != null" >
+        userSn = #{usersn,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null" >
+        role = #{role,jdbcType=TINYINT},
+      </if>
+      <if test="bindcard != null" >
+        bindCard = #{bindcard,jdbcType=TINYINT},
+      </if>
+      <if test="bindstudent != null" >
+        bindStudent = #{bindstudent,jdbcType=TINYINT},
+      </if>
+      <if test="wanxscore != null" >
+        wanxScore = #{wanxscore,jdbcType=INTEGER},
+      </if>
+      <if test="wanxaccount != null" >
+        wanxAccount = #{wanxaccount,jdbcType=VARCHAR},
+      </if>
+      <if test="enroldate != null" >
+        enrolDate = #{enroldate,jdbcType=DATE},
+      </if>
+      <if test="graduatedate != null" >
+        graduateDate = #{graduatedate,jdbcType=DATE},
+      </if>
+      <if test="leavestatus != null" >
+        leaveStatus = #{leavestatus,jdbcType=TINYINT},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where userId = #{userid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.newins.model.NiUserEducation" >
+    update ni_user_education
+    set degree = #{degree,jdbcType=TINYINT},
+      registerStatus = #{registerstatus,jdbcType=TINYINT},
+      schoolId = #{schoolid,jdbcType=INTEGER},
+      schoolName = #{schoolname,jdbcType=VARCHAR},
+      regionId = #{regionid,jdbcType=INTEGER},
+      regionName = #{regionname,jdbcType=VARCHAR},
+      college = #{college,jdbcType=VARCHAR},
+      department = #{department,jdbcType=VARCHAR},
+      major = #{major,jdbcType=VARCHAR},
+      className = #{classname,jdbcType=VARCHAR},
+      userSn = #{usersn,jdbcType=VARCHAR},
+      role = #{role,jdbcType=TINYINT},
+      bindCard = #{bindcard,jdbcType=TINYINT},
+      bindStudent = #{bindstudent,jdbcType=TINYINT},
+      wanxScore = #{wanxscore,jdbcType=INTEGER},
+      wanxAccount = #{wanxaccount,jdbcType=VARCHAR},
+      enrolDate = #{enroldate,jdbcType=DATE},
+      graduateDate = #{graduatedate,jdbcType=DATE},
+      leaveStatus = #{leavestatus,jdbcType=TINYINT},
+      comment = #{comment,jdbcType=VARCHAR}
+    where userId = #{userid,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.newins.dao.MemberDao">
+    <insert id="Membership" parameterType="com.newins.model.Member">
+    	insert into ni_personal_member(userId,bTime,eTime) value(#{userId},#{bTime},#{eTime})
+    </insert>
+    <select id="IsPersonalMember" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    	select count(*) from ni_personal_member where userId=#{userId} and eTime>now()
+    </select>
+    <select id="getUserSchoolId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    	select schoolId from ni_user_education where userId=#{userId}
+    </select>
+    <select id="IsCollectiveMember" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    	select count(*) from ni_school_member where schoolId=#{schoolId} and eTime>now()
+    </select>
+    <insert id="insertFreePackage" parameterType="com.newins.model.PersonalProduct">
+    	insert into ni_personal_product(userId,packageId,bTime,eTime,`status`) value(#{userId},#{packageId},#{bTime},#{eTime},#{status})
+    </insert>
+    <select id="isHaveFreePackage"  parameterType="java.lang.Integer" resultType="java.lang.Integer">
+   		select count(*) from  ni_personal_product where userId=#{0} and packageId=#{1}
+    </select>
+</mapper>	
+	
+	
+		
+  
+  

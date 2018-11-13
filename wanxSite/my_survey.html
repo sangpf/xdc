@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html manifest="newIns.manifest">
+
+<head>
+    <meta charset="utf-8">
+    <title>心发现</title>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="css/mui/mui.css">
+    <link rel="stylesheet" type="text/css" href="css/mui/mui.example.pullrefresh.css">
+    <link rel="stylesheet" type="text/css" href="css/lib/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/xdc/xdc_main.css">
+    <link rel="stylesheet" type="text/css" href="css/xdc/xdc_person.css">
+</head>
+
+<body>
+    <!-- 上拉刷新容器 -->
+    <div class="mui-content xdc-scroll">
+        <!-- 页面头部 -->
+        <div class="global-header">
+            <img src="images/complete.png">
+            <h4>参与认知调查<span id="my-value" data-myType="mySuperSurvey">0</span>次</h4>
+            <h5>点击查看参与的问卷</h5>
+        </div>
+        <!-- 数据列表 -->
+        <ul class="mui-table-view card-list" id="my-survey-list"></ul>
+        <!-- 没有作答过问卷 -->
+        <div class="list-empty" id="my-survey-list-empty">
+            <div class="media-list-wrapper">
+                <h3>同学</h3>
+                <p>你还没有开启自己的认知世界哦！</p>
+                <a id="start-tour">开始启程</a>
+            </div>
+        </div>
+    </div>
+    <!-- loading动画 -->
+	<div id="over" class="over">
+	  	<iframe frameborder="0" scrolling="no" src="fireloading.html" width="100%" height="100%"></iframe>
+	</div>
+	<div id="layout" class="layout">
+	  	<div class="loading">  
+	  	</div>
+	  	<p class="loading-text">Loading...</p>
+	</div>
+    <!-- 返回悬浮窗 -->
+    <span class="suspension back-to-prev" id="suspension"></span>
+    <!-- JS -->
+    <script src="js/mui/mui.min.js"></script>
+    <script src="js/mui/mui.pullToRefresh.js"></script>
+    <script src="js/mui/mui.pullToRefresh.material.js"></script>
+    <script src="js/lib/mustache.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/xdc/usefulFun.js"></script>
+    <script src="js/xdc/my_survey.js"></script>
+    <script>
+    if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+        window.applicationCache.update();
+    }
+    </script>
+</body>
+
+</html>

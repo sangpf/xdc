@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.sqlmapping.qnTagsMapper">
+	<resultMap type="com.newins.model.QnTags" id="qnTagsMap">
+		<result property="tag1Str" column="tag1Str" />
+		<result property="tag2Str" column="tag2Str" />
+		<result property="tag3Str" column="tag3Str" />
+		<result property="tag4Str" column="tag4Str" />
+		<result property="tag5Str" column="tag5Str" />
+	</resultMap>
+
+	<select id="getQnTags" parameterType="int" resultMap="qnTagsMap">
+	SELECT
+	ni_survey_delivery.tag1Str,
+	ni_survey_delivery.tag2Str,
+	ni_survey_delivery.tag3Str,
+	ni_survey_delivery.tag4Str,
+	ni_survey_delivery.tag5Str
+	FROM
+	ni_survey_delivery
+	WHERE
+	ni_survey_delivery.deliveryId = #{delivId} AND ni_survey_delivery.channelId=1
+	
+
+	</select>
+
+
+</mapper>

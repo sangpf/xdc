@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.SurveyQuestionnaireDao">
+	<resultMap type="com.newins.model.SurveyQuestionnaire" id="surveyQuestionnaireMap">
+		<result property="sqnId" column="sqnId" />
+		<result property="sqnName" column="sqnName" />
+		<result property="publisherName" column="publisherName" />
+		<result property="sqnClassName" column="sqnClassName" />
+		<result property="sqnSummary" column="sqnSummary" />
+		<result property="perface" column="perface" />
+		<result property="epilogue" column="epilogue" />
+		<result property="questionQty" column="questionQty" />
+		<result property="sqnCategory" column="sqnCategory" />
+		<result property="comment" column="comment" />
+		<result property="picPath" column="picPath" />
+		<result property="showType" column="showType"/>
+	</resultMap>
+
+	<select id="loadSurveyQuestionnaire" resultMap="surveyQuestionnaireMap"
+		parameterType="int">
+		SELECT
+		ni_survey_questionnaire.sqnId,
+		ni_survey_questionnaire.sqnName,
+		ni_survey_questionnaire.publisherName,
+		ni_survey_questionnaire.epilogue,
+		ni_survey_questionnaire.perface,
+		ni_sqnclass_dict.sqnClassName,
+		ni_survey_questionnaire.questionQty,
+		ni_survey_questionnaire.picPath,
+		ni_survey_questionnaire.sqnSummary,
+		ni_survey_questionnaire.sqnCategory,
+		ni_survey_questionnaire.comment,
+		ni_survey_questionnaire.showType
+		FROM
+		ni_survey_questionnaire,ni_sqnclass_dict
+		WHERE
+		ni_survey_questionnaire.sqnId = #{sqnId} and ni_sqnclass_dict.sqnClassId=ni_survey_questionnaire.sqnClassId
+	</select>
+
+
+
+</mapper>

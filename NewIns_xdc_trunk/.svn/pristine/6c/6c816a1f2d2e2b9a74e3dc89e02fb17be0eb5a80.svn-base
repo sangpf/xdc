@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newins.dao.NiCommentMapper">
+	
+	<sql id="niComment">
+		commentId,commentObjId,commentObjType,userId,content,likeNum,
+		commentTime,STATUS,COMMENT
+	</sql>
+	
+	<insert id="insert" parameterType="com.newins.model.NiComment">
+		INSERT INTO ni_comment ( <include refid="niComment"/> ) 
+		VALUES 
+		(#{commentId},#{commentObjId},#{commentObjType},#{userId},#{content},#{likeNum},
+		#{commentTime},#{status},#{comment})		
+	    
+	</insert>
+	
+	<select id="listNiComment" parameterType="hashmap" resultType="com.newins.model.NiCommentVO" statementType="CALLABLE">
+		CALL selectCommentList(#{commentObjType},#{commentObjId});
+	</select>
+	
+	<select id="goodCommentList" parameterType="hashmap" resultType="com.newins.model.NiCommentVO" statementType="CALLABLE">
+		CALL goodCommentList(#{commentObjType},#{commentObjId});
+	</select>
+	
+	
+	<!-- 根据主键修改点赞数量 -->
+	<update id="updateLikeNum" parameterType="hashmap">
+		UPDATE ni_comment SET likeNum = #{likeNum}
+		WHERE commentId = #{commentId}
+	</update>
+	
+	<select id="findCount" parameterType="hashmap" resultType="java.lang.Integer">
+		SELECT COUNT(commentId) comNum
+		FROM ni_comment
+		WHERE ni_comment.commentObjId=#{commentObjId} AND ni_comment.commentObjType=#{commentObjType}
+	</select>
+	
+</mapper>
+

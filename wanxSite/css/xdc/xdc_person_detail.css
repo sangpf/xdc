@@ -1,0 +1,192 @@
+/**
+ * 个人信息详情的CSS文件
+ */
+
+
+/**
+ * 覆盖默认的mui样式
+ */
+
+.detail-content {
+    margin-bottom: 100px;
+}
+
+.detail-content .mui-table-view {
+    margin-top: 10px;
+}
+
+.detail-content .mui-table-view:first-child {
+    margin-top: 0px;
+}
+
+.detail-content .mui-table-view-cell:after {
+    left: 50px;
+}
+
+.detail-content .mui-ellipsis {
+    width: 67%;
+    text-align: right;
+    color: #000;
+}
+
+.detail-content a:not(.mui-btn) {
+    padding: 15px 44px 15px 50px;
+    background: url(../../images/detail.png) no-repeat;
+    background-size: 22px;
+}
+
+
+/*
+ * 头像及文字
+ */
+
+.detail-portrait {
+    text-align: center;
+    height: 131px;
+    padding-top: 26px;
+}
+
+.detail-portrait img {
+    width: 78px;
+    height: auto;
+    border-radius: 50%;
+}
+
+.detail-content h5 {
+    font-size: 17px;
+    color: #000;
+    display: inline-block;
+    margin: 0;
+}
+
+
+/*
+ * 标签
+ */
+
+.detail-tag {
+    color: #999;
+    border: 1px solid #999;
+    font-size: 15px;
+    padding: 2px 10px;
+    border-radius: 2px;
+    margin-right: 21px;
+}
+
+.detail-tag.active {
+    color: #fff;
+    background-color: #43d13f;
+    border: 1px solid #43d13f;
+}
+
+
+/**
+ * 每一组头部的分组名，及“填写可获粮票”提示
+ */
+
+.detail-des {
+    text-align: center;
+    font-size: 15px;
+    margin: 15px 0 0 0;
+    color: #c3c3c3;
+}
+
+.detail-head {
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.detail-head .detail-head-title {
+    font-size: 16px;
+}
+
+.detail-head .detail-head-subtitle {
+    font-size: 14px;
+    color: #b3b3b3;
+}
+
+.detail-head .detail-head-angle {
+    color: #ffa11a;
+    font-size: 14px;
+}
+
+.detail-head i {
+    color: #ffa11a;
+    font-size: 18px;
+    margin-right: 4px;
+}
+
+
+/**
+ * 每个设置的背景
+ */
+
+#ul-basic li:nth-child(2) > a {
+    background-position: 15px 15px;
+}
+
+#ul-basic li:nth-child(3) > a {
+    background-position: 15px -40px;
+    padding-right: 0;
+}
+
+#ul-basic li:nth-child(4) > a {
+    background-position: 15px -95px;
+    padding-right: 0;
+}
+
+#ul-inSchool li:nth-child(2) > a {
+    background-position: 15px -148px;
+}
+
+#ul-inSchool li:nth-child(3) > a {
+    background-position: 15px -200px;
+}
+
+#ul-inSchool li:nth-child(4) > a {
+    background-position: 15px -253px;
+}
+
+#ul-inSchool li:nth-child(5) > a {
+    background-position: 15px -308px;
+}
+
+#ul-inSchool li:nth-child(6) > a {
+    background-position: 15px -362px;
+}
+
+#ul-inSchool li:nth-child(7) > a {
+    background-position: 15px -415px;
+}
+
+#ul-contact li:nth-child(2) > a {
+    background-position: 15px -468px;
+}
+
+#ul-contact li:nth-child(3) > a {
+    background-position: 15px -520px;
+}
+
+#ul-feature li:nth-child(2) > a {
+    background-position: 15px -575px;
+}
+
+#ul-feature li:nth-child(3) > a {
+    background-position: 15px -630px;
+}
+
+#ul-feature li:nth-child(4) > a {
+    background-position: 15px -682px;
+}
+
+#ul-feature li:nth-child(5) > a {
+    background-position: 15px -736px;
+}
+
+#ul-feature li:nth-child(6) > a {
+    background-position: 15px -791px;
+}
+
+#ul-feature li:nth-child(7) > a {
+    background-position: 15px -843px;
+}

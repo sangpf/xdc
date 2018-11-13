@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.assess.AssessModel_MBTIDao">
+
+	<!-- 查询问卷中所有的 MBTI -->
+	<select id="findAssessModel_MBTI" parameterType="hashmap" resultType="com.newins.model.assess.AssessModel_MBTI">
+		SELECT *
+		from ni_assess_model_mbti
+		WHERE 
+		ni_assess_model_mbti.aqnId = #{aqnId}
+	</select>
+	
+	<select id="getMaxScoreByDimension_mbti" parameterType="hashmap" resultType="com.newins.model.assess.MaxScoreByDimension">
+		SELECT MAX(totalScore) maxScore,dimensionStr
+		FROM 
+			(SELECT
+				ni_assess_question.dimensionStr,
+				sum(ni_assess_answer.score) AS totalScore
+			FROM
+				ni_assess_answer,
+				ni_assess_question
+			WHERE
+				ni_assess_answer.userId = #{userId} and
+				ni_assess_answer.aqnId = #{aqnId}  and
+				ni_assess_answer.aqId = ni_assess_question.aqId
+			GROUP BY
+				ni_assess_question.dimensionStr
+		  HAVING 
+			  ni_assess_question.dimensionStr IN
+			  	<foreach collection="dimension_mbti_List" item="dimension_mbti" open="(" close=")" separator=",">
+			  		#{dimension_mbti}
+			  	</foreach>
+			  
+		) a
+	
+	</select>
+	
+	<!-- 根据 问卷id 联合维度编号 ,查询联合维度输出 -->
+	<select id="getAssessModel_mbti_combination" parameterType="hashmap" resultType="com.newins.model.assess.AssessModel_mbti_combination">
+		SELECT * 
+		from 
+		ni_assess_model_mbti_comb
+		WHERE
+		ni_assess_model_mbti_comb.aqnId = #{aqnId}
+		AND 
+		ni_assess_model_mbti_comb.dimensionStr IN 
+		<foreach collection="listDimension" item="dimension" separator="," open="(" close=")">
+			#{dimension}
+		</foreach>
+	
+	</select>
+
+</mapper>

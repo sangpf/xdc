@@ -1,0 +1,499 @@
+"use strict";
+
+/**
+ * 初始化侧滑tab的配置
+ * 
+*/
+var tabs = {
+    tab1: {
+        currentPage: 0,
+        hasMore: false,
+        pullToRefreshSelector: '#index-tab1 .xdc-scroll',
+        listId: 'index-tab1-list',
+        listType: 1,
+        listCategory: 'floatLatestList',
+        headTagType: 'titleTag',
+        loadFunction: function(){
+            loadQnList(this, function(){
+                hideLoading();
+                tabs.hideTabLoading();
+            });
+        }
+    },
+    tab2: {
+        currentPage: 0,
+        hasMore: false,
+        pullToRefreshSelector: '#index-tab2 .xdc-scroll',
+        listId: 'index-tab2-list',
+        listType: 1,
+        listCategory: 'floatClassicList',
+        headTagType: 'titleTag',
+        loadFunction: function(){
+            loadQnList(this, function(){
+                tabs.hideTabLoading();
+            });
+        }
+    },
+    tab3: {
+        currentPage: 0,
+        hasMore: false,
+        pullToRefreshSelector: '#index-tab3 .xdc-scroll',
+        listId: 'index-tab3-list',
+        listType: 2,
+        listCategory: 'awardQnList',
+        headTagType: 'titleTag',
+        loadFunction: function(){
+            loadQnList(this, function(){
+                tabs.hideTabLoading();
+            });
+        }
+    },
+    tab4: {
+        currentPage: 0,
+        hasMore: false,
+        pullToRefreshSelector: '#index-tab4 .xdc-scroll',
+        listId: 'index-tab4-list',
+        listType: 1,
+        listCategory: 'floatTweetList',
+        headTagType: 'titleTag',
+        loadFunction: function(){
+            loadQnList(this, function(){
+                tabs.hideTabLoading();
+            });
+        }
+    },
+    tab5: {
+        currentPage: 0,
+        hasMore: false,
+        pullToRefreshSelector: '#index-tab5 .xdc-scroll',
+        listId: 'index-tab5-list',
+        listType: 1,
+        listCategory: 'floatVideoList',
+        headTagType: 'titleTag',
+        loadFunction: function(){
+            loadQnList(this, function(){
+                tabs.hideTabLoading();
+            });
+        }
+    },
+    // 显示每个子tab的加载动画
+    showTabLoading: function() {
+        var loadingHTML = '<div class="mui-loading"><div class="mui-spinner"></div></div>';
+        for (var prop in this) {
+            if (this.hasOwnProperty(prop) && typeof this[prop] === 'object') {
+                document.getElementById(this[prop].listId).innerHTML = loadingHTML;
+                document.getElementById(this[prop].listId + '-empty').style.display = 'none';
+            }
+        }
+    },
+    // 当前tab被激活（mui-active）时，隐藏加载动画
+    hideTabLoading: function() {
+        var loadingDom = document.querySelector('.mui-slider-item.mui-active .mui-loading');
+        if (loadingDom) {
+            loadingDom.style.display = 'none';
+        }
+    },
+    // 加载所有tab的列表
+    loadAllTabs: function() {
+        for (var prop in this) {
+            if (this.hasOwnProperty(prop) && typeof this[prop] === 'object') {
+                this[prop].loadFunction();
+            }
+        }
+    },
+    // 初始化 div.mui-control-content的min-height
+    initialContentHeight: function() {
+        var navHeight = document.getElementById('index-slide-tab-head').clientHeight;
+        var contentHeight = screen.availHeight - navHeight;
+        mui.each(document.getElementsByClassName('mui-control-content'), function(i, item) {
+            item.style.minHeight =  contentHeight + 'px';
+        });
+    },
+    // 监听点击热点加载数据
+    initialTapListener_tab1: function() {
+        document.getElementById('tap-loaddate-tab1').addEventListener('tap', function(e) {
+        		//监控浮动栏上下浮动
+            //if (document.getElementById('index-slide-tab-head').classList.contains('fixed-top')) {
+              //  window.scrollTo(0, this.offsetTop, 0);
+           // }
+            //显示加载动画
+            tabs.showTabLoading();
+            var targetTab = tabs.tab1;
+            updatePullRefreshTips('上拉显示更多');
+           
+            targetTab.hasMore = false;
+            targetTab.currentPage = 0;
+            targetTab.loadFunction();
+        });
+     
+    },
+    // 监听点击加载数据
+    initialTapListener_tab2: function() {
+        document.getElementById('tap-loaddate-tab2').addEventListener('tap', function(e){
+        		//监控浮动栏上下浮动
+            //if (document.getElementById('index-slide-tab-head').classList.contains('fixed-top')) {
+              //  window.scrollTo(0, this.offsetTop, 0);
+           // }
+            //显示加载动画
+            tabs.showTabLoading();
+            var targetTab = tabs.tab2;
+            updatePullRefreshTips('上拉显示更多');
+            targetTab.hasMore = false;
+            targetTab.currentPage = 0;
+            targetTab.loadFunction();
+        });
+     
+    },
+    // 监听点击热点加载数据
+    initialTapListener_tab3: function() {
+        document.getElementById('tap-loaddate-tab3').addEventListener('tap', function(e) {
+        		//监控浮动栏上下浮动
+            //if (document.getElementById('index-slide-tab-head').classList.contains('fixed-top')) {
+              //  window.scrollTo(0, this.offsetTop, 0);
+           // }
+            //显示加载动画
+            tabs.showTabLoading();
+            var targetTab = tabs.tab3;
+            targetTab.hasMore = false;
+            updatePullRefreshTips('上拉显示更多');
+            targetTab.currentPage = 0;
+            targetTab.loadFunction();
+        });
+     
+    },
+    // 监听点击推文加载数据
+    initialTapListener_tab4: function() {
+        document.getElementById('tap-loaddate-tab4').addEventListener('tap', function(e) {
+        		//监控浮动栏上下浮动
+            //if (document.getElementById('index-slide-tab-head').classList.contains('fixed-top')) {
+              //  window.scrollTo(0, this.offsetTop, 0);
+           // }
+            //显示加载动画
+            tabs.showTabLoading();
+            var targetTab = tabs.tab4;
+            updatePullRefreshTips('上拉显示更多');
+            targetTab.hasMore = false;
+            targetTab.currentPage = 0;
+            targetTab.loadFunction();
+        });
+    },
+     // 监听点击推文加载数据
+    initialTapListener_tab5: function() {
+        document.getElementById('tap-loaddate-tab5').addEventListener('tap', function(e) {
+        		//监控浮动栏上下浮动
+            //if (document.getElementById('index-slide-tab-head').classList.contains('fixed-top')) {
+              //  window.scrollTo(0, this.offsetTop, 0);
+           // }
+            //显示加载动画
+            tabs.showTabLoading();
+            var targetTab = tabs.tab5;
+            updatePullRefreshTips('上拉显示更多');
+            targetTab.hasMore = false;
+            targetTab.currentPage = 0;
+            targetTab.loadFunction();
+        });
+     },
+    // 监听上下滚动
+    initialScrollListener: function() {
+        var nav = document.getElementById('index-slide-tab-head');
+        var navHeight = nav.clientHeight;
+        var navOffetTop = document.getElementById('index-slide-tab').offsetTop;
+        var next = document.getElementById('index-slide-tab-body');
+
+        // 监听页面滚动
+        document.addEventListener('scroll', function() {
+            if (navOffetTop < document.body.scrollTop) {
+                // 固定在顶部
+                nav.classList.add('fixed-top');
+                next.style.marginTop = navHeight + 'px';
+            } else {
+                // 随页面滚动
+                nav.classList.remove('fixed-top');
+                next.style.marginTop = 0;
+            }
+        });
+    }
+}; 
+
+
+(function() {
+
+    // mui初始化
+    mui.init({
+        swipeBack: true //启用右滑关闭功能
+    });
+
+    localStorage.clear();
+    
+    // 用户认证接口
+    mui.ajax(baseUrl+'/wanx/wanxAuth', {
+        dataType: 'json',
+        type: 'get',
+        timeout: 10000,
+        success: function(data) {
+            if (data.loggedin === true) {
+                // 设置cookie
+                document.cookie = "userId=" + data.userId + "; ";
+
+                // 轮播图的自动播出时间间隔
+                mui("#slider").slider({
+                    interval: 4000
+                });
+
+                // h5统计
+                MtaH5.clickStat('100');
+
+                // 加载轮播
+                loadCarousel();
+
+                // 更新用户信息
+                updateUserInfo();
+
+                // 存入后退按钮的跳转地址
+                localStorage.setItem('fromPos', 'index.html?version=' + xdcVersion);
+
+                // 监听十宫格点击
+                initialIndexGridListener();
+				
+				// 监听更多问卷点击
+				/*
+                document.getElementById('more-qn').addEventListener('tap', function() {
+                    var listType = 1;
+                    var listCategory = 'schoolQnList';
+                    addLog({
+                        logType: 'listSkip',
+                        sourcePage: 'index',
+                        targetPage: listCategory
+                    });
+                    jumpToQnList(listType, listCategory); 
+                });
+				*/
+                // 监听跳转按钮
+                document.getElementById('jump-to-person').addEventListener('tap', function() {
+                    addLog({
+                        logType: 'listSkip',
+                        sourcePage: 'index',
+                        targetPage: 'person_index'
+                    });
+                    jumpTo('person_index');
+                });
+                document.getElementById('jump-to-report').addEventListener('tap', function() {
+                    addLog({
+                        logType: 'listSkip',
+                        sourcePage: 'index',
+                        targetPage: 'vip_page'
+                    });
+                    jumpTo('vip_page');
+                });
+			
+                //调用当进入首页先加载一次热点的数据
+                tabs.tab1.loadFunction();
+                tabs.initialContentHeight();
+                //调用tabs对象的点击热点浮动栏按钮后加载数据
+                tabs.initialTapListener_tab1();
+                //调用tabs对象的点击最新浮动栏按钮后加载数据
+                tabs.initialTapListener_tab2();
+                //调用tabs对象的点击有奖浮动栏按钮后加载数据
+                tabs.initialTapListener_tab3();
+                //调用tabs对象的点击推文浮动栏按钮后加载数据
+                tabs.initialTapListener_tab4();
+                //调用tabs对象的点击视频浮动栏按钮后加载数据
+                tabs.initialTapListener_tab5();
+                /*wu'shan
+		        //加载三更list
+		        obj.loadFunction();
+		        */
+            } else {
+                // 跳转到玩校登录页面
+                window.location = data.locationUrl;
+            }
+        }
+    });
+})(mui);
+/**勿删
+ * 定义加载三更数据类
+
+var obj= {
+		currentPage: 0,
+		hasMore: false,
+		pullToRefreshSelector: '.mui-content.xdc-scroll',
+		listId: 'qn-list',
+		listType: 1,
+		listCategory: 'index',
+		headTagType: 'titleTag',
+			 loadFunction: function(){
+			        loadQnList(this, function(){
+			            hideLoading();
+			        });
+			}
+		}
+ */
+/*
+ * 调取轮播图的接口，填充轮播图
+ */
+function loadCarousel() {
+    mui.ajax(baseUrl+'/wanx/carousel', {
+        data: {
+            userId: 1,
+            channelId:1//渠道Id，1代表完美校园
+        },
+        dataType: 'json',
+        type: 'get',
+        timeout: 10000,
+        success: function(data) {
+            var carouselPos = ['1601', '1602', '1603', '1604'];
+            var adPosCode = ['wanx_index_c1', 'wanx_index_c2', 'wanx_index_c3', 'wanx_index_c4'];
+
+            // 统计
+            var countNum = function() {
+                MtaH5.clickStat('1600', {
+                    '1': 'true'
+                });
+                MtaH5.clickStat('1600', {
+                    '2': 'true'
+                });
+                MtaH5.clickStat('1600', {
+                    '3': 'true'
+                });
+                MtaH5.clickStat('1600', {
+                    '4': 'true'
+                });
+                MtaH5.clickStat('1600', {
+                    '5': 'true'
+                });
+            }
+
+            // 加载第i个轮播，i=0，1，2，3，4
+            var loadCarousel = function(i, imgElemId) {
+                // 显示广告
+                var adImg = document.getElementById(imgElemId);
+                adImg.src = baseUrl + data[i].adImg;
+
+                // 浏览广告统计。防止carousel-first和carousel-last记两次
+                if (imgElemId !== 'carousel-first' && imgElemId !== 'carousel-last') {
+                    addLog({
+                        logType: 'advertise',
+                        action: 'view',
+                        adPosCode: adPosCode[i],
+                        adId: data[i].adId,
+                        adTitle: data[i].adTitle,
+                        adLink: data[i].adLink
+                    });
+                }
+
+                // 监听点击广告
+                adImg.addEventListener('tap', function() {
+                    // 点击广告统计
+                    MtaH5.clickStat(carouselPos[i]);
+                    countNum();
+                    clickAdStatistics(adPosCode[i], data[i].adId);
+                    addLog({
+                        logType: 'advertise',
+                        action: 'click',
+                        adPosCode: adPosCode[i],
+                        adId: data[i].adId,
+                        adTitle: data[i].adTitle,
+                        adLink: data[i].adLink
+                    });
+
+                    // 点击广告跳转
+                    if ((data[i].adLink === null || data[i].adLink === '') && data[i].deliveryId != 0) {
+                        // 如果轮播关联的是问卷（站内动态跳转）,跳转到问卷页。需先加载投放
+                        getDeliveryInfo(data[i].qnType, data[i].deliveryId, 'null', function(ajaxData) {
+                            jumpToQn(data[i].qnType, ajaxData.answered, ajaxData.qnId, data[i].deliveryId);
+                        });
+                    }else{
+                    		 // 如果是站内（外）静态跳转，直接跳走                    
+                        jumpToUrl('http://' + data[i].adLink);
+                    }
+                   
+                });
+            }
+
+            // 加载各个轮播
+            loadCarousel(0, 'carousel-0');
+            loadCarousel(1, 'carousel-1');
+            loadCarousel(2, 'carousel-2');
+            loadCarousel(3, 'carousel-3');
+            loadCarousel(3, 'carousel-first');
+            loadCarousel(0, 'carousel-last');
+
+            /** 
+             * 监听页面滚动，固定侧滑tab导航条在页面顶部.
+             * 由于轮播图异步加载，会影响导航条的offsetTop的计算，
+             * 所以应该在加载轮播图后，调用此函数。
+             * 为保险起见，最好延时500ms，确保轮播图img已经渲染在DOM树上
+             */
+            //setTimeout(tabs.initialScrollListener, 1000);
+        }
+    });
+}
+
+/**
+ * 监听十宫格点击
+ */
+function initialIndexGridListener() {
+    document.getElementById('index-grid').addEventListener('tap', function(e) {
+        // 找到目标节点
+        var target = e.target;
+        while (target !== this ) {
+            if (target.tagName.toLowerCase() == 'li') {
+                break;
+            }
+            target = target.parentNode;
+        }
+		
+        // 提取属性
+        var listType = target.getAttribute('data-listtype');
+        var listCategory = target.getAttribute('data-listcategory');
+        // 列表点击统计
+        addLog({
+            logType: 'listSkip',
+            sourcePage: 'index',
+            targetPage: listCategory
+        });
+		//判断点击的是否是有奖合作调查
+		if(listCategory=='awardQnList'){
+			//进入这里表示进入的是有奖合作调查
+			//请求后台接口查询用户是否已经填写过采集信息
+	        mui.ajax(baseUrl+'/wanx/isGather',{
+	            	dataType:'json',
+	            type:'GET',
+	            timeout:10000,
+	            success:function(data){
+	              //判断用户是否填写过采集信息
+	              if(data.success==true&&data.isGather==1){
+	                 //1.进入这里表示已经填写过了采集信息
+	                 //2.跳转到投吧问卷列表页
+	                 jumpTo('kurun_list');
+	              }else{
+	              	jumpTo('kurun_gather');
+	              };
+	            },
+	            error:function(){
+	            		//进入这里表示接口请求异常
+	            		mui.toast("网络错误....");
+	            	}
+			});
+		}else{
+			  // 进入这里表示点击的是其他宫格
+			 // 跳转页面
+        		jumpToQnList(listType, listCategory);
+		}
+        
+
+       
+    });
+}
+
+/**
+ * 请求更新用户信息接口
+ */
+function updateUserInfo() {
+    mui.ajax(baseUrl+'/wanx/updateUserInfo', {
+        dataType: 'json',
+        type: 'get',
+        timeout: 10000,
+        success: function() {}
+    });
+}

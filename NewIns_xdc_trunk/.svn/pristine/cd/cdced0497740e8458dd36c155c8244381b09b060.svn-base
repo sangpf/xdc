@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newins.dao.AssessDeliveryInfoMapper">
+	<resultMap type="com.newins.model.AssessDeliveryInfo" id="deliveryInfoMap">
+	</resultMap>
+
+	<select id="getDeliveryInfo" resultMap="deliveryInfoMap">
+		SELECT
+		ni_award.awardId,ni_award.awardName,ni_ad_info.adType,ni_ad_info.replaceAdId,lotteryId,awardType,awardLink,awardNum,ni_ad_info.adId,adImg,adLink,thumbUp,thumbDown,relatedStr1,relatedStr2,relatedStr3,relatedUrl1,relatedUrl2,relatedUrl3,resultMsg,ni_assess_delivery.aqnId
+		as qnId,aqnCategory,ni_assess_questionnaire.aqnName as qnName,headResultDetail,tailResultDetail,resutShowType,shareAbstract
+
+		FROM
+		ni_award,ni_award_pool,ni_ad_info,ni_assess_delivery,ni_assess_questionnaire
+		WHERE ni_award.awardPoolId = ni_award_pool.awardPoolId
+		AND ni_award.awardId = ni_assess_delivery.award1Id
+		AND ni_assess_delivery.adId = ni_ad_info.adId
+		AND
+		ni_assess_delivery.deliveryId = #{deliveryId}
+		AND
+		ni_assess_delivery.aqnId=ni_assess_questionnaire.aqnId AND
+		ni_assess_delivery.channelId=1
+
+
+	</select>
+
+</mapper>

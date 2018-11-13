@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+  <mapper namespace="com.newins.dao.ReportDao">
+  	<resultMap type="com.newins.model.ReportItem" id = "reportMap">
+  		<result property="reportId" column="reportId" />
+		<result property="reportTitle" column="reportTitle" />
+		<result property="summary" column="summary" />
+		<result property="publisher" column="publisher" />
+		<result property="pTime" column="pTime" />
+		<result property="reportUrl" column="reportUrl" />
+		<result property="reportImg" column="reportImg" />
+		<result property="viewNum" column="viewNum" />
+		<result property="commentNum" column="commentNum" />
+		<result property="tag1Str" column="tag1Str" />
+		<result property="tag2Str" column="tag2Str" />
+		<result property="tag3Str" column="tag3Str" />
+		<result property="tag4Str" column="tag4Str" />
+	</resultMap>
+	
+	<select id = "getReportInfo" resultMap = "reportMap">
+	SELECT
+		ni_report.reportId,
+		ni_report.reportTitle,
+		ni_report.reportImg,
+		ni_report.baseViewNum+ni_report.wanxViewNum as ViewNum,
+		ni_report.qnCollectedNum as collectedNum,
+		ni_report.commentNum,
+		ni_report.tag1Str,
+		ni_report.tag2Str,
+		ni_report.tag3Str,
+		ni_report.tag4Str,
+		ni_report.summary,
+		ni_report.reportUrl,
+		ni_report.publisher,
+		ni_report.pTime,
+		ni_report.thumbUp,
+		ni_report.thumbDown
+	FROM
+		ni_report ,
+		ni_report_wanx
+	WHERE
+		ni_report.reportId = ni_report_wanx.reportId AND
+		ni_report_wanx.pageStatus = 3 AND
+		ni_report.reportStatus= 2
+	ORDER BY
+		ni_report_wanx.isTop ASC,
+		ni_report_wanx.showOrder ASC
+	
+	
+	</select>
+	
+	<update id="addReportViewNum" parameterType="int">
+	update ni_report set wanxViewNum=wanxViewNum+1 where reportId=#{reportId}
+	</update>
+	
+	
+	<update id="reportThumbUpAndDown">
+	update ni_report SET thumbUp=#{thumbUp},thumbDown=#{thumbDown} where reportId=#{reportId}
+	</update>
+	
+	<!-- 判断问卷是否能收藏 -->
+	<select id="judgeIsFavorite" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+		select count(*) from ni_user_favorite_report where userId=#{0} and reportId=#{1};
+	</select>
+</mapper>	
+		

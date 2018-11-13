@@ -1,0 +1,441 @@
+﻿var images = "[{\"url\":\"" + baseUrl + "/data/res/static/img/misc/shareIcon/shareIcon_180_180.png\"},{\"url\":\"" + baseUrl + "/data/res/static/img/misc/shareIcon/shareIcon_320_320.jpg\"}]";
+// var images = "[{\"url\":\"http://www.17wanxiao.com:80/campus/~/userPic/164\"},{\"url\":\"http://www.17wanxiao.com:80/campus/~/userPic/167\"}]";
+var imagejson = eval('(' + images + ')');
+//当前用户是否为临时用户
+var isTemporary;
+//设置分享的内容
+var shareContent=window.location.href
+			.replace(/assess_result/,'assess_content')
+			.replace(/101.200.169.159:8080/,'www.xindongcha.cn:8080');
+//声明分享的名称
+var shareName;
+(function() {
+    // mui初始化
+    mui.init({
+        swipeBack: true, //启用右滑关闭功能
+        
+    });
+    checkUser()
+    var qnType = 2;
+    var qnId = getIdFromQueryString();
+    var deliveryId = getDeliveryIdFromQueryString();
+    localStorage.setItem('isReport', 0);
+    // 加载投放信息
+    getDeliveryInfo(qnType, deliveryId, 'result', function() {
+    		//设置分享的名称
+		shareName=localStorage.getItem('qnName');
+    		//加载测评结论信息
+        checkAssessResult(function(){
+   				if(document.getElementById('donate-show')!=null){
+   					//进入这里表示有打赏模块
+   					// 监听"打赏"按钮
+   					AssessResultButtonListener(qnType);
+   					isShow();
+   				}
+        });
+    //评论数
+	document.getElementById('footer-commentnum').innerText=localStorage.getItem('assessCommentNum');
+    	
+    });
+   
+})()
+
+/**
+ * 验证当前用户是不是临时用户
+ */
+ function checkUser(){
+	//1.调用后台接口
+	mui.ajax(baseUrl+'/wanx/checkUser',{
+		type:'GET',
+		timeout:10000,
+		success:function(data){
+				//保存到本地
+				localStorage.setItem('isTemporary',data);
+				//如果进来的是临时用户就移除点击准与不准事件
+			    if(data==true||data=='true'){
+			    	 	//判断是否有打赏区域
+			    	 	if(document.getElementById('donate-show')!=null||document.getElementById('donate-show')!=undefined){
+			    	 		//移除打赏点击事件
+				    	 	document.getElementById('donate-show').removeEventListener('tap',function() {
+					        document.getElementById('donate').style.display = 'block';
+					    	});
+			    	 	}
+			    	 	//隐藏问卷分享区域
+			    	 	document.getElementById('assess-share-box').style.display='none';
+			    }
+		}
+	});
+}
+
+/**
+ * “展开”、“收起”报告
+ */
+var mmp=true
+function changeStyle() {
+
+		    	if(document.getElementById("footBar").style.display=="none"){
+		    		 var reportState=document.getElementById('behavior-n-box').getAttribute('state');
+					 //判断是展开还是收起状态
+					 if(reportState=='true'){
+					 		//进入这里表示当前报告是收起状态
+					 		//1.将标签的state属性设置为false表示已经是展开状态的
+					 		document.getElementById('behavior-n-box').setAttribute('state','false')
+					 		//2.需要将文本和图片换成收起状态的
+					 		document.getElementById('behavior-img').setAttribute('src','images/tap-up.png')
+					 		document.getElementById('behavior-text').innerHTML='收起详细报告'
+					 		//3.将隐藏的各个报告区域显示出来
+					 		//先判断要显示的标签id是否存在，如果存在再显示，否则会报错
+					 		//显示"你的表现区域"
+					 		if(document.getElementById('assessresult-yourperformance')!=null){
+					 			document.getElementById('assessresult-yourperformance').style.display='block';
+					 		}
+					 		//显示"原因分析区域"
+					 		if(document.getElementById('reasonanalysis-box')!=null){
+					 			document.getElementById('reasonanalysis-box').style.display='block'
+					 		}
+					 		//显示"小故事区域"
+					 		if(document.getElementById('littlestory-box')!=null){
+					 			document.getElementById('littlestory-box').style.display='block'
+					 		}
+					 		//显示"小贴士区域"
+					 		if(document.getElementById('tips-box')!=null){
+					 			document.getElementById('tips-box').style.display='block'
+					 		}
+					 		//显示"推荐阅读区域"
+					 		if(document.getElementById('recommended-box')!=null){
+					 			document.getElementById('recommended-box').style.display='block'
+					 		}
+					 		//显示"活动提示区域"
+					 		if(document.getElementById('activity-box')!=null){
+					 			document.getElementById('activity-box').style.display='block'
+					 		}
+					 		//显示"操作区域"
+					 		if(document.getElementById('operation-box')!=null){
+					 			document.getElementById('operation-box').style.display='block'
+					 		}
+					 		//显示“维度一”
+					 		if(document.getElementById('dimension-one-box')!=null){
+					 			document.getElementById('dimension-one-box').style.display='block'
+					 		}
+					 		//显示“维度二”
+					 		if(document.getElementById('dimension-two-box')!=null){
+					 			document.getElementById('dimension-two-box').style.display='block'
+					 		}
+					 		//显示“维度三”
+					 		if(document.getElementById('dimension-three-box')!=null){
+					 			document.getElementById('dimension-three-box').style.display='block'
+					 		}
+					 		//显示“维度四”
+					 		if(document.getElementById('dimension-four-box')!=null){
+					 			document.getElementById('dimension-four-box').style.display='block'
+					 		}
+					 		//显示“维度五”
+					 		if(document.getElementById('dimension-five-box')!=null){
+					 			document.getElementById('dimension-five-box').style.display='block'
+					 		}
+					 }else{
+					 		//进入这里表示当前报告是展开状态
+					 		//1.将标签的state属性设置为true表示已经是未展开状态的
+					 		document.getElementById('behavior-n-box').setAttribute('state','true')
+					 		//2.需要将文本和图片换成收起状态的
+							document.getElementById('behavior-img').setAttribute('src','images/tap-dowm.png')
+				   			document.getElementById('behavior-text').innerHTML='查看详细报告'
+					 		//先判断要隐藏的标签id是否存在，如果存在再隐藏，否则会报错
+					 		//隐藏"你的表现区域"
+					 		if(document.getElementById('assessresult-yourperformance')!=null){
+					 			document.getElementById('assessresult-yourperformance').style.display='none';
+					 		}
+					 		//隐藏"原因分析区域"
+					 		if(document.getElementById('reasonanalysis-box')!=null){
+					 			document.getElementById('reasonanalysis-box').style.display='none'
+					 		}
+					 		//隐藏"小故事区域"
+					 		if(document.getElementById('littlestory-box')!=null){
+					 			document.getElementById('littlestory-box').style.display='none'
+					 		}
+					 		//隐藏"小贴士区域"
+					 		if(document.getElementById('tips-box')!=null){
+					 			document.getElementById('tips-box').style.display='none'
+					 		}
+					 		//隐藏"推荐阅读区域"
+					 		if(document.getElementById('recommended-box')!=null){
+					 			document.getElementById('recommended-box').style.display='none'
+					 		}
+					 		//隐藏"活动提示区域"
+					 		if(document.getElementById('activity-box')!=null){
+					 			document.getElementById('activity-box').style.display='none'
+					 		}
+					 		//隐藏"操作区域"
+					 		if(document.getElementById('operation-box')!=null){
+					 			document.getElementById('operation-box').style.display='none'
+					 		}
+					 		//隐藏“维度一”
+					 		if(document.getElementById('dimension-one-box')!=null){
+					 			document.getElementById('dimension-one-box').style.display='none'
+					 		}
+					 		//隐藏“维度二”
+					 		if(document.getElementById('dimension-two-box')!=null){
+					 			document.getElementById('dimension-two-box').style.display='none'
+					 		}
+					 		//隐藏“维度三”
+					 		if(document.getElementById('dimension-three-box')!=null){
+					 			document.getElementById('dimension-three-box').style.display='none'
+					 		}
+					 		//隐藏“维度四”
+					 		if(document.getElementById('dimension-four-box')!=null){
+					 			document.getElementById('dimension-four-box').style.display='none'
+					 		}
+					 		//隐藏“维度五”
+					 		if(document.getElementById('dimension-five-box')!=null){
+					 			document.getElementById('dimension-five-box').style.display='none'
+					 		}
+					 }
+		    		
+		    		
+		    	}else{
+	    			if(mmp){
+						document.getElementById("result").style.display="block";
+						document.getElementById("operation-box").style.display="block"
+				   		document.getElementById('behavior-img').setAttribute('src','images/tap-up.png')
+				   		document.getElementById('behavior-text').innerHTML='收起详细报告'
+						mmp=false;
+					}else{
+						document.getElementById("result").style.display="none";
+						document.getElementById("operation-box").style.display="none"
+						document.getElementById('behavior-img').setAttribute('src','images/tap-dowm.png')
+				   		document.getElementById('behavior-text').innerHTML='查看详细报告'
+						mmp=true;
+				
+					}
+		    	}
+
+
+}
+
+/**
+ * 加载测评结论
+ */
+function checkAssessResult(callback) {
+    mui.ajax(baseUrl+'/wanx/checkAssessResult', {
+        data: {
+            userId: 1,
+            aqnId: getIdFromQueryString(),
+            aqnCategory: localStorage.getItem('aqnCategory')
+        },
+        dataType: 'json',
+        type: 'get',
+        timeout: 10000,
+        success: function(data) {
+				var result = document.getElementById('result');
+				var tabBar = document.getElementById('tabBar');
+				var footBar = document.getElementById('footBar');
+				
+				var headResultDetail=localStorage.getItem('headResultDetail');
+        		var tailResultDetail=localStorage.getItem('tailResultDetail');
+        		if(headResultDetail=="null"||tailResultDetail=="null"){
+					tabBar.style.display="none"
+					footBar.style.display="none"
+					result.style.display="block"
+				}else{
+					tabBar.innerHTML=headResultDetail
+        			footBar.innerHTML=tailResultDetail
+				}
+        		
+
+
+				//因为录入的测评模板'准','不准'的id属性有问题，所有需要特殊处理一下
+                result.innerHTML = data.resultDetail.replace('/NIMS/static/assessResult/images/tap-dowm.png','images/tap-dowm.png')
+                									   .replace(/‘zhun-tap’/,'zhun-tap')
+                								   .replace(/‘buzhun-tap’/,'buzhun-tap')
+				//为了兼容旧的测评结论，需要判断是否以下三个功能
+				if(document.getElementById('operation-true-datanumber')!=null){
+					//进入这里表示有'准数'的模块
+					//初始化准数
+					document.getElementById('operation-true-datanumber').innerHTML=localStorage.getItem('thumbUp');
+				}
+				if(document.getElementById('operation-false-datanumber')!=null){
+					//进入这里表示有'不准数'的模块
+					//初始化不准数
+					document.getElementById('operation-false-datanumber').innerHTML=localStorage.getItem('thumbDown');
+				}
+				if(document.getElementById('donate-show')!=null){
+					//进入这里表示有'打赏'模块
+					//初始化打赏人数
+					loadAssessDonateShow();
+				}
+				//验证用户是否为临时用户
+				checkUser();
+				//参数执行函数
+				callback();
+        }
+   })
+}
+
+/**
+ * 分享相关
+ */
+
+function shareToWanxiao() {
+    addLog({
+        logType: 'reportAction',
+        action: 'repost',
+        reportId: localStorage.getItem('reportId'),
+        actResult: 'wanxiao'
+    });
+    wanxiao.shareTo("-1", "心发现来喽，乃们有各种好玩有料的报告，让你在欢乐中了解大学生的世界！", imagejson, shareContent , shareName);
+}
+
+function shareWanxiaoCircle() {
+    addLog({
+        logType: 'reportAction',
+        action: 'repost',
+        reportId: localStorage.getItem('reportId'),
+        actResult: 'wanxiaoCircle'
+    });
+    wanxiao.shareTo("0", "心发现来喽，乃们有各种好玩有料的报告，让你在欢乐中了解大学生的世界！", imagejson , shareContent , shareName);
+}
+
+function shareWeixin() {
+    addLog({
+        logType: 'reportAction',
+        action: 'repost',
+        reportId: localStorage.getItem('reportId'),
+        actResult: 'weixin'
+    });
+    wanxiao.shareTo("1", "心发现来喽，乃们有各种好玩有料的报告，让你在欢乐中了解大学生的世界！", imagejson, shareContent, shareName);
+	//shareContent + '?position=weix'
+}
+
+function shareWeixinCircle() {
+    addLog({
+        logType: 'reportAction',
+        action: 'repost',
+        reportId: localStorage.getItem('reportId'),
+        actResult: 'weixinCircle'
+    });
+    wanxiao.shareTo("2", "心发现来喽，乃们有各种好玩有料的报告，让你在欢乐中了解大学生的世界！", imagejson, shareContent , shareName);
+}
+
+function shareWeibo() {
+    addLog({
+        logType: 'reportAction',
+        action: 'repost',
+        reportId: localStorage.getItem('reportId'),
+        actResult: 'weibo'
+    });
+    wanxiao.shareTo("3", "心发现来喽，乃们有各种好玩有料的报告，让你在欢乐中了解大学生的世界！", imagejson, shareContent , shareName);
+}
+
+function shareQQ() {
+    addLog({
+        logType: 'reportAction',
+        action: 'repost',
+        reportId: localStorage.getItem('reportId'),
+        actResult: 'qq'
+    });
+    wanxiao.shareTo("4", "心发现来喽，乃们有各种好玩有料的报告，让你在欢乐中了解大学生的世界！", imagejson, shareContent , shareName);
+}
+
+function shareQzone() {
+    addLog({
+        logType: 'reportAction',
+        action: 'repost',
+        reportId: localStorage.getItem('reportId'),
+        actResult: 'qzone'
+    });
+    wanxiao.shareTo("5", "心发现来喽，乃们有各种好玩有料的报告，让你在欢乐中了解大学生的世界！", imagejson, shareContent ,shareName);
+}
+/**
+ * 判断各个区域是否应该显示
+ * 因为和展开收起操作冲突，需要将在管理后台录入的模板隐藏模块移除掉
+ */
+function isShow(){
+	//获取原因分析节点
+	var yyfx=document.getElementById('reasonanalysis-box')
+	//判断原因分析是否被隐藏
+	if(yyfx.style.display=='none'){
+		//进入这里表示活动提示不应该显示
+		yyfx.parentNode.removeChild(yyfx);
+	}
+	
+	//获取你的表现节点
+	var ndbx=document.getElementById('assessresult-yourperformance');
+	//判断你的表现是否被隐藏
+	if(ndbx.style.display=='none'){
+		//进入这里表示活动提示不应该显示
+		ndbx.parentNode.removeChild(ndbx);
+	}
+	//获取小故事节点
+	var xgs=document.getElementById('littlestory-box')
+	//判断原因分析是否被隐藏
+	if(xgs.style.display=='none'){
+		//进入这里表示活动提示不应该显示
+		xgs.parentNode.removeChild(xgs);
+	}
+	
+	//获取小贴士节点
+	var xts=document.getElementById('tips-box')
+	//判断小贴士是否被隐藏
+	if(xts.style.display=='none'){
+		//进入这里表示活动提示不应该显示
+		xts.parentNode.removeChild(xts);
+	}
+	
+	//获取推荐阅读节点
+	var tjyd=document.getElementById('recommended-box')
+	//判断推荐阅读是否被隐藏
+	if(tjyd.style.display=='none'){
+		//进入这里表示活动提示不应该显示
+		tjyd.parentNode.removeChild(tjyd);
+	}
+	
+	
+	//获取活动提示节点
+	var hdts=document.getElementById('activity-box');
+	//判断活动提示是否被隐藏
+	if(hdts.style.display=='none'){
+		//进入这里表示活动提示不应该显示
+		hdts.parentNode.removeChild(hdts);
+		
+	}
+
+	//将已经准备好的测评结果该隐藏的隐藏掉
+	//并且判断是否有这个模块
+	//你的表现
+	if(document.getElementById("footBar").style.display=="none"){
+		if(ndbx!=null){
+			ndbx.setAttribute('style','display: none;')
+		}
+		//原因分析
+		if(yyfx!=null){
+			yyfx.style.display='none'
+		}
+		//小故事
+		if(xgs!=null){
+			xgs.style.display='none';
+		}
+		//小贴士
+		if(xts!=null){
+			xts.style.display='none';
+		}
+		//推荐阅读
+		if(xgs!=null){
+			tjyd.style.display='none';
+		}
+		//活动提示
+		if(hdts!=null){
+			hdts.style.display='none';
+		}
+		var yd=document.getElementById('operation-box')
+		//引导
+		if(yd!=null){
+			yd.style.display='none';
+		}
+			//将收起箭头替换成展开箭头
+	}
+
+
+	var jt=document.getElementById('behavior-img');
+	jt.setAttribute('src','images/tap-dowm.png');
+	jt.setAttribute('state','true');
+}

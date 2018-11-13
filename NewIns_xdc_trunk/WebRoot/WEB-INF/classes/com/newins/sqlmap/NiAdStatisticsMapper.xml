@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newins.dao.NiAdStatisticsMapper">
+
+
+
+	<!-- 基本结果集 -->
+	<resultMap id="BaseResultMap" type="com.newins.model.NiAdStatistics">
+		<id column="adId" property="adId" jdbcType="INTEGER" />
+		<result column="adChannel" property="adChannel" jdbcType="INTEGER" />
+		<result column="adPosCode" property="adPosCode" jdbcType="VARCHAR" />
+		<result column="adViewCount" property="adViewCount" jdbcType="INTEGER" />
+		<result column="adTapCount" property="adTapCount" jdbcType="INTEGER" />
+		<result column="Comment" property="Comment" jdbcType="VARCHAR" />
+	</resultMap>
+	<!-- 基本列 -->
+	<sql id="Base_Column_List">
+		adId, adChannel,adPosCode,adViewCount,adTapCount,Comment
+	</sql>
+
+
+	<!-- 用户浏览一个广告之后对广告统计表更新 -->
+	<insert id="updateAdStatistics" parameterType="hashMap"
+		statementType="PREPARED">
+		INSERT INTO ni_ad_statistics
+		(adId,adChannel,adPosCode,adViewCount,adTapCount) VALUES
+		(#{adId},1,#{adPosCode},1,0) ON DUPLICATE KEY UPDATE
+		adViewCount=adViewCount+1
+	</insert>
+
+	<!-- 加载轮播图对广告统计表更新 -->
+	<insert id="updateCarouselStatistics" parameterType="java.util.List"
+		statementType="PREPARED">
+		INSERT INTO ni_ad_statistics
+		(adId,adChannel,adPosCode,adViewCount,adTapCount)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.adId},1,#{item.adPosCode},1,0)
+		</foreach>
+		ON DUPLICATE KEY UPDATE
+		adViewCount=adViewCount+1
+	</insert>
+
+	<!-- 根据主键查询结果 -->
+	<select id="selectListByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM ni_ad_statistics
+		<where>
+			<if test="adId != null">
+				adId=#{adId}
+			</if>
+		</where>
+	</select>
+
+	<!-- 用户点击一个广告之后对广告统计表更新 -->
+	<insert id="updateClickAdStatistics" parameterType="hashMap"
+		statementType="PREPARED">
+		INSERT INTO ni_ad_statistics
+		(adId,adChannel,adPosCode,adViewCount,adTapCount) VALUES
+		(#{adId},1,#{adPosCode},0,1) ON DUPLICATE KEY UPDATE
+		adTapCount=adTapCount+1
+	</insert>
+
+
+
+
+
+</mapper>

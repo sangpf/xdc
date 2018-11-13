@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html manifest="newIns.manifest">
+
+<head>
+    <meta charset="utf-8">
+    <title>心发现</title>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/mui/mui.css">
+    <link rel="stylesheet" href="css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="css/xdc/xdc_main.css">
+    <link rel="stylesheet" href="css/xdc/xdc_comment.css">
+</head>
+
+<body>
+    <!-- 顶部操作栏 -->
+    <div class="comHead">
+        <div class="comItem comLeft" id="cancel">取消</div>
+        <div class="comItem">发表评论</div>
+        <div class="comItem comRight" id="submit">发送</div>
+    </div>
+    <!-- 评论输入框 -->
+    <textarea class="comInner" placeholder="写评论..." maxlength="140" id="commentInput"></textarea>
+    <!-- 表情按钮 -->
+    <div class="face-icon"></div>
+    <ul id="emoji" class="emoji-list">
+      <li title='[微笑]'>&#x1F600;</li>
+      <li title='[呲牙]'>&#x1F601;</li>
+      <li title='[哭笑]'>&#x1F602;</li>
+      <li title='[我很开心]'>&#x1F603;</li>
+      <li title='[我真的开心]'>&#x1F604;</li>
+      <li title='[醉了]'>&#x1F605;</li>
+      <li title='[调皮]'>&#x1F606;</li>
+      <li title='[升天了]'>&#x1F607;</li>
+      <li title='[魔鬼]'>&#x1F608;</li>
+      <li title='[挤眉弄眼]'>&#x1F609;</li>
+      <li title='[可爱]'>&#x1F60A;</li>
+      <li title='[吐舌]'>&#x1F60B;</li>
+      <li title='[骄傲]'>&#x1F60C;</li>
+      <li title='[好靓]'>&#x1F60D;</li>
+      <li title='[酷]'>&#x1F60E;</li>
+      <li title='[不屑]'>&#x1F60F;</li>
+      <li title='[就这么看着你]'>&#x1F610;</li>
+      <li title='[我懒得鸟你]'>&#x1F611;</li>
+      <li title='[怎样]'>&#x1F612;</li>
+      <li title='[额]'>&#x1F613;</li>
+      <li title='[桑心]'>&#x1F614;</li>
+      <li title='[不开心了]'>&#x1F615;</li>
+      <li title='[糟糕]'>&#x1F616;</li>
+      <li title='[吹口哨]'>&#x1F617;</li>
+      <li title='[mua]'>&#x1F618;</li>
+      <li title='[亲亲]'>&#x1F619;</li>
+      <li title='[~]'>&#x1F61A;</li>
+      <li title='[快摸我的头]'>&#x1F61B;</li>
+      <li title='[被摸头好舒服]'>&#x1F61C;</li>
+      <li title='[我要升天了]'>&#x1F61D;</li>
+      <li title='[难过]'>&#x1F61E;</li>
+      <li title='[你说话好难听]'>&#x1F61F;</li>
+      <li title=''>&#x1F620;</li>
+      <li>&#x1F621;</li>
+      <li>&#x1F622;</li>
+      <li>&#x1F623;</li>
+      <li>&#x1F624;</li>
+      <li>&#x1F625;</li>
+      <li>&#x1F626;</li>
+      <li>&#x1F627;</li>
+      <li>&#x1F628;</li>
+      <li>&#x1F629;</li>
+      <li>&#x1F62A;</li>
+      <li>&#x1F62B;</li>
+      <li>&#x1F62C;</li>
+      <li>&#x1F62D;</li>
+      <li>&#x1F62E;</li>
+      <li>&#x1F62F;</li>
+      <li>&#x1F630;</li>
+      <li>&#x1F631;</li>
+      <li>&#x1F632;</li>
+      <li>&#x1F633;</li>
+      <li>&#x1F634;</li>
+      <li>&#x1F635;</li>
+      <li>&#x1F636;</li>
+      <li>&#x1F637;</li>
+    </ul>
+    <!-- JS -->
+    <script type="text/javascript" src="http://pingjs.qq.com/h5/stats.js" name="MTAH5" sid="500158849" cid="500158852"></script>
+    <script src="js/mui/mui.min.js"></script>
+    <script src="js/lib/jquery-1.10.2.js"></script>
+    <script src="js/lib/sinaFaceAndEffec.js"></script>
+    <script src="js/lib/mustache.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/xdc/usefulFun.js"></script>
+    <script src="js/xdc/comment.js"></script>
+    <script src="js/lib/twemoji.min.js"></script>
+    <script>
+      if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+          window.applicationCache.update();
+      }
+      //将表情解析为标签
+      //twemoji.parse(document.body);
+      // 绑定表情
+      $('.face-icon').click(function(){
+      	$('#emoji').toggle();
+      });
+    </script>
+</body>
+</html>

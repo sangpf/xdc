@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.newins.dao.SubmitVoteDao">
+		<resultMap type="com.newins.model.VoteDeliveryItem" id="voteDeliveryItemMap">
+		<result property="deliveryId" column="deliveryId" />
+		<result property="vqnId" column="vqnId" />
+		<result property="collectedNum" column="collectedNum" />
+		<result property="collectNum" column="collectNum" />
+		<result property="award1Id" column="award1Id" />
+		<result property="award2Id" column="award2Id" />
+		<result property="award3Id" column="award3Id" />
+		<result property="award4Id" column="award4Id" />
+		<result property="lotteryId" column="lotteryId" />
+		<result property="lotteryReady" column="lotteryReady" />
+		<result property="status" column="status" />
+		<result property="bTime" column="bTime" />
+		<result property="eTime" column="eTime" />
+		<result property="showDes" column="showDes" />
+		<result property="showTitle" column="showTitle" />
+		<result property="img" column="img" />
+		<result property="reason" column="reason" />
+		<result property="comment" column="comment" />
+		<result property="tag1Str" column="tag1Str" />
+		<result property="tag2Str" column="tag2Str" />
+		<result property="tag3Str" column="tag3Str" />
+		<result property="tag4Str" column="tag4Str" />
+		<result property="tag5Str" column="tag5Str" />
+		<result property="adId" column="adId" />
+	</resultMap>
+	
+	<insert id="createVoteOrder" parameterType="com.newins.model.VoteOrder"
+		keyProperty="id">
+		INSERT INTO ni_vote_order (userId,deliveryId,vqnId,sequenceNum,orderCTime,answerETime,orderStatus,awardId,answerBTime,awardMethod)
+		VALUES (#{userId},#{deliveryId},#{vqnId},ifnull( (SELECT MAX(sequenceNum)+1 from ni_vote_order
+		ni_vote_order_rename where vqnId=#{vqnId}),1),#{orderCTime},#{answerETime},#{orderStatus},#{awardId},#{answerBTime}
+		<if test="awardMethod != null">
+			,awardMethod = #{awardMethod}
+		</if>)
+	</insert>
+
+	<insert id="submitVote" parameterType="com.newins.model.VoteAnswer"
+		keyProperty="id">
+		INSERT INTO ni_vote_answer (userId,vqnId,choice)
+		VALUES (#{userId},#{vqnId},#{choice})
+	</insert>
+	
+	<select id="getOptionNum" resultType="java.lang.Integer">
+		select optionNum
+		from ni_vote_questionnaire
+		where vqnId=#{vqnId}
+	</select>
+	
+	<select id="getChoice" resultType="java.lang.String">
+		select choice
+		from ni_vote_answer
+		where vqnId=#{vqnId}	
+	</select>
+
+	<select id="getCollectAndCollectedNumById" resultMap="voteDeliveryItemMap">
+		select collectNum,sum(case when orderId is not NULL then 1 else 0 end) + IFNULL(collectedNum,0)  as collectedNum
+		from ni_vote_order,ni_vote_delivery	
+		where ni_vote_order.deliveryId=ni_vote_delivery.deliveryId AND
+			ni_vote_delivery.deliveryId=#{deliveryId} AND ni_vote_delivery.channelId=1
+	</select>
+	
+	<update id="changeDeliveryStatus" parameterType="java.lang.Integer">
+		update
+		ni_vote_delivery 
+		set 
+		status =6 
+		where deliveryId=#{deliveryId} AND ni_vote_delivery.channelId=1
+	</update>
+</mapper>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.newins.dao.BannerAdDao">
+    <resultMap type="com.newins.model.BannerAdvert" id = "bannerAdMap">
+    	<result property="adId" column="adId" />
+		<result property="adPosDes" column="adPosDes" />
+		<result property="adLink" column="adLink" />
+		<result property="adImg" column="adImg" />
+		<result property="adTitle" column="adTitle" />
+	</resultMap>
+	
+	<select id = "getBannerAd" resultMap = "bannerAdMap" parameterType="int">
+	SELECT
+		ni_ad_info.adId,
+		ni_ad_info.adTitle,
+		ni_ad_info.adImg,
+		ni_ad_info.adLink,
+		ni_ad_info.adType,
+		ni_ad_info.replaceAdId,
+		ni_admisc_wanx.adPosDes
+	FROM
+		ni_ad_info ,
+		ni_admisc_wanx
+	WHERE
+		ni_ad_info.adId = ni_admisc_wanx.adId AND
+		ni_admisc_wanx.adPos=#{adPos} 
+	</select>
+</mapper>	
+	
+	
+		
+  
+  

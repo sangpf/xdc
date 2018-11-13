@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.VoteResultDao">
+<select id="getChoice" resultType="java.lang.String">
+	select choice
+	from ni_vote_answer
+	where vqnId=#{vqnId}	
+</select>
+
+<select id="getUserAnswer" resultType="java.lang.String">
+	select choice
+	from ni_vote_answer
+	where vqnId=#{vqnId} and userId=#{userId}	
+</select>
+
+</mapper>

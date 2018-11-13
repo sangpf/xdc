@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.CheckUserIdTemporaryDao">
+	<select id="checkUserType" resultType="java.lang.String" parameterType="java.lang.Integer">
+		select comment from ni_user_base where userId=#{userId}
+	</select>
+	
+	<select id="getResultShowType" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+		select resutShowType from ni_assess_questionnaire where aqnId=#{qnId}
+	</select>
+	
+	<select id="getNickName" resultType="java.lang.String" parameterType="java.lang.Integer">
+		select wanxNickname from ni_user_identifer where userId=#{userId}
+	</select>
+</mapper>

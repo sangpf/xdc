@@ -1,0 +1,294 @@
+var num2letter = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+/**
+ * 获取当前时间
+ *
+ * 输出：形如   2016-12-21 16:0:49
+ */
+function getCurrentTime() {
+    var time = new Date();
+    var currentTime =
+        time.getFullYear() + '-' +
+        (time.getMonth() + 1) + '-' +
+        time.getDate() + ' ' +
+        time.getHours() + ':' +
+        time.getMinutes() + ':' +
+        time.getSeconds();
+    return currentTime;
+}
+
+/**
+ * 获取表单中的题目总数
+ */
+function getQuestionCount() {
+    return document.querySelectorAll("form[class=mui-input-group]").length;
+}
+
+/**
+ * 多选题的题干，根据最少、最多选项的限制个数，在题干上显示的提示信息
+ *
+ * 输入：
+ *     optMinNum: 最少选择的个数
+ *     optMaxNum: 最多选择的个数
+ *     optionNum: 选项总个数
+ * 返回：
+ *     chioceDesc: 题干上对于选项个数限制的信息
+ */
+function getMultiChioceDesc(optMinNum, optMaxNum, optionNum) {
+    var chioceDesc = "";
+    if (optMinNum == optMaxNum) {
+        chioceDesc += "，请选择" + optMaxNum + "项";
+    } else {
+        if (optMinNum > 1) {
+            chioceDesc += "，最少选择" + optMinNum + "项";
+        }
+        if (optMaxNum < optionNum) {
+            chioceDesc += "，最多选择" + optMaxNum + "项";
+        }
+    }
+    return chioceDesc;
+}
+
+/**
+ * 获取单选题答案的函数
+ *
+ * 输入：
+ *     questionNumber: 题号
+ *     isRequired: 该题是否为必答题
+ */
+function getAnswerSingleChoice(questionNumber, isRequired) {
+    // 如果没有选择任何选项，则检查是否为必答。如果为必答，则进行提示
+    var checkedInput = document.querySelector("input[name=q" + questionNumber + "]:checked");
+    if (!checkedInput) {
+        if (isRequired == 1) {
+            mui.toast("第" + questionNumber + "题为必答题，请您作答后再次提交");
+            return false;
+        }
+        return "";
+    } else {
+        // 取得当前问题checked选项的value作为return备用
+        var check = checkedInput.value;
+        return num2letter[check - 1];
+    }
+}
+
+/**
+ * 获取多选题答案的函数
+ *
+ * 输入：
+ *     questionNumber: 题号
+ *     isRequired: 该题是否为必答题
+ *     optMinNum: 最少选择的个数
+ *     optMaxNum: 最多选择的个数
+ */
+function getAnswerMultipleChoice(questionNumber, isRequired, optMinNum, optMaxNum) {
+    // 如果没有选择任何选项，则检查是否为必答。如果为必答，则进行提示
+    var checkedInput = document.querySelectorAll("input[name=q" + questionNumber + "]:checked");
+    var checkedInputNum = checkedInput.length;
+    if (!checkedInput || checkedInputNum < 1) {
+        if (isRequired == 1) {
+            mui.toast("第" + questionNumber + "题为必答题，请您作答后再次提交");
+            return false;
+        }
+        return "";
+    } else if (checkedInputNum > optMaxNum) {
+        mui.toast("第" + questionNumber + "题最多只能选择" + optMaxNum + "个选项哦");
+        return false;
+    } else if (checkedInputNum < optMinNum) {
+        mui.toast("第" + questionNumber + "题最少需要选择" + optMinNum + "个选项哦");
+        return false;
+    } else {
+        var multiAnswer = "";
+        // 由于muitiCheck的类型是array，需要将其所有元素拼成一个字符串来return备用
+        for (var j = 0; j < checkedInput.length; j++) {
+            var oneMultiAnswer = checkedInput.item(j);
+            multiAnswer += num2letter[oneMultiAnswer.value - 1];
+        }
+        return multiAnswer;
+    }
+}
+
+/**
+ * 获取填空题答案的函数
+ *
+ * 输入：
+ *     questionNumber: 题号
+ *     isRequired: 该题是否为必答题
+ */
+function getAnswerSelfDefine(questionNumber, isRequired) {
+    // 取得当前文本框的内容
+    var inputValue = document.getElementsByName("q" + questionNumber)[0].value;
+    // 如果没有填写,则检查是否为必答。如果为必答，则进行提示
+    if (inputValue.trim() == '') {
+        if (isRequired == 1) {
+            mui.toast("第" + questionNumber + "题为必答题，请您作答后再次提交");
+            return false;
+        }
+        return "";
+    } else {
+        return inputValue;
+    }
+}
+
+/**
+ * 获取答题页要提交的的表单数据
+ *
+ * 输入：
+ *     qnType: 问卷类型。1: 调查   2: 测评   3: 投票
+ * 输出：
+ *     submitAnswer: 答题页要提交的表单数据。
+ *         submitAnswer.success：boolean型。数据是否有效。无效数据可能包括：必答题未作答、填空题为空等
+ *         submitAnswer.data：数组型。要提交的数据。
+ */
+function getSubmitAnswer(qnType) {
+    // 表单中所有题目的答案集合
+    var answersToSubmit = {
+        success: true,
+        data: []
+    };
+    // 存入每道题的答案
+    var getThisAnswer = function(qnType, qId, questionType, answerResult, duration) {
+        var thisAnswer = {};
+        switch (qnType) {
+            case 1:
+                thisAnswer.sqId = qId;
+                break;
+            case 2:
+                thisAnswer.aqId = qId;
+                break;
+            case 3:
+                thisAnswer.vqId = qId;
+                break;
+            default:
+                // statements_def
+                break;
+        }
+        thisAnswer.questionType = questionType; // 1:单选    2:多选   3:填空
+        thisAnswer.qAnswer = answerResult;
+        thisAnswer.duration = duration;
+        return thisAnswer;
+    }
+
+    // 循环表单中的每一道题。
+    for (var i = 1, questionCount = getQuestionCount(); i <= questionCount; i++) {
+        var thisQuestion = document.getElementById("q" + i); //根据"qx"来获取每一道题的元素（因为每道题的form的id是"qx"的形式，选项的name是"qx"形式，所以这里选用getElementById来获得form
+        var isRequired = thisQuestion.getAttribute('data-isRequired');
+        var qId = thisQuestion.getAttribute('data-id');
+        var thisAnswer;
+        // 根据题型，得到第i题的答案thisAnswer
+        if (thisQuestion.name == "xdc-single-choice") {
+            // 单选题
+            var answerResult = getAnswerSingleChoice(i, isRequired);
+            if (answerResult === false) {
+                answersToSubmit.success = false;
+                break;
+            };
+            thisAnswer = getThisAnswer(qnType, qId, '1', answerResult, '2');
+        } else if (thisQuestion.name == "xdc-multiple-choice") {
+            // 多选题
+            var optMinNum = thisQuestion.getAttribute('data-optMinNum');
+            var optMaxNum = thisQuestion.getAttribute('data-optMaxNum');
+            var answerResult = getAnswerMultipleChoice(i, isRequired, optMinNum, optMaxNum);
+            if (answerResult === false) {
+                answersToSubmit.success = false;
+                break;
+            };
+            thisAnswer = getThisAnswer(qnType, qId, '2', answerResult, '2');
+        } else if (thisQuestion.name == "xdc-self-define") {
+            // 填空题
+            var answerResult = getAnswerSelfDefine(i, isRequired);
+            if (answerResult === false) {
+                answersToSubmit.success = false;
+                break;
+            };
+            thisAnswer = getThisAnswer(qnType, qId, '3', answerResult, '2');
+        }
+        // 将第i题的答案thisAnswer压入到answersToSubmit.data
+        answersToSubmit.data[i - 1] = thisAnswer;
+    }
+    return answersToSubmit;
+}
+
+/**
+ * 提交接口
+ *
+ * 输入：
+ *     qnType: 问卷类型。 1：调查   2：测评   3：投票
+ *     answersToSubmit: 对象类型。要提交给后台的答案
+ */
+function saveAnswer(qnType, answersToSubmit) {
+    var ajaxSettings = {
+        interface: "",
+        data:{
+            userId: "1",
+            deliveryId: getDeliveryIdFromQueryString(),
+            awardId: JSON.parse(localStorage.getItem('award')).awardId,
+            awardMethod: JSON.parse(localStorage.getItem('award')).awardMethod,
+            answerNum: getQuestionCount(),
+            answerBTime: getCurrentTime()
+        },
+        sourcePage: "",
+        targetPage: ""
+    }
+
+    switch (qnType) {
+        case 1:
+            ajaxSettings.interface = '/wanx/saveSurveyAnswer';
+            ajaxSettings.data.sqnId = getIdFromQueryString();
+            ajaxSettings.data.answers = JSON.stringify(answersToSubmit);
+            ajaxSettings.sourcePage = "survey_content";
+            ajaxSettings.targetPage = "survey_result";
+            break;
+        case 2:
+            ajaxSettings.interface = '/wanx/saveAssessAnswer';
+            ajaxSettings.data.aqnId = getIdFromQueryString();
+            ajaxSettings.data.aqnCategory = localStorage.getItem('aqnCategory');
+            ajaxSettings.data.answers = JSON.stringify(answersToSubmit);
+            ajaxSettings.sourcePage = "assess_content";
+            ajaxSettings.targetPage = "assess_result";
+            break;
+        case 3:
+            ajaxSettings.interface = '/wanx/saveVoteAnswer';
+            ajaxSettings.data.vqnId = getIdFromQueryString();
+            ajaxSettings.data.answer = answersToSubmit;
+            ajaxSettings.sourcePage = "vote_content";
+            ajaxSettings.targetPage = "vote_result";
+            break;
+        default:
+            break;
+    }
+
+    mui.ajax(baseUrl+ajaxSettings.interface, {
+        data: ajaxSettings.data,
+        dataType: 'json',
+        type: 'POST',
+        timeout: 10000,
+        success: function(data) {
+            if (isDataSuccess(data)) {
+                // 提交答案跳转统计
+                addLog({
+                    logType: 'qnPageSkip',
+                    sourcePage: ajaxSettings.sourcePage,
+                    targetPage: ajaxSettings.targetPage,
+                    deliveryId: ajaxSettings.data.deliveryId,
+                    qnId: ajaxSettings.data.sqnId || ajaxSettings.data.vqnId || ajaxSettings.data.aqnId,
+                    qnType: qnType
+                });
+
+                // 跳转页面
+                jumpTo(ajaxSettings.targetPage, location.search);
+            } else {
+                if (data.errCode == '002') {
+                    mui.toast("你已经答过这个问卷了呦 亲...");
+                } else if (data.errCode == '006') {
+                    mui.toast("哎呀~问卷已经关闭了，还有更多有趣问卷等你回答！");
+                } else {
+                    mui.toast("网络好像出错了额(⊙_⊙;)");
+                }
+            }
+        },
+        error: function() {
+            mui.toast('网络错误, 请重新提交');
+        }
+    });
+}

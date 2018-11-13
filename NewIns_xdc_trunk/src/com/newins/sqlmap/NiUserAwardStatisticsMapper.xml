@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newins.dao.NiUserAwardStatisticsMapper">
+	<!-- 插入用户奖励记录 -->
+  <insert id="insertUserAwardStatistics" parameterType="com.newins.model.NiUserAwardStatistics">
+  	insert into ni_user_award_statistics
+  	<trim prefix="(" suffix=")" suffixOverrides=",">
+  		userId,awardId,
+  		<if test="awardMethod != null">
+  			awardMethod,
+  		</if>
+  		<if test="awardCause != null">
+  			awardCause,
+  		</if>
+  		deliveryId,
+  		<if test="qnChannel != null">
+  			qnChannel,
+  		</if>
+  		<if test="qnType != null">
+  			qnType,
+  		</if>
+  		<if test="awardGetTime != null">
+  			awardGetTime,
+  		</if>
+  		<if test="lotteryRank !=null">
+  			lotteryRank,
+  		</if>
+  		<if test="redeemCodeId !=null">
+  			redeemCodeId,
+  		</if>
+  		<if test="Comment != null">
+  			Comment,
+  		</if>
+  	</trim>
+  	<trim prefix="values (" suffix=")" suffixOverrides="," >
+  		#{userId,jdbcType=INTEGER},#{awardId,jdbcType=INTEGER},
+  		<if test="awardMethod != null">
+  			#{awardMethod,jdbcType=TINYINT},
+  		</if>
+  		<if test="awardCause != null">
+  			#{awardCause,jdbcType=TINYINT},
+  		</if>
+  		#{deliveryId,jdbcType=INTEGER},
+  		<if test="qnChannel != null">
+  			#{qnChannel,jdbcType=TINYINT},
+  		</if>
+  		<if test="qnType != null">
+  			#{qnType,jdbcType=TINYINT},
+  		</if>
+  		<if test="awardGetTime != null">
+  			#{awardGetTime,jdbcType=TIMESTAMP},
+  		</if>
+  		<if test="lotteryRank !=null">
+  			#{lotteryRank,jdbcType=TINYINT},
+  		</if>
+  		<if test="redeemCodeId !=null">
+  			#{redeemCodeId,jdbcType=TINYINT},
+  		</if>
+  		<if test="Comment != null">
+  			#{Comment,jdbcType=VARCHAR},
+  		</if>
+  	</trim>
+  </insert>
+</mapper>

@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newins.dao.PersonalDao">
+	<!-- 查询用户信息 -->
+	<select id="LoadPersonalInfo" resultType="com.newins.model.MyInformation" parameterType="java.lang.Integer">
+		SELECT
+			ni_user_identifer.wanxNickname,
+			(case when (ni_user_base.gender = 1) then '男' when (ni_user_base.gender = 2) then '女' end) as gender,
+			ni_user_identifer.wanxHeadImg,
+			DATE_FORMAT(ni_user_base.birthday,'%Y-%m-%d') as birthday,
+			ni_user_base.phone,
+			(case when (ni_user_base.starSign = 1) then '水瓶座' when (ni_user_base.starSign = 2) then '双鱼座'  when (ni_user_base.starSign = 3) then '白羊座' when (ni_user_base.starSign = 4) then '金牛座' when (ni_user_base.starSign = 5) then '双子座' when (ni_user_base.starSign = 6) then '巨蟹座' when (ni_user_base.starSign = 7) then '狮子座' when (ni_user_base.starSign = 8) then '处女座' when (ni_user_base.starSign = 9) then '天秤座' when (ni_user_base.starSign = 10) then '天蝎座' when (ni_user_base.starSign = 11) then '射手座' when (ni_user_base.starSign = 12) then '摩羯座' end) as starSign,
+			(case when (ni_user_base.bloodType = 1) then 'A型' when (ni_user_base.bloodType = 2) then 'B型' when (ni_user_base.bloodType = 3) then 'AB型' when (ni_user_base.bloodType = 4) then 'O型' when (ni_user_base.bloodType = 5) then '稀有血型' end) as bloodType,
+			(case when (ni_user_base.`character` = 1) then '柔弱' when (ni_user_base.`character` = 2) then '坚强' when (ni_user_base.`character` = 3) then '悲观' when (ni_user_base.`character` = 4) then '乐观' when (ni_user_base.`character` = 5) then '内向' when (ni_user_base.`character` = 6) then '外向' when (ni_user_base.`character` = 7) then '安静' when (ni_user_base.`character` = 8) then '活泼' when (ni_user_base.`character` = 9) then '依赖' when (ni_user_base.`character` = 10) then '独立' when (ni_user_base.`character` = 11) then '愚笨' when (ni_user_base.`character` = 12) then '聪明' when (ni_user_base.`character` = 13) then '随意' when (ni_user_base.`character` = 14) then '严谨' when (ni_user_base.`character` = 15) then '犹豫' when (ni_user_base.`character` = 16) then '果断' when (ni_user_base.`character` = 17) then '传统' when (ni_user_base.`character` = 18) then '开放' when (ni_user_base.`character` = 19) then '刻板' when (ni_user_base.`character` = 20) then '灵活' end) as `character`,
+			(case when (ni_user_base.moral) then '自私' when (ni_user_base.moral=2) then '无私' when (ni_user_base.moral=3) then '虚伪' when (ni_user_base.moral=4) then '诚实' when (ni_user_base.moral=5) then '懒惰' when (ni_user_base.moral=6) then '勤奋' when (ni_user_base.moral=7) then '正直' when (ni_user_base.moral=8) then '好色' when (ni_user_base.moral=9) then '残忍' when (ni_user_base.moral=10) then '善良' when (ni_user_base.moral=11) then '狭隘' when (ni_user_base.moral=12) then '宽宏' when (ni_user_base.moral=13) then '吝啬' when (ni_user_base.moral=14) then '仗义' when (ni_user_base.moral=15) then '幻想' when (ni_user_base.moral=16) then '实际' when (ni_user_base.moral=17) then '骄傲' when (ni_user_base.moral=18) then '谦虚' when (ni_user_base.moral=19) then '激进' when (ni_user_base.moral=20) then '平和' end) as moral,
+			(case when (ni_user_base.loveCondition = 1) then '单身' when (ni_user_base.loveCondition = 2) then '恋爱萌芽期' when (ni_user_base.loveCondition = 3) then '热恋期' when (ni_user_base.loveCondition = 4) then '稳定期' when (ni_user_base.loveCondition = 5) then '矛盾期' when (ni_user_base.loveCondition = 6) then '修好期' when (ni_user_base.loveCondition = 7) then '分手期' when (ni_user_base.loveCondition = 8) then '失恋期' when (ni_user_base.loveCondition = 9) then '已婚' when (ni_user_base.loveCondition = 10) then '离异' when (ni_user_base.loveCondition = 11) then '独身主义' when (ni_user_base.loveCondition = 12) then '其他' end) as loveCondition,
+			ni_user_education.college,
+			ni_user_education.major as major,
+			DATE_FORMAT(ni_user_education.enrolDate,'%Y-%m') as enrolDate,
+			ni_user_education.schoolName,
+			(case when (ni_user_education.degree = 1) then '高中' when (ni_user_education.degree = 2) then '中专' when (ni_user_education.degree = 3) then '中技' when (ni_user_education.degree = 4) then '职高' when (ni_user_education.degree = 5) then '高职' when (ni_user_education.degree = 6) then '大专' when (ni_user_education.degree = 7) then '本科' when (ni_user_education.degree = 8) then '硕士' when (ni_user_education.degree = 9) then '博士' when (ni_user_education.degree = 10) then '其他' end) as degree,
+			(case when (ni_user_base.career=1) then '学生' when (ni_user_base.career=2) then '老师' end) as career,
+			ni_user_base.email,
+			(case when (ni_user_education.grade = 1) then '高一' when (ni_user_education.grade = 2) then '高二' when (ni_user_education.grade = 3) then '高三' when (ni_user_education.grade = 4) then '大一' when (ni_user_education.grade = 5) then '大二' when (ni_user_education.grade = 6) then '大三' when (ni_user_education.grade = 7) then '大四' when (ni_user_education.grade = 8) then '大五' when (ni_user_education.grade = 9) then '研一' when (ni_user_education.grade = 10) then '研二' when (ni_user_education.grade = 11) then '研三' when (ni_user_education.grade = 12) then '博一' when (ni_user_education.grade = 13) then '博二' when (ni_user_education.grade = 14) then '博三' when (ni_user_education.grade = 15) then '博四' when (ni_user_education.grade = 16) then '博五' when (ni_user_education.grade = 17) then '其他' end) as grade
+			FROM
+			ni_user_base ,
+			ni_user_education ,
+			ni_user_identifer
+			WHERE
+			ni_user_base.userId = ni_user_education.userId AND
+			ni_user_base.userId = #{userId} AND
+			ni_user_base.userId = ni_user_identifer.userId  
+	</select>
+	<!-- 修改用户信息 -->
+	<update id="updatePersonalInfo" parameterType="com.newins.model.UpDatePersonalInfo" statementType="STATEMENT">
+			<if test='keyString == "wanxNickName".toString()'>
+			 update ni_user_identifer set ${keyString}='${valueString}' where userId=${userId}</if>
+			 
+			 <if test='keyString == "wanxHeadImg".toString()'>
+			 update ni_user_identifer set ${keyString}='${valueString}' where userId=${userId}</if>
+			 
+			 <if test='keyString == "gender".toString()'>
+			  update ni_user_base set ${keyString}=${valueString} where userId=${userId}</if>
+			  
+			 <if test='keyString == "birthday".toString()'>
+			  update ni_user_base set ${keyString}='${valueString}' where userId=${userId}</if>
+			  
+			  <if test='keyString == "phone".toString()'>
+			  update ni_user_base set ${keyString}=${valueString} where userId=${userId}</if>
+			  
+			  <if test='keyString == "starSign".toString()'>
+			  update ni_user_base set ${keyString}=${valueString} where userId=${userId}</if>
+			  
+			   <if test='keyString == "bloodType".toString()'>
+			  update ni_user_base set ${keyString}=${valueString} where userId=${userId}</if>
+			  
+			   <if test='keyString == "character".toString()'>
+			  update ni_user_base set `${keyString}`=${valueString} where userId=${userId}</if>
+			  
+			  <if test='keyString == "moral".toString()'>
+			  update ni_user_base set ${keyString}=${valueString} where userId=${userId}</if>
+			  
+			  <if test='keyString == "loveCondition".toString()'>
+			  update ni_user_base set ${keyString}=${valueString} where userId=${userId}</if>
+			  
+			  <if test='keyString == "college".toString()'>
+			 update ni_user_education set ${keyString}='${valueString}' where userId=${userId}</if>
+			  
+			  <if test='keyString == "major".toString()'>
+			 update ni_user_education set ${keyString}='${valueString}' where userId=${userId}</if>
+			  
+			  <if test='keyString == "enrolDate".toString()'>
+			 update ni_user_education set ${keyString}='${valueString}' where userId=${userId}</if>
+			  
+			  <if test='keyString == "schoolName".toString()'>
+			 update ni_user_education set ${keyString}='${valueString}' where userId=${userId}</if>
+			  
+			  <if test='keyString == "degree".toString()'>
+			 update ni_user_education set ${keyString}='${valueString}' where userId=${userId}</if>
+			  
+			  <if test='keyString == "career".toString()'>
+			  update ni_user_base set ${keyString}=${valueString} where userId=${userId}</if>
+			  
+			  <if test='keyString == "email".toString()'>
+			  update ni_user_base set ${keyString}='${valueString}' where userId=${userId}</if>
+			  
+			 <if test='keyString == "grade"'>
+			 update ni_user_education set ${keyString}='${valueString}' where userId=${userId}</if>
+	</update>
+</mapper>

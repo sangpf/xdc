@@ -1,0 +1,32 @@
+package com.newins.service;
+
+import java.util.Map;
+
+import com.newins.model.Daily3UpdateItem;
+import com.newins.util.AjaxResult;
+
+public interface Daily3UpdateService {
+	/**
+	 * @Title: getDaily3UpdateList
+	 * @Author: Fanyuelin
+	 * @Description: 加载每日三更的列表
+	 * @return List<Daily3UpdateList>
+	 * @Time May 15, 2016 12:14:19 PM
+	 */
+//	Object getDaily3UpdateList(int userId,int page,String qnListCategory);
+	
+	/**
+	 * @Title:加载3种问卷的答题人数和获奖人数
+	 * @Author:星仔
+	 * @Time:2017年6月5日
+	 * @Discription:
+	 * @param param
+	 * @return
+	 */
+	Daily3UpdateItem getOrderData(Map<String, Object> param);
+	
+	// 加载每日三更列表
+	public AjaxResult getDaily3UpdateList_new(int userId, int page, String qnListCategory);
+	
+	public AjaxResult getDaily3UpdateList(int userId, int page, String qnListCategory) ;
+}

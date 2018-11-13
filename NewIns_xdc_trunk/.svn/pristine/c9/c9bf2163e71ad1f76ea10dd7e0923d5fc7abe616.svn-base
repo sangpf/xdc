@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.ConsumeDao">
+	<insert id="addConsume" parameterType="com.newins.model.Consume">
+		insert  ni_consume_statistics(userId,reason,time,qnType,deliveryId,consumeType,consumeQuantity,status,comment) values(#{userId},#{reason},#{time},#{qnType},#{deliveryId},#{consumeType},#{consumeQuantity},#{status},#{comment})
+	</insert>
+	<!-- 查询打赏的人数 -->
+	<select id="getDonatePerson" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select count(distinct(userId))  from ni_consume_statistics where deliveryId=#{deliveryId}
+	</select>
+	<!-- 查询当前投放的积分 -->
+	<select id="getDeliveryScore" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
+		select sum(consumeQuantity) from ni_consume_statistics where deliveryId=#{0}
+	</select>
+	<!-- 判断当前用户是否第一次来打赏当前问卷 -->
+	<select id="isGratuity" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+			select count(*) from ni_consume_statistics where userId=#{0} and deliveryId=#{1}
+	</select>
+</mapper>

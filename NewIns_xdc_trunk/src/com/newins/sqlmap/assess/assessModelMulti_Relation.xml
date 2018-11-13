@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.assess.AssessModelMulti_RelationDao">
+	
+	<!-- 根据主键查询 -->
+	<select id="findByKeyMap" parameterType="hashmap" resultType="com.newins.model.assess.AssessModelMulti_Relation">
+		SELECT * 
+		from ni_assess_model_multi_relation
+		WHERE 
+		ni_assess_model_multi_relation.aqnId = #{aqnId}
+		AND ni_assess_model_multi_relation.relation 
+		IN 
+		<foreach collection="relationList" item="relation" open="(" close=")" separator="," >
+			#{relation}
+		</foreach> 
+		
+	</select>
+	
+	
+
+
+</mapper>

@@ -1,0 +1,460 @@
+/**
+ * 个人中心的CSS，包括：个人中心首页、我的xx页
+ */
+
+
+/**
+ * 通用的类
+ */
+
+.mui-pages {
+    top: 0;
+}
+
+.white-bgc {
+    background-color: #fff;
+}
+
+
+/**
+ * 个人中心首页头部
+ */
+
+.person-header h5 > span {
+    border: 1px solid #fff;
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 12px;
+    margin-right: 8px;
+    margin-bottom: 5px;
+    display: inline-block;
+    background: #5fd85c;
+}
+
+.person-header h5 > i {
+    font-size: 18px;
+    margin-right: 0.5em;
+    font-weight: bold;
+}
+
+.person-header .portrait {
+    border: 1px solid #a1a1a1;
+    border-radius: 50%;
+}
+
+.person-header .person-more:active {
+    color: #ccc;
+}
+
+.person-more {
+    position: absolute;
+    top: 37px;
+    right: 10px;
+    color: #eee;
+}
+
+.person-more:active {
+    color: #ccc;
+}
+
+
+/**
+ * 个人中心：我的xx的链接
+ */
+
+.person-button .bg-placeholder {
+    background-image: url(../../images/person.png);
+}
+
+.person-button a.link-1 {
+    padding-bottom: 15px;
+    border-right: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.person-button a.link-2 {
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.person-button a.link-3 {
+    padding-top: 15px;
+    border-right: 1px solid #eee;
+}
+
+.person-button a.link-4 {
+    padding-top: 15px;
+}
+
+.person-button a.link-1 .bg-placeholder {
+    background-position: 0 5px;
+}
+
+.person-button a.link-2 .bg-placeholder {
+    background-position: 0 -45px;
+}
+
+.person-button a.link-3 .bg-placeholder {
+    background-position: 0 -95px;
+}
+
+.person-button a.link-4 .bg-placeholder {
+    background-position: 0 -145px;
+}
+
+
+/**
+ * 个人中心：设置
+ */
+
+.person-settings .mui-table-view {
+    margin-top: 10px;
+}
+
+.person-settings .mui-table-view:first-child {
+    margin-top: 10px;
+}
+
+.person-settings .mui-table-view-cell:after {
+    left: 50px;
+}
+
+.person-settings .mui-table-view-cell a:not(.mui-btn) {
+    padding: 15px 44px 15px 50px;
+    background-image: url(../../images/person.png);
+    background-repeat:  no-repeat;
+    background-size: 30px;
+    color: #000;
+}
+
+.person-settings a.link-1 {
+    background-position: 15px -176px;
+}
+
+.person-settings a.link-2 {
+    background-position: 15px -230px;
+}
+
+.person-settings a.link-3 {
+    background-position: 15px -278px;
+}
+
+.person-settings a.link-4 {
+    background-position: 15px -328px;
+}
+
+
+/**
+ * 我的XX页面
+ */
+
+.card-name {
+    line-height: 25px;
+    font-weight: 400;
+    white-space: normal;
+    margin: 0 0 22px 0;
+    color: #000;
+    font-size: 17px;
+}
+
+.card-time {
+    margin-right: 12px;
+}
+
+.card-report {
+    color: #47d144;
+    float: right;
+    font-weight: 200;
+    font-size: 14px;
+}
+
+.card-trash {
+    border-left: 1px solid #ebebeb;
+    color: #cccccc;
+    padding-left: 20px;
+}
+
+.card-award-des {
+    font-size: 20px;
+    float: right;
+    color: #ffa11a;
+}
+
+
+/*
+ * 留言建议
+ */
+
+.message-area {
+    padding: 27px;
+}
+
+.message-area h4 {
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #e6e6e6;
+    font-weight: normal;
+}
+
+.message-area textarea {
+    font-size: 15px;
+    height: 160px;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+}
+
+.message-area .message-number {
+    text-align: right;
+    color: #b3b3b3;
+}
+
+.message-contact {
+    background-color: #f0f0f0;
+    padding: 35px 0 80px 0;
+}
+
+.message-contact p {
+    margin: 5px 0 0 0;
+    color: #999999;
+    text-align: center;
+    font-size: 14px;
+}
+
+.message-button {
+    line-height: 45px;
+    display: block;
+    width: 90%;
+    height: 45px;
+    margin: 15px auto;
+    padding: 0;
+    transition: none;
+    text-align: center;
+    color: #43d13f;
+    border-radius: 3px;
+    background-color: #fff;
+    border: 1px solid #43d13f;
+}
+
+.message-button.active {
+    color: #fff;
+    background-color: #43d13f;
+}
+
+
+/**
+ * 关于我们
+ */
+
+.about-us-header {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.about-us-header img {
+    margin-top: 55px;
+    margin-bottom: 38px;
+}
+
+.about-us-header h4 {
+    font-size: 21px;
+    margin-bottom: 11px;
+    font-weight: normal;
+}
+
+.about-us-header p {
+    font-size: 16px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid #e5e5e5;
+    width: 90px;
+    margin: 0 auto 45px auto;
+}
+
+.about-us-body {
+    padding: 0 32px;
+    text-align: left;
+}
+
+.about-us-body .about-description {
+    font-size: 15px;
+    line-height: 25px;
+    margin-bottom: 30px;
+    color: #838383;
+    text-align: center;
+}
+
+.about-us-body .about-phone {
+    font-size: 17px;
+    color: #101010;
+    text-align: center;
+}
+
+.about-us-footer {
+    text-align: center;
+}
+
+.about-us-footer .about-law {
+    margin-top: 46px;
+    color: #000;
+    font-size: 17px;
+}
+
+.about-us-footer .about-law-item {
+    text-decoration: underline;
+    color: #000;
+}
+
+.about-us-footer .about-company {
+    margin-bottom: 0;
+    font-size: 14px;
+}
+
+.about-us-footer .about-copyright {
+    font-size: 14px;
+}
+
+
+/**
+ * 用户协议及隐私协议
+ */
+
+.about-law-text {
+    margin-bottom: 80px;
+}
+
+.about-law-text h4 {
+    text-align: center;
+    font-weight: bold;
+}
+
+.about-law-text h5 {
+    color: #000;
+    font-size: 15px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.about-law-text h6 {
+    color: #000;
+    font-size: 15px;
+    margin: 8px 0;
+}
+
+.about-law-text p {
+    text-indent: 2em;
+    color: #333;
+    text-align: justify;
+    font-size: 14px;
+}
+
+.about-law-text ol {
+    font-size: 14px;
+    color: #000;
+    margin: 10px 0 10px 17px;
+    padding: 0;
+    line-height: 1.6em;
+}
+
+
+/**
+ * 关于认知
+ */
+
+.about-cognitive-header {
+    background: #43d13f url(../../images/medal.png) no-repeat 30px center;
+    background-size: 90px;
+    padding: 22px 0 15px 140px;
+}
+
+.about-cognitive-header p {
+    font-size: 15px;
+    margin-bottom: 7px;
+    text-align: left;
+    color: #fff;
+    font-weight: normal;
+}
+
+.about-cognitive-body {
+    margin: 16px;
+}
+
+.about-cognitive-body p {
+    color: #999;
+    margin-bottom: 0;
+    font-size: 14px;
+}
+
+.about-cognitive-footer {
+    margin-bottom: 80px;
+    text-align: center;
+}
+
+.about-cognitive-footer p {
+    margin-bottom: 5px;
+    color: #909090;
+    font-size: 14px; 
+}
+
+.about-cognitive-footer a {
+    display: block;
+    margin: 40px 16px;
+    padding: 19px 0;
+    background-color: #43d13f;
+    color: #fff;
+    border-radius: 10px;
+    font-size: 17px;
+    font-weight: normal;
+    letter-spacing: 2px;
+}
+
+.about-cognitive-footer a:active {
+    background-color: #43993f;
+}
+
+.about-cognitive-box {
+    margin-bottom: 15px;
+    padding: 20px;
+    border: 1px solid #dadada;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.about-cognitive-box h4 {
+    font-weight: normal;
+    margin: 0 0 18px 0;
+    padding-bottom: 16px;
+    color: #000;
+    font-size: 16px;
+    border-bottom: 1px solid #e5e5e5
+}
+
+
+/**
+ * 心理世界
+ */
+
+.tweet-banner {
+    background-color: #fff;
+    background-image: url(../../images/light.png);
+    background-repeat: no-repeat;
+    background-size: 30px;
+    background-position: 10px 10px;
+    width: 100%;
+    border-bottom: 1px solid #ebebeb;
+    padding: 16px 22px 16px 50px;
+}
+
+.tweet-banner h4 {
+    display: inline-block;
+    color: #000;
+    font-weight: 400;
+    font-size: 16px;
+    margin: 0;
+}
+
+.tweet-banner a {
+    float: right;
+    color: #666666;
+    font-weight: normal;
+    font-size: 14px;
+}

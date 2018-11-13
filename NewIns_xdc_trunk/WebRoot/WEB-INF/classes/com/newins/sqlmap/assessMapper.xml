@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.AssessDao">
+	<resultMap type="com.newins.model.Assess" id="assessMap">
+		<result property="aqnId" column="aqnId" />
+		<result property="deliveryId" column="deliveryId"/>
+		<result property="collectedNum" column="collectedNum" />
+		<result property="collectNum" column="collectNum" />
+		<result property="winnerNum" column="winnerNum" />
+		<result property="awardId" column="awardId" />
+		<result property="awardName" column="awardName" />
+		<result property="awardNum" column="awardNum" />
+		<result property="showDes" column="showDes" />
+		<result property="bTime" column="bTime" />
+		<result property="eTime" column="eTime" />
+		<result property="showTitle" column="showTitle" />
+		<result property="publisher" column="publisherName" />
+		<result property="aqnSummary" column="aqnSummary" />
+		<result property="img" column="img" />
+		<result property="tag1Str" column="tag1Str" />
+		<result property="tag2Str" column="tag2Str" />
+		<result property="tag3Str" column="tag3Str" />
+		<result property="tag4Str" column="tag4Str" />
+		<result property="tag5Str" column="tag5Str" />
+		<result property="adId" column="adId" />
+		<result property="lotteryId" column="lotteryId" />
+		<result property="adImg" column="adImg" />
+		<result property="adLink" column="adLink" />
+		<result property="awardLink" column="awardLink" />
+		<result property="awardType" column="awardType" />
+		<result property="titleTag" column="titleTag"/>
+		<result property="showType" column="showType"/>
+		<result property="qnClassName" column="qnClassName"/>
+	</resultMap>
+
+	<select id="getAssess" resultMap="assessMap" parameterType="java.lang.String">
+		SELECT
+		ni_assess_wanx.deliveryId,
+		ni_assess_wanx.aqnId,
+		ni_assess_delivery.bTime,
+		ni_assess_delivery.eTime,
+		ni_assess_delivery.collectNum,
+		ni_assess_delivery.showTitle,
+		ni_assess_delivery.showDes,
+		ni_assess_delivery.img,
+		ni_assess_delivery.collectedNum,
+		ni_assess_delivery.tag1Str,
+		ni_assess_delivery.tag2Str,
+		ni_assess_delivery.tag3Str,
+		ni_assess_delivery.tag4Str,
+		ni_assess_delivery.tag5Str,
+		ni_assess_delivery.lotteryId,
+		ni_assess_questionnaire.publisherName,
+		ni_assess_questionnaire.aqnSummary,
+		ni_assess_questionnaire.showType,
+		ni_award.awardNum,
+		ni_award.awardName,
+		ni_award.awardId,
+		ni_assess_delivery.adId,
+		ni_ad_info.adImg,
+		ni_ad_info.adLink,
+		ni_award_pool.awardType,
+		ni_award_pool.awardLink,
+		ni_assess_delivery.titleTag,
+		ni_aqnclass_dict.aqnClassName as qnClassName
+		FROM
+		ni_assess_delivery ,
+		ni_assess_wanx ,
+		ni_assess_questionnaire ,
+		ni_award,
+		ni_ad_info,
+		ni_award_pool,
+		ni_aqnclass_dict
+		WHERE
+		ni_assess_delivery.deliveryId =
+		ni_assess_wanx.deliveryId AND
+		ni_assess_delivery.award1Id =
+		ni_award.awardId AND
+		ni_assess_wanx.aqnId =
+		ni_assess_questionnaire.aqnId AND
+		ni_assess_delivery.status=2 AND
+		ni_assess_wanx.pageStatus=3 AND
+		ni_assess_delivery.adId=ni_ad_info.adId AND
+		ni_award.awardPoolId=ni_award_pool.awardPoolId AND
+		ni_aqnclass_dict.aqnClassId = ni_assess_questionnaire.aqnClassId AND
+		ni_assess_wanx.assessListCategory=#{assessListCategory} AND
+		ni_assess_delivery.channelId=1
+		order by
+		ni_assess_wanx.isTop,ni_assess_wanx.showOrder
+
+	</select>
+	
+	<!-- 同名存储过程 -->
+	<select id="getAssessOrderByAqnId" resultMap="assessMap" parameterType="int" statementType="CALLABLE">
+		
+		CALL getAssessOrderByAqnId(#{id})
+	</select>
+<!-- <select id="getAssessOrderByAqnId" resultMap="assessMap" parameterType="int">
+		SELECT
+			sum(
+				CASE
+				WHEN awardId != 0 THEN
+					1
+				ELSE
+					0
+				END
+			) AS winnerNum,
+			sum(
+				CASE
+				WHEN orderId IS NOT NULL THEN
+					1
+				ELSE
+					0
+				END
+			) + IFNULL(collectedNum, 0) AS collectedNum
+		FROM
+			ni_assess_order,
+			ni_assess_delivery
+		WHERE
+			ni_assess_order.deliveryId = #{deliveryId} AND ni_assess_delivery.deliveryId=#{deliveryId} AND
+			ni_assess_delivery.channelId = 1
+	</select> -->
+
+
+</mapper>

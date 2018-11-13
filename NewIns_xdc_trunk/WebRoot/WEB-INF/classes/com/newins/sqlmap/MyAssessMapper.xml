@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newins.dao.MyAssessDao">
+	<resultMap type="com.newins.model.MyAssessModel" id="myAssessMap">
+		<result property="deliveryId" column="deliveryId"/>
+		<result property="aqnId" column="aqnId"/>
+		<result property="aqnName" column="aqnName"/>
+		<result property="answerETime" column="answerETime"/>
+		<result property="aqnClassName" column="aqnClassName"/>
+		<result property="assessProperty" column="assessProperty"/>
+		<result property="reportUrl" column="reportUrl"/>
+		<result property="deliveryStatus" column="status"/>
+		<result property="reportId" column="reportId"/>
+		<result property="reportTitle" column="reportTitle"/>
+		<result property="reportStatus" column="reportStatus"/>
+		<result property="thumbUp" column="thumbUp"/>
+	</resultMap>
+	
+	<!-- 根据userId查询该用户参加过的测评 -->
+	<select id="myAssessList" resultMap="myAssessMap" parameterType="int">
+		select a.*,b.reportId,b.reportTitle,b.reportStatus,b.reportUrl,b.thumbUp 
+		FROM (SELECT
+		ni_assess_order.deliveryId,
+		ni_assess_order.aqnId,
+		ni_assess_order.answerETime,
+		ni_assess_questionnaire.aqnName,
+		ni_aqnclass_dict.aqnClassName,
+		ni_assess_delivery.assessProperty,
+		ni_assess_delivery.`status`
+		FROM
+		ni_assess_order ,
+		ni_assess_questionnaire ,
+		ni_aqnclass_dict ,
+		ni_assess_delivery
+		WHERE
+		ni_assess_questionnaire.aqnClassId = ni_aqnclass_dict.aqnClassId AND
+		ni_assess_order.deliveryId = ni_assess_delivery.deliveryId AND
+		ni_assess_questionnaire.aqnId = ni_assess_delivery.aqnId AND
+		ni_assess_order.aqnId = ni_assess_questionnaire.aqnId AND
+		ni_assess_order.userId = #{userId}
+		Order by
+		ni_assess_order.answerETime DESC) as a 
+		LEFT JOIN (SELECT
+		ni_report.reportId,
+		ni_report.reportTitle,
+		ni_report.reportStatus,
+		ni_report.qnId,
+		ni_report.reportUrl,
+		ni_report.thumbUp
+		FROM
+		ni_report ) as b
+		ON
+		a.aqnId = b.qnId
+	</select>
+	
+	<!-- 不查报告表 -->
+	<!-- 
+	<select id="noReportList" parameterType="int" resultMap="myAssessMap">
+		SELECT
+		ni_assess_order.deliveryId,
+		ni_assess_order.aqnId,
+		ni_assess_order.answerETime,
+		ni_assess_questionnaire.aqnName,
+		ni_aqnclass_dict.aqnClassName,
+		ni_assess_delivery.assessProperty,
+		ni_assess_delivery.`status`
+		FROM
+		ni_assess_order ,
+		ni_assess_questionnaire ,
+		ni_aqnclass_dict ,
+		ni_assess_delivery
+		WHERE
+		ni_assess_questionnaire.aqnClassId = ni_aqnclass_dict.aqnClassId AND
+		ni_assess_questionnaire.aqnId = ni_assess_delivery.aqnId AND
+		ni_assess_order.aqnId = ni_assess_questionnaire.aqnId AND
+		ni_assess_order.userId = #{userId}
+		Order by
+		ni_assess_order.answerETime DESC
+	</select>
+	 -->
+	
+	<!-- 查询出所有报告，用来看此测评问卷是否有报告 -->
+	<!-- 
+	<select id="isMakeReport" parameterType="int" resultType="int">
+		select count(*) FROM ni_report WHERE qnId=#{aqnId}
+	</select>
+	 -->
+	
+	<!-- 根据测评报告ID查询用户是否收藏过 -->
+	<select id="userIsFavorite" parameterType="int" resultType="int">
+		select count(*) from ni_user_favorite_report where userId=#{0} and reportId=#{1}
+	</select>
+</mapper>

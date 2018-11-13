@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.PaidQuestionnaireDao">
+	<select id="getBootInfo" parameterType="java.lang.Integer" resultType="com.newins.model.BootPageInfo">
+		SELECT ni_assess_questionnaire.picPath, 
+			ni_assess_questionnaire.aqnName AS qnName, 
+			ni_assess_questionnaire.aqnSummary AS qnSummary, 
+			ni_assess_delivery.discountInfo, 
+			ni_assess_delivery.price, 
+			ni_assess_delivery.payTag1, 
+			ni_assess_delivery.payTag2, 
+			ni_assess_delivery.payTag3, 
+			ni_author.userName AS authorName, 
+			ni_author.introduce, 
+			ni_author.headImg, 
+			ni_assess_questionnaire.subtitle, 
+			ni_assess_delivery.cornerflag
+		FROM ni_assess_delivery, ni_assess_questionnaire, ni_author
+		WHERE ni_assess_delivery.aqnId=ni_assess_questionnaire.aqnId AND
+			ni_assess_questionnaire.authorId=ni_author.id AND
+			ni_assess_delivery.deliveryId=#{deliveryId}
+	</select>
+	
+	<select id="answerNumber" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select count(*) from ni_assess_order where deliveryId=#{deliveryId}
+	</select>
+	
+	<select id="isPaid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select count(*) from ni_paid_order where userId=#{0} and contentType=#{1} and channelId=#{2} and state=2
+	</select>
+</mapper>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>开通会员</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="css/mui/mui.css" />
+		<link rel="stylesheet" href="css/xdc/xdc_main.css" />
+	</head>
+	<body class="bg-color">
+		<!-- loading动画 -->
+		<div id="over" class="over">
+		  <iframe frameborder="0" scrolling="no" src="fireloading.html" width="100%" height="100%"></iframe>
+		</div>
+		<div id="layout" class="layout">
+		  <div class="loading">  
+		  </div>
+		  <p class="loading-text">Loading...</p>
+		</div>
+		
+		<div class="mui-content bg-color">
+		    <div class="mui-row">
+		        <!--<div class="mui-col-xs-12 open_vip"><img src="img/pay/u14.png" alt="vip" /></div>-->
+		        <div class="mui-col-xs-12 open_vip"><img src="img/pay/u100.png" alt="vip" style="margin-bottom: .3rem;"/></div>
+		        <div class="mui-col-xs-12 open_vip-title1">会员福利</div>
+		        <div class="mui-col-xs-12 open_vip-title2"></div>
+		        <div class="mui-col-xs-12 open_vip-explain"></div>
+		    </div>
+		    <div class="open_vip-btn">立即开通会员</div>
+		</div>
+		<div class="open_vip-alert po-a">
+			<div class="open_vip-alert-con po-a">
+				<ul>
+					<li class="alert-title">您已完成会员开通</li>
+					<li class="alert-con">欢迎成为会员</li>
+					<li class="alert-btn">返回会员中心</li>
+				</ul>
+			</div>
+		</div>
+		
+	</body>
+	<script type="text/javascript" src="js/mui/mui.js"></script>
+	<script type="text/javascript" src="js/lib/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="js/lib/resetPage.js"></script>
+	<script type="text/javascript" src="js/xdc/usefulFun.js"></script>
+	<script type="text/javascript" src="js/config.js"></script>
+	<script type="text/javascript" src="js/xdc/Product_package.js"></script>
+	<script type="text/javascript">
+		pay_vip(function(){
+//			隐藏loading动画
+			hideLoading();
+		})
+	</script>
+</html>

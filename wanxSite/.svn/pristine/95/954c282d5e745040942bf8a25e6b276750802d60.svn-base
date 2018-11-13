@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html manifest="newIns.manifest">
+
+<head>
+    <meta charset="utf-8">
+    <title>心发现</title>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/mui/mui.css">
+    <link rel="stylesheet" href="css/mui/mui.example.pullrefresh.css">
+    <link rel="stylesheet" href="css/xdc/xdc_main.css">
+</head>
+
+<body>
+    <!-- 上拉刷新容器 -->
+    <div class="mui-content xdc-scroll">
+        <!-- banner广告 -->
+        <img id="ad-banner" src="">
+        <!-- 数据列表 -->
+        <ul id="qn-list" class="mui-table-view card-list"></ul>
+        <!-- 列表为空 -->
+        <div class="list-empty" id="qn-list-empty">
+            <div class="media-list-wrapper">
+                <h3 id="wanxNickName">&nbsp;</h3>
+                <p>今天已经没有可参加的问卷了！</p>
+                <p>请到“我的认知-我参与的调查（测评）”<br>内查看参与过的问卷！</p>
+                <a id="jump-to-person">查看已答问卷</a>
+            </div>
+        </div>
+    </div>
+    <!-- loading动画 -->
+	<div id="over" class="over">
+	  	<iframe frameborder="0" scrolling="no" src="fireloading.html" width="100%" height="100%"></iframe>
+	</div>
+	<div id="layout" class="layout">
+	  	<div class="loading">  
+	  	</div>
+	  	<p class="loading-text">Loading...</p>
+	</div>
+    <!-- 回首页悬浮窗 -->
+    <span class="suspension back-to-home" id="suspension"></span>
+    <!-- JS -->
+    <script type="text/javascript" src="http://pingjs.qq.com/h5/stats.js" name="MTAH5" sid="500158849" cid="500158852"></script>
+    <script src="js/mui/mui.min.js"></script>
+    <script src="js/mui/mui.pullToRefresh.js"></script>
+    <script src="js/mui/mui.pullToRefresh.material.js"></script>
+    <script src="js/lib/mustache.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/xdc/usefulFun.js"></script>
+    <script src="js/xdc/qn_list.js"></script>
+    <script>
+    if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+        window.applicationCache.update();
+    }
+    </script>
+</body>
+
+</html>

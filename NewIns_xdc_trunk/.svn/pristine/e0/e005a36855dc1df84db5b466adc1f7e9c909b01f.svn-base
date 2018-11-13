@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newins.dao.MyAwardDao">
+	<resultMap type="com.newins.model.MyAwardModel" id="myAwardMap">
+		<result property="awardId" column="awardId"/>
+		<result property="awardNum" column="awardNum"/>
+		<result property="awardName" column="awardName"/>
+		<result property="awardType" column="awardType"/>
+		<result property="awardGetTime" column="awardGetTime"/>
+		<result property="awardMethod" column="awardMethod"/>
+		<result property="redeemCode" column="redeemCode"/>
+	</resultMap>
+	
+	<select id="myAwardList" resultMap="myAwardMap" parameterType="int">
+		SELECT newTable.awardGetTime,newTable.awardMethod,newTable.awardId,newTable.awardName,newTable.awardNum,newTable.awardType,ni_redeem_code.redeemCode
+		FROM
+		(SELECT
+		ni_user_award_statistics.awardMethod,
+		ni_user_award_statistics.awardGetTime,
+		ni_user_award_statistics.redeemCodeId,
+		ni_award.awardId,
+		ni_award.awardNum,
+		ni_award.awardName,
+		ni_award_pool.awardType
+		FROM
+		ni_user_award_statistics
+		INNER JOIN ni_award ON ni_user_award_statistics.awardId = ni_award.awardId ,
+		ni_award_pool
+		WHERE
+		ni_user_award_statistics.awardId = ni_award.awardId AND
+		ni_award.awardPoolId = ni_award_pool.awardPoolId AND
+		ni_user_award_statistics.userId = #{userId} and 
+		ni_user_award_statistics.awardId!=0
+		ORDER BY
+		ni_user_award_statistics.awardGetTime DESC) as newTable LEFT JOIN ni_redeem_code 
+		on
+		newTable.redeemCodeId = ni_redeem_code.id
+
+	</select>
+</mapper>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>会员服务</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="css/mui/mui.css" />
+		<link rel="stylesheet" href="css/xdc/xdc_main.css" />
+	</head>
+	<body>
+			<!-- loading动画 -->
+		<div id="over" class="over">
+		  <iframe frameborder="0" scrolling="no" src="fireloading.html" width="100%" height="100%"></iframe>
+		</div>
+		<div id="layout" class="layout">
+		  <div class="loading">  
+		  </div>
+		  <p class="loading-text">Loading...</p>
+		</div>
+		<!--内容-->
+		<div class="mui-content">
+		    <div class="mui-row mbottom">
+		        <div class="mui-col-xs-12 vip-title bg-color po-r"><img src="img/pay/u92.png" alt="会员服务"/><span class="vip-txt">您还没有开通会员服务</span><span class="group">团体会员</span></div>
+		    </div>
+		    <div class="mui-row mbottom bg-color">
+		    	<div class="mui-col-xs-12 vip-introduce"><span class="fl">会员服务介绍</span></div>
+		    	<div class="mui-col-xs-12 vap-introduce-con">
+		    		<ul>
+		    			<li>本服务提供心理测评、个人报告、推荐阅读等内容</li>
+		    			<li>本服务涵盖大学生在校期间的基本心理服务场景</li>
+		    			<li>免费开通会员，开通会员同时可0元购买大学适应力测评包</li>
+		    		</ul>
+		    	</div>
+		    </div>
+		    <div class="mui-row mbottom bg-color" id="vip-open">
+		    	<div class="mui-col-xs-12">
+		    		<div id="vip-open-btn"/>立即免费开通</div>
+		    	</div>
+		    </div>
+		    <div class="mui-row vip-ification bg-color">
+		    	<div class="mui-col-xs-12 ification-title"><img src="img/pay/u83.png" alt="图片" /><span>心理服务分类</span></div>
+		    	<div class="mui-col-xs-12 ification-package">
+		    		<ul id="product-box">
+		    			<!--产品包内容-->
+		    		</ul>
+		    	</div>
+		    	
+
+		    </div>
+		</div>
+		
+		<!--弹窗-->
+		<div class="open_vip-alert po-a">
+			<div class="open_vip-alert-con po-a">
+				<p class='vip-alert-title'>开通会员</p>
+				<p class='vip-alert-con'>2017年12月31日前开通会员，永久赠送《开启大学》、《职业规划》、《创新创业》三个心理产品包服务！快点击"立即免费开通"成为会员吧！</p>
+				<div class="vip-alert-btn"><img src="img/index/clear.png" alt="关闭" /></div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/mui/mui.js"></script>
+	<script type="text/javascript" src="js/lib/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="js/lib/resetPage.js"></script>
+	<script type="text/javascript" src="js/xdc/usefulFun.js"></script>
+	<script type="text/javascript" src="js/xdc/Product_package.js"></script>
+	<script type="text/javascript" src="js/config.js"></script>
+	<script>
+//		eruda.init();
+		vip_page(function(){
+//			隐藏loading动画
+			hideLoading();
+		})	
+	</script>
+</html>

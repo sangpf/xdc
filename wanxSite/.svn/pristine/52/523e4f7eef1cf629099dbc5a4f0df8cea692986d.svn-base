@@ -1,0 +1,146 @@
+//####################
+//创建gather类#
+//####################
+function Gather(city,province,sex,age){
+	this.city=city,
+	this.province=province,
+	this.sex=sex,
+	this.age=age
+}
+//构造方法
+Gather.prototype={
+	//编写本类构造
+	constructor:Gather,
+	//封装getter方法
+	getCity:function(){
+		return this.city;
+	},
+	getProvince:function(){
+		return this.province;
+	},
+	getSex:function(){
+		return this.sex;
+	},
+	getAge:function(){
+		return this.age;
+	}
+}
+
+//####################
+//ajax请求库润问卷接口#
+//####################
+function getKuRunList(){
+	//1.实例化采集数据类
+	gather=new Gather();
+	//2.请求用户采集信息
+	mui.ajax('/wanx/getGather',{
+		dataType:'json',
+		type:'GET',
+		timeout:10000,
+		success:function(data){
+//			//进入这里表示请求成功，进行进一步操作
+			//3.将ajax数据保存到类中
+			gather.city=data.city;
+			gather.age=data.age;
+			gather.province=data.province;
+			//将数字代表的性别转换为汉字
+			if(data.sex==0){
+				gather.sex='女';
+			}else{
+				gather.sex='男';
+			}
+			//请求获取库润问卷列表接口
+			mui.ajax('/wanx/getKuRunList',{
+				data:{
+					city:gather.getCity(),
+					province:gather.getProvince(),
+					sex:gather.getSex(),
+					age:gather.getAge()
+				},
+				dataType:'json',
+				type:'POST',
+				timeout:10000,
+				success:function(data){
+					if(data==null||data==''){
+						//如果没有数据就显示大师姐
+						document.getElementById("index-tab1-list-empty").style.display='block';
+					}else{
+						//进入这里表示不是空的就隐藏大师姐
+						document.getElementById("index-tab1-list-empty").style.display='none';
+					}
+					//1.接口传递的是jsonArray，使用each遍历
+					//data：表示要遍历的数据 index:表示数据的下标或者key，elem表示当前匹配的元素
+					mui.each(data,function(index,elem){
+						//把传递来的数据截取处理
+						var starTime=data[index].startTime;
+						//只保留yyyy/mm/dd
+						starTime=starTime.slice(0,10);
+						//将数据封装成标签
+						//var list='<span class="list-data-title">'+data[index].title+'</span><span class="list-data-time">'+starTime+'</span><span class="list-data-more">....</span>';
+						var list='<table width="100%"><tr><td width="60%"><span class="list-data-title">'+data[index].title+'</span></td><td width="50%"><span class="list-data-time">'+starTime+'</span></td><td width="10%"><span class="list-data-more">....</span></td></tr></table>';
+
+						//创建li子节点
+						var dataLi=document.createElement('li');
+						//给li绑定类属性名
+						dataLi.className='mui-table-view-cell list-data';
+						//给li绑定id
+						dataLi.id='list-sequence'
+						//给创建好的li设置内容
+						dataLi.innerHTML=list;
+						//给li设置data-survey属性并把问卷id赋值给她
+						dataLi.setAttribute('data-survey',data[index].survey_id);
+						dataLi.setAttribute('list-id',index);
+						//将跳转的链接保存在li标签中
+						dataLi.setAttribute('data-url',data[index].redirect_url)
+						//将封装好的li数据追加到class为mui-table-view的ul下
+						document.getElementById("data-list-father").appendChild(dataLi);
+					});
+					//追加完成数据后关闭Loading动画
+					hideLoading();
+				},
+				error:function(){
+					mui.toast('网络错误...');
+				}
+			});
+				},
+				error:function(){
+					//进入这里表示请求失败了
+					//给用户一个提示
+		            mui.toast('网络错误...');
+				}
+	});
+	
+
+			
+}
+
+//调用加载库润问卷List方法
+	getKuRunList();
+//当用户点击问卷的时候保存当前问卷的问卷Id
+var data_ul=document.getElementById("data-list-father")
+//给ul添加点击事件
+data_ul.addEventListener('tap',function(){
+	//得到目标节点
+	var target=event.target;
+	while (target!=this){
+		if(target.tagName.toLowerCase()=='li'){
+			break;
+		}
+		target=target.parentNode;
+	}
+	//获取点击目标的问卷编号
+	var data_survey=target.getAttribute('data-survey');
+	//将获取到的问卷编号保存到本地
+	localStorage.setItem('data_survey',data_survey);
+	//获取到目标的链接
+	var data_url=target.getAttribute('data-url');
+	//跳转到问卷地址
+	jumpTo(data_url);
+	
+},false);
+
+(function(){
+	//初始化mui组件
+	mui.init();
+	
+});

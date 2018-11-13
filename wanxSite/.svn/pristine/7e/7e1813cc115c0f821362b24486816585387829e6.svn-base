@@ -1,0 +1,17 @@
+.mui-table-view{
+	border-radius: 15px;
+	border: 0px;
+}
+.list-data-time{
+	font-family: "宋体";
+	font-size: 13px;
+}
+
+.list-data-more{
+	font-family: "宋体";
+	font-size: 13px;
+}
+.list-data-title{
+	font-family: "宋体";
+	font-size: 13px;
+}

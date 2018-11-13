@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.xdc.login.dao.NiUserEducationMapper">
+
+	<select id="selectByPrimaryKey" resultType="cn.xdc.login.po.NiUserEducation"
+		parameterType="java.lang.Integer">
+
+		select *
+		from ni_user_education
+		where userId = #{userid}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		ni_user_education
+		where userId = #{userid}
+	</delete>
+	
+	<insert id="insert" parameterType="cn.xdc.login.po.NiUserEducation">
+		insert into ni_user_education
+		(userId, degree, registerStatus,
+		schoolId, schoolName, regionId,
+		regionName, college, department,
+		major, className, userSn,
+		role,
+		bindCard, bindStudent,
+		wanxScore, wanxAccount, enrolDate,
+		graduateDate,
+		leaveStatus, comment
+		)
+		values (#{userid},
+		#{degree},
+		#{registerstatus},
+		#{schoolid}, #{schoolname},
+		#{regionid},
+		#{regionname},
+		#{college},
+		#{department},
+		#{major}, #{classname},
+		#{usersn},
+		#{role},
+		#{bindcard},
+		#{bindstudent},
+		#{wanxscore}, #{wanxaccount},
+		#{enroldate},
+		#{graduatedate},
+		#{leavestatus},
+		#{comment}
+		)
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="cn.xdc.login.po.NiUserEducation">
+		update ni_user_education
+		<set>
+			<if test="degree != null">
+				degree = #{degree},
+			</if>
+			<if test="registerstatus != null">
+				registerStatus = #{registerstatus},
+			</if>
+			<if test="schoolid != null">
+				schoolId = #{schoolid},
+			</if>
+			<if test="schoolname != null">
+				schoolName = #{schoolname},
+			</if>
+			<if test="regionid != null">
+				regionId = #{regionid},
+			</if>
+			<if test="regionname != null">
+				regionName = #{regionname},
+			</if>
+			<if test="college != null">
+				college = #{college},
+			</if>
+			<if test="department != null">
+				department = #{department},
+			</if>
+			<if test="major != null">
+				major = #{major},
+			</if>
+			<if test="classname != null">
+				className = #{classname},
+			</if>
+			<if test="usersn != null">
+				userSn = #{usersn},
+			</if>
+			<if test="role != null">
+				role = #{role},
+			</if>
+			<if test="bindcard != null">
+				bindCard = #{bindcard},
+			</if>
+			<if test="bindstudent != null">
+				bindStudent = #{bindstudent},
+			</if>
+			<if test="wanxscore != null">
+				wanxScore = #{wanxscore},
+			</if>
+			<if test="wanxaccount != null">
+				wanxAccount = #{wanxaccount},
+			</if>
+			<if test="enroldate != null">
+				enrolDate = #{enroldate},
+			</if>
+			<if test="graduatedate != null">
+				graduateDate = #{graduatedate},
+			</if>
+			<if test="leavestatus != null">
+				leaveStatus = #{leavestatus},
+			</if>
+			<if test="comment != null">
+				comment = #{comment},
+			</if>
+		</set>
+		where userId = #{userid}
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="cn.xdc.login.po.NiUserEducation">
+		update
+		ni_user_education
+		set degree = #{degree},
+		registerStatus =
+		#{registerstatus},
+		schoolId =
+		#{schoolid},
+		schoolName =
+		#{schoolname},
+		regionId =
+		#{regionid},
+		regionName =
+		#{regionname},
+		college = #{college},
+		department = #{department},
+		major =
+		#{major},
+		className = #{classname},
+		userSn = #{usersn},
+		role = #{role},
+		bindCard = #{bindcard},
+		bindStudent =
+		#{bindstudent},
+		wanxScore =
+		#{wanxscore},
+		wanxAccount =
+		#{wanxaccount},
+		enrolDate =
+		#{enroldate},
+		graduateDate =
+		#{graduatedate},
+		leaveStatus =
+		#{leavestatus},
+		comment = #{comment}
+		where userId = #{userid}
+	</update>
+
+</mapper>

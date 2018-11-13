@@ -1,0 +1,20 @@
+package com.newins.service;
+
+import javax.servlet.http.HttpServletRequest;
+
+import com.newins.util.AjaxResult;
+
+public interface NiCommentService {
+	
+	/**
+	 * 添加评论
+	 */
+	AjaxResult addNiComment(HttpServletRequest request);
+	
+	//查询评论列表
+	AjaxResult listNiComment(HttpServletRequest request);
+	
+	//点赞
+	AjaxResult praiseComment(HttpServletRequest request);
+	
+}

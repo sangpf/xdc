@@ -1,0 +1,653 @@
+/*
+ * 内容页、结果页的CSS样式
+ */
+
+
+/**
+ * 覆盖默认的mui样式
+ */
+
+html,
+body {
+    font-size: 17px;
+}
+
+label {
+    line-height: 1.3 !important;
+    
+}
+
+p {
+    color: #585656;
+}
+
+.mui-content {
+    background-color: transparent;
+}
+
+.mui-content-padded-18px {
+    margin: 18px;
+}
+
+.hide {
+    display: none !important;
+}
+
+
+/**
+ * 答题页问卷的描述
+ */
+.title-desc {
+    letter-spacing: 0;
+    font-size: 15px;
+}
+
+.title-desc span {
+    margin-right: 20px;
+}
+
+.title-summary {
+    line-height: 1.4;
+    text-align: justify;
+}
+
+.title-pic {
+    width: 100%;
+}
+
+
+/**
+ * 提交按钮
+ */
+
+.xdc-btn-submit {
+    color: #fff;
+    border: 1px solid #bae363;
+    background-color: #bae363;
+    padding: 8px 0;
+    text-align: center;
+}
+
+.xdc-btn-submit:enabled:active {
+    border: 1px solid #B3D465;
+    background-color: #B3D465;
+}
+
+
+/* 核心题、投票结果页的图形展示 */
+
+.graph {
+    position: relative;
+    width: 100%;
+}
+
+.graph-gray {
+    background-color: #f0f0f0;
+}
+
+.graph-green {
+    background-color: #e4fbe2;
+}
+
+.grah-title {
+    margin-bottom: 0;
+}
+
+.graph-title-h {
+    background-color: #fff;
+    padding: 10px 25px;
+    margin: 0;
+    font-size: 1em;
+    color: #333;
+    font-weight: bold;
+}
+
+.graph-list {
+    background-color: #fff;
+    padding-top: 15px;
+    margin-bottom: 10px;
+}
+
+.graph-area {
+    margin-left: 25px;
+    padding: 0 15px 0 0;
+    border-left: 1px solid #e6e6e6;
+}
+
+.subrect {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    z-index: 2;
+}
+
+.graph-gray .subrect {
+    background-color: #d4d2d2;
+}
+
+.graph-green .subrect {
+    background-color: #82f37b;
+}
+
+.graph .trans {
+    width: 0;
+    transition-delay: 2s;
+    -moz-transition-delay: 2s;
+    -webkit-transition-delay: 2s;
+    -o-transition-delay: 2s;
+    transition: width 2s;
+    -moz-transition: width 2s;
+    -webkit-transition: width 2s;
+    -o-transition: width 2s;
+}
+
+.graph-text {
+    padding: 4px;
+    position: relative;
+    z-index: 3;
+}
+
+.graph-text-des {
+    margin: 0;
+    line-height: 20px;
+    padding: 0 0 0 10px;
+    font-size: 17px;
+    font-weight: normal;
+    color: #6a6a6a;
+}
+
+.graph-text-percent {
+    margin: 0;
+    padding: 0 0 0 10px;
+    height: 20px;
+    font-size: 12px;
+    color: #939393;
+    font-family: "微软雅黑", "Microsoft Yahei", 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+.graph-parti {
+    font-size: 12px;
+    margin: 0;
+    padding: 10px 10px 10px 25px;
+}
+
+.mui-card {
+    margin-bottom: 10px;
+}
+
+
+/* 题目新样式 */
+.mui-input-group{
+	margin-top:15px;
+}
+.mui-input-group .mui-input-row {
+    height: auto;
+}
+
+.mui-input-group .mui-input-row.selfDefine-input {
+    margin: 10px 5px;
+    height: 70px;
+}
+
+.mui-radio input[type='radio'],
+.mui-checkbox input[type='checkbox'] {
+    top: 50%;
+    margin-top: -13px;
+}
+
+
+/* 投票选项图片 */
+
+.img-chioce .mui-radio.mui-left input[type="radio"],
+.img-chioce .mui-checkbox.mui-left input[type="checkbox"] {
+    top: 48px;
+    left: 2px;
+}
+
+.img-chioce .mui-radio.mui-left label,
+.img-chioce .mui-checkbox.mui-left label {
+    padding: 0;
+    text-align: left;
+    position: relative;
+    margin: 30px 0 0 0;
+}
+
+.img-chioce.mui-table-view.mui-grid-view .mui-table-view-cell {
+    padding-top: 0;
+}
+
+.img-chioce.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body {
+    overflow: visible;
+    margin: 0;
+    height: auto;
+    font-size: 18px;
+    line-height: 20px;
+    position: absolute;
+    top: 0;
+    padding: 10px 0 10px 40px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+}
+
+.img-chioce .mui-radio input[type='radio']:checked:before,
+.img-chioce .mui-radio input[type='checkbox']:checked:before {
+    color: #bae363;
+}
+
+
+/* 题干图片 */
+
+.qimg {
+    padding: 5px 0;
+}
+
+.qimg img {
+    width: 100%;
+}
+
+
+/* 广告 */
+
+#ad-delivery {
+    width: 100%;
+    margin: 10px 0;
+}
+
+
+/* 底部操作栏 */
+
+.footer-bar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 43px;
+    background-color: #fff;
+    opacity: 0.97;
+    z-index: 99;
+    padding-top: 8px;
+    border-top: 1px solid #ebebeb;
+}
+
+.footer-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.footerIcon {
+    color: #a1a1a1;
+    float: left;
+    font-size: 20px;
+    line-height: 22px;
+    text-align: center;
+}
+
+.footerIcon:active {
+    color: #fe9333;
+    text-decoration: none;
+}
+
+.footerIcon.active {
+    color: #fe9333;
+}
+
+.footer-bar .footer-back-btn {
+    line-height: 27px;
+    width: 20%;
+    height: 100%;
+}
+
+.footer-bar .footer-back-text {
+    font-size: 17px;
+    margin: 1px;
+}
+
+.footer-bar .footer-comment-container {
+    width: 45%;
+    height: 100%;
+    margin-top: -1px;
+}
+
+.footer-bar .footer-comment {
+    width: 100%;
+    height: 28px;
+    border: 1px solid #ccc;
+    color: #ccc;
+    background-color: #fafafa;
+    border-radius: 15px;
+    padding: 2px 0px 2px 15px;
+    font-size: 16px;
+    text-align: left;
+}
+
+.footer-bar .footer-icon {
+    width: 14.4%;
+    height: 100%;
+    padding-top: 3px;
+}
+
+.footer-bar .footer-thumb-num {
+    font-size: 12px;
+    z-index: 10;
+    margin-left: -8px;
+    position: relative;
+    top: 0px;
+    background: #fff;
+}
+
+.footer-report-page .footer-icon {
+    width: 10%;
+}
+.footer-bar .footer-comment-number{
+	width:20%;
+	height: 100%;
+	margin-left: 70%;
+	margin-top:0.5%;
+}
+.footer-bar .footer-comment-number img{
+	width: 1.3em;
+	float: left;
+}
+.footer-bar .footer-comment-number span{
+	float: left;
+	font-size: 0.6em;
+	text-align: center;
+	border-radius: 10px;
+	margin-left: -13%;
+	background-color: red;
+	height: 30%;
+	line-height: initial;
+	color: white;
+	margin-top: -4%;
+	padding:0.1em 0.3em;
+	padding-top:0em;
+}
+.footer-bar .footer-backtoHome-box{
+	float: left;
+	position:absolute;
+	top: -1%;
+	left: 90%;
+	
+}
+.footer-bar .footer-backtoHome-box .footer-backtoHome-img{
+	width: 1.3em;
+	float: left;
+}
+.footer-bar img.footer-backtoHome-text{
+	float: left;
+	width: 40%;
+	margin-left: 10%;
+	margin-top: 10%;
+}
+/*知识总分型题目结果样式*/
+
+.scoreContainer {
+    height: 55px;
+    line-height: 55px;
+    width: 100%;
+    background-color: #fff;
+    text-align: center;
+    margin: 0 0 10px 0;
+}
+
+.scoreBody {
+    width: 25%;
+    height: 100%;
+    float: left;
+    line-height: 55px;
+}
+
+.scoreLine {
+    margin-top: 14px;
+    height: 23px;
+    line-height: 23px;
+    width: 100%;
+    color: #c0c0c0;
+    font-size: 12px;
+    border-width: 1px;
+    border-color: #c0c0c0;
+}
+
+.scoreNum {
+    font-size: 24px;
+    color: #333;
+}
+
+.scoreText {
+    height: 18px;
+    line-height: 18px;
+    color: #c0c0c0;
+    font-size: 8px;
+}
+
+.toAnswer {
+    color: #54c351;
+    font-size: 15px;
+}
+
+
+/* 抽奖区域 */
+
+.awardArea {
+    display: none;
+    height: 90px;
+    color: #404040;
+    background-color: #fff;
+    font-size: 13px;
+    text-align: left;
+    padding: 4.5% 23% 4.5% 6.7%;
+    position: relative;
+    margin: 10px 0;
+}
+
+.awardArea .bg-placeholder {
+    width: 23%;
+    height: 100%;
+    background: url(../../images/redbag.png) 0 10px no-repeat;
+    background-size: 60px auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.awardButton {
+    color: #e6463a;
+    border: 1px solid #e6463a;
+    width: 58px;
+    height: 17px;
+    line-height: 17px;
+    font-size: 10px;
+    border-radius: 10px;
+    padding: 0px 4px;
+    margin-top: 9px;
+    text-align: center;
+}
+
+
+/* 精彩推荐区域 */
+
+#recommend {
+    margin: 10px 0;
+}
+
+#recommend h5 {
+    height: 41px;
+    line-height: 41px;
+    width: 100%;
+    padding: 0 0 0 4.8%;
+    font-size: 14px;
+    color: #000;
+    background-color: #fff;
+    margin: 0 0 1px 0;
+}
+
+#recommend ul {
+    margin: 0;
+    padding: 13px 0 13px 4.8%;
+    background-color: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#recommend li {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 27px;
+    line-height: 27px;
+    font-size: 12px;
+    color: #1d931a;
+    margin-bottom: 0px;
+    text-decoration: underline;
+}
+
+#recommend a {
+    color: #1d931a;
+}
+
+
+/* 返回首页、看报告按钮*/
+.result-button {
+    margin: 10px 0;
+    background-color: #fff;
+}
+
+.result-button img {
+    height: 17px;
+    width: auto;
+    margin-right: 8px;
+    position: relative;
+    top: 2px;
+}
+
+.result-button a {
+    display: block;
+    margin: 15px 0;
+    border-right: 1px solid #e6e6e6;
+}
+
+.result-button a.link-3  {
+    border-right: 0;
+}
+
+.result-button h4 {
+    margin-right: 0;
+    color: #000;
+    font-size: 17px;
+    font-weight: normal;
+    text-align: center;
+}
+
+.result-button p {
+    color: #b3b3b3;
+    text-align: center;
+    font-size: 13px;
+    margin: 0;
+}
+
+/* 测评结果的展开按钮 */
+
+#angleText {
+    font-size: 12px;
+    position: relative;
+    top: -2px;
+}
+
+
+/* 测评结论 */
+
+#state .angleDown {
+    text-align: right;
+    font-size: 20px;
+    color: #43d13f;
+    display: block;
+}
+
+.resultArea {
+    font-size: 14px;
+    text-align: left;
+    padding: 10px;
+}
+
+.ellipsis {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+}
+
+#result-title {
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+
+/* 题目 */
+
+#list font {
+    font-size: 12px;
+}
+
+#list h5 {
+    color: black;
+    letter-spacing: 1px;
+    font-size: 16px;
+    line-height: 1.5em;
+    padding: 15px 10px 0 10px;
+    font-family: "宋体";
+}
+
+
+/* 打赏 */
+
+.donate {
+    display: none;
+}
+
+.donate .mui-popup {
+    width: 80%;
+}
+
+.donate .mui-popup-inner {
+    padding: 20px 15px
+}
+
+.donate-box {
+    margin: 8px;
+    border-radius: 8px;
+    border: 1px solid #ffa11a;
+}
+
+.donate-p1 {
+    color: #ffa11a;
+    font-size: 20px;
+    margin: 5px 0;
+}
+
+.donate-p2 {
+    color: #333;
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.donate img {
+    display: inline-block;
+    width: 40px;
+    height: auto;
+    margin-top: 10px;
+}
+
+
+/* 其他 */
+
+#title {
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.statement {
+    font-size: 12px;
+}
+.statement-text{
+	font-size: 12px;
+}

@@ -1,0 +1,562 @@
+package com.newins.service.imp;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.newins.controller.AssessController;
+import com.newins.dao.AssessOrderDao;
+import com.newins.dao.SubmitAssessAnswerDao;
+import com.newins.dao.assess.AssessModelMulti_RelationDao;
+import com.newins.dao.assess.AssessModel_BigFiveDao;
+import com.newins.dao.assess.AssessModel_MBTIDao;
+import com.newins.dao.assess.AssessModel_multi_SumDao;
+import com.newins.model.Assess;
+import com.newins.model.AssessAnswer;
+import com.newins.model.AssessDelivery;
+import com.newins.model.AssessOrder;
+import com.newins.model.AssessResult;
+import com.newins.model.assess.AssessModelMulti_Relation;
+import com.newins.model.assess.AssessModel_BigFive;
+import com.newins.model.assess.AssessModel_MBTI;
+import com.newins.model.assess.AssessModel_mbti_combination;
+import com.newins.model.assess.AssessModel_multi_Sum;
+import com.newins.model.assess.MaxScoreByDimension;
+import com.newins.service.AssessDeliveryService;
+import com.newins.service.SubmitAssessAnswerService;
+import com.newins.util.AjaxResult;
+import com.newins.util.StrUtils;
+
+/**
+ * @Description 递交测评答案Service层实现类
+ * @author Guan
+ * @time 2016年6月20日 下午2:08:39
+ */
+@Service(value = "SubmitAssessAnswerService")
+public class SubmitAssessAnswerServiceImp implements SubmitAssessAnswerService {
+	private static Logger log = Logger.getLogger(AssessController.class);
+	@Autowired
+	private SubmitAssessAnswerDao submitAssessAnsDao;
+	@Autowired
+	@Qualifier("AssessOrder")
+	private AssessOrder assessOrder;
+	@Autowired
+	private AssessDeliveryService assessDeliveryService;
+	@Autowired
+	private AssessOrderDao assessOrderDao;
+	@Autowired
+	private AssessModelMulti_RelationDao assessModelMulti_RelationDao;
+	@Autowired
+	private AssessModel_BigFiveDao assessModel_BigFiveDao;
+	@Autowired
+	private AssessModel_MBTIDao assessModel_MBTIDao;
+	@Autowired
+	private AssessModel_multi_SumDao assessModel_multi_SumDao;
+	
+	
+	/**
+	 * 将每条答案值付给1个Answer对象，并组成List递交到Dao层
+	 */
+	public boolean insertAssessAnswer(int user_Id, int answer_Num, int aqn_Id, JSONArray jsonAnswerArray) {
+		
+		// 初始化一个answerList存放每条问卷答案对象（SurveyAnswer)
+		List<AssessAnswer> assessAnsList = new ArrayList<AssessAnswer>();
+		for (int i = 0; i < answer_Num; i++) {
+			
+			AssessAnswer assessAnswer = new AssessAnswer();
+			JSONObject oneAnswer = (JSONObject) jsonAnswerArray.get(i);
+			
+			int qType = Integer.parseInt(oneAnswer.getString("questionType"));
+			int aqId = Integer.parseInt(oneAnswer.getString("aqId"));
+			String qAnswer = oneAnswer.getString("qAnswer");
+			String duration = oneAnswer.getString("duration");
+			// 添加属性到model
+			assessAnswer.setUserId(user_Id);
+			assessAnswer.setAqnId(aqn_Id);
+			assessAnswer.setQuestionType(qType);
+			assessAnswer.setAqId(aqId);
+			assessAnswer.setqAnswer(qAnswer);
+			assessAnswer.setDuration(duration);   // 答题持续时间
+			
+			assessAnsList.add(i, assessAnswer);
+
+		}
+		// 将svyAnsList递交到Dao层
+		try {
+			submitAssessAnsDao.insertAssessAnswer(assessAnsList);
+			log.info("------------------>>测评问卷答题 , 新增数据到 answer表中");
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+
+
+
+	/**
+	 *  验证答案递交状态，返回递交成功状态
+	 */
+	public AjaxResult insertAssessAnswer(int user_Id, int answer_Num, int aqn_Id,JSONArray jsonAnswerArray, 
+			int deliveryId, int aqnCategory) {
+		
+		AssessResult assessResult = new AssessResult();
+		//	插入记录到答案表 , 将每条答案值付给1个Answer对象，并组成List递交到 dao层
+		boolean isAssessAnswerExit = insertAssessAnswer(user_Id, answer_Num, aqn_Id,jsonAnswerArray);
+		
+		Map<String, Object> dataMap = new HashMap<String, Object>();// 将参数封装成map格式
+		dataMap.put("userId", user_Id);
+		dataMap.put("aqnId", aqn_Id);
+		
+		if (isAssessAnswerExit) {
+			log.info("=====================>>测评问卷答题后  新增数据到 Answer表成功 , 下面开始查询 测评输出结果 , 将测评结果保存到 order表中 ... "); 
+			// 保存测评结果到 测评 订单 Order表中
+			if(aqnCategory == 0){ // 简单测评模型
+				
+				assessResult = submitAssessAnsDao.getAssessResultFromSimple(dataMap); // 获取测评结果  , 从简单测评模型表中获取
+				
+				log.info("==============================>> 简单测评模型 结果 :"+assessResult);
+				
+			}else if(aqnCategory == 1){ // 1 多维度加总型模型
+				// 根据 用户id, 问卷id 查询每个维度下的得分情况 
+				// 返回总得分, 维度id, 
+				List<MaxScoreByDimension> listMaxScoreByDimension = submitAssessAnsDao.getMaxScoreByDimension(dataMap);
+				if(listMaxScoreByDimension != null && listMaxScoreByDimension.size()>0){
+					if(listMaxScoreByDimension.size() == 1){
+						// 只有一个最大值
+						MaxScoreByDimension maxScoreByDimension = listMaxScoreByDimension.get(0);
+						// 根据维度编号 查询 多维度总分模型表
+						if(maxScoreByDimension!=null){
+							Integer dimension = maxScoreByDimension.getDimension();
+							dataMap.put("dimension", dimension);
+							
+							int totalScore = maxScoreByDimension.getMaxScore();
+							assessResult.setTotalScore(totalScore);
+						}
+						
+						List<AssessModel_multi_Sum> selectByKey = assessModel_multi_SumDao.selectByKey(dataMap);
+						
+						if(selectByKey != null && selectByKey.size()>0){
+							AssessModel_multi_Sum assessModel_multi_Sum = selectByKey.get(0);
+							
+							assessResult.setResultSummary(assessModel_multi_Sum.getResultSummary());
+							assessResult.setResultDetail(assessModel_multi_Sum.getResultDetail());
+							
+						}
+						
+						
+					}else if(listMaxScoreByDimension.size() == 2){
+						// 有两个最大值
+						int dimension_0 = listMaxScoreByDimension.get(0).getDimension();
+						int dimension_1 = listMaxScoreByDimension.get(1).getDimension();
+						
+						List<String> arrayList = new ArrayList<>();
+						arrayList.add( dimension_0+","+dimension_1);
+						arrayList.add( dimension_1+","+dimension_0);
+						
+						dataMap.put("relationList", arrayList);
+						
+						List<AssessModelMulti_Relation> findByKeyMap = assessModelMulti_RelationDao.findByKeyMap(dataMap);
+						if(findByKeyMap != null && findByKeyMap.size()>0){
+							AssessModelMulti_Relation assessModelMulti_Relation = findByKeyMap.get(0);
+							
+							if(assessModelMulti_Relation != null){
+								assessResult.setResultSummary(assessModelMulti_Relation.getResultSummary());
+								assessResult.setResultDetail(assessModelMulti_Relation.getResultDetail());
+							}
+							
+						}else{
+							// 没有关联输出 , 下面根据优先级输出
+							// 根据问卷id, 维度编号查询  多维度测评模型 , 输出优先级大的哪一条记录
+							List<Integer> arrayList2 = new ArrayList<>();
+							arrayList2.add(dimension_0);
+							arrayList2.add(dimension_1);
+							
+							dataMap.put("dimension_list", arrayList2);
+							listMaxScoreByDimension = submitAssessAnsDao.findAssessModelMulti_sum(dataMap);
+							
+							if(listMaxScoreByDimension != null && listMaxScoreByDimension.size()>0){
+								
+								assessResult.setResultSummary(listMaxScoreByDimension.get(0).getResultSummary());
+								assessResult.setResultDetail(listMaxScoreByDimension.get(0).getResultDetail());
+							}
+							
+						}
+						
+						
+					}else{
+						// 有三个或以上的最大值 , 按照优先级输出
+						
+						List<Integer> arrayList = new ArrayList<>();
+						Iterator<MaxScoreByDimension> iterator = listMaxScoreByDimension.iterator();
+						if(iterator.hasNext()){
+							MaxScoreByDimension next = iterator.next();
+							
+							Integer dimension = next.getDimension();
+							arrayList.add(dimension);
+						}
+						dataMap.put("dimension_list", arrayList);
+						listMaxScoreByDimension = submitAssessAnsDao.findAssessModelMulti_sum(dataMap);
+						
+						if(listMaxScoreByDimension != null && listMaxScoreByDimension.size()>0){
+							
+							assessResult.setResultSummary(listMaxScoreByDimension.get(0).getResultSummary());
+							assessResult.setResultDetail(listMaxScoreByDimension.get(0).getResultDetail());
+						}
+						
+					}
+					
+				}else{
+					log.info("====================>>测评问卷答题=================>>未查询出多维度测评模型结果");
+					return AjaxResult.errorResult("未查询出多维度测评模型结果");
+				}
+				
+				
+			}else if(aqnCategory == 3){ // 3 MBTI模型
+//				一、加总每一个一级维度中的二级维度的得分
+				// 查询当前问卷所有的 一级维度下对应的二级维度 集合
+				List<AssessModel_MBTI> findAssessModel_MBTI = assessModel_MBTIDao.findAssessModel_MBTI(dataMap);
+				
+				if(findAssessModel_MBTI!=null){
+					
+					Iterator<AssessModel_MBTI> iterator = findAssessModel_MBTI.iterator();
+					
+					StringBuffer stringBuffer = new StringBuffer();
+					
+					while(iterator.hasNext()){
+						AssessModel_MBTI next = iterator.next();
+						// 查询每个 一级维度中的两个二级维度  
+						String leftSecond = next.getLeftSecond();
+						String rightSecond = next.getRightSecond();
+						
+						ArrayList<String> arrayList = new ArrayList<String>();
+						arrayList.add(leftSecond);
+						arrayList.add(rightSecond);
+						
+						dataMap.put("dimension_mbti_List", arrayList);
+						
+					    // 从这两个维度中 查询出分值高的那个
+//				二、筛选出每一个一级维度中得分最高的二级维度
+						List<MaxScoreByDimension> listMaxScoreByDimension = assessModel_MBTIDao.getMaxScoreByDimension_mbti(dataMap);
+						
+						if(listMaxScoreByDimension != null && listMaxScoreByDimension.size()>0){
+							MaxScoreByDimension maxScoreByDimension = listMaxScoreByDimension.get(0);
+							// 返回的 分值高的 二级维度 
+							if(maxScoreByDimension != null){
+								String dimension_mbti = maxScoreByDimension.getDimensionStr();  //两个 二级维度 得分高的维度 编号 
+								stringBuffer.append(dimension_mbti);
+							}
+						}else{
+							log.info("=======================>> MBTI模型每个一级维度下的 二级维度 没有查询除 最大得分的维度编号");
+						}
+						
+					}
+					
+//				三、把所有得分最高的二级维度联合，输出对应的个人解析
+					char[] charArray = stringBuffer.toString().toCharArray();
+					
+					Set<String> fullPermutation = StrUtils.getFullPermutation(charArray);
+					
+					dataMap.put("listDimension", fullPermutation);
+					
+					// 查询 MBTI 组合编号 ,  返回测评内容 
+					List<AssessModel_mbti_combination> listAssessModel_mbti_combination = assessModel_MBTIDao.getAssessModel_mbti_combination(dataMap);
+					
+					if(listAssessModel_mbti_combination != null && listAssessModel_mbti_combination.size()>0){
+						AssessModel_mbti_combination assessModel_mbti_combination = listAssessModel_mbti_combination.get(0);
+						
+						if(assessModel_mbti_combination!=null){
+							assessResult.setResultDetail(assessModel_mbti_combination.getResultDetail());
+							assessResult.setResultSummary(assessModel_mbti_combination.getResultSummary());
+						}
+					}
+					
+					
+				}
+				
+			}else if(aqnCategory == 2){ //  2 大五模型
+//				一、每个维度分别加总
+				// 当前问卷 所有问题 根据维度进行分组  统计总得分 , 求出每个维度的总得分 
+				List<MaxScoreByDimension> listMaxScoreByDimension = submitAssessAnsDao.getTotalScoreByDimension(dataMap);
+				if(listMaxScoreByDimension != null && listMaxScoreByDimension.size()>0){
+					
+					String resultSummary_Total = "";
+					String resultDetail_Total = "";
+					
+					Iterator<MaxScoreByDimension> iterator = listMaxScoreByDimension.iterator();
+					
+					while(iterator.hasNext()){
+						MaxScoreByDimension maxScoreByDimension = iterator.next();
+						
+						assessResult.setTotalScore(maxScoreByDimension.getTotalScore());
+						
+						// 根据 问卷id , 维度编号, 总得分 查询 测评结果
+						dataMap.put("dimension", maxScoreByDimension.getDimension());
+						dataMap.put("totalScore", maxScoreByDimension.getTotalScore());
+						
+						List<AssessModel_BigFive> findAssessModel_BigFive = assessModel_BigFiveDao.findAssessModel_BigFive(dataMap);
+						if(findAssessModel_BigFive != null && findAssessModel_BigFive.size()>0){
+							AssessModel_BigFive assessModel_BigFive = findAssessModel_BigFive.get(0);
+							
+							String resultSummary = assessModel_BigFive.getResultSummary();
+							String resultDetail = assessModel_BigFive.getResultDetail();
+							
+							resultSummary_Total = resultSummary_Total + resultSummary;
+							resultDetail_Total = resultDetail_Total + resultDetail;
+						}
+						
+					}
+					
+//				二、看每个维度分数 落在各自 哪个分数段内，输出对应的分数段个人解析 , 查询 大五模型表  得出 答题结果信息
+					
+//				三、全部维度个人解析组成总解析 , 将 多个维度得出的解析进行拼接, 存储
+					assessResult.setResultDetail(resultDetail_Total);
+					assessResult.setResultSummary(resultSummary_Total);
+					
+				}else{
+					log.info("====================>>  大五 模型 测评结果为空 ....");
+					return AjaxResult.errorCode(" 大五 模型 测评结果为空 ... ", "009");
+				}
+				
+			}else{
+				log.info("====================>>当前测评问卷测评类型 aqnCategory 错误");
+				return AjaxResult.errorCode("aqnCategory is wrong", "008");
+			}
+
+			if (assessResult != null) {
+				assessResult.setAqnId(aqn_Id);
+				assessResult.setUserId(user_Id);
+				
+				// 根据aqnId和userId 将测评结果存入订单中
+				submitAssessAnsDao.insertResultToOrder(assessResult);
+			} else {
+				// 查询测评结果失败
+				log.info("--------------------->> 测评问卷答题中, 当前用户答题后测评结果查询为空 ");
+				return AjaxResult.errorCode("check assess result failed , 测评结果为空", "007");
+			}
+			
+			//验证是否答题人数达到需要收集人数，如果达到将问卷状态改为6，数量完成
+			changeDeliveryStatus(deliveryId);// 更改投放状态
+			return AjaxResult.successResult("assess answer submit successfully");
+			
+		} else {
+			// 插入记录到答案表失败
+			log.info("--------------------->> 测评问卷答题中, 插入记录到  answer表 失败 ");
+			return AjaxResult.errorCode("insert into survey answer db failed", "006");
+		}
+
+	}
+
+	//从订单表里获取测评结果
+	public AssessResult getAssessResultFromOrder(int user_Id, int aqn_Id){
+		Map<String, Object> param = new HashMap<String, Object>();// 将参数封装成map格式
+		param.put("userId", user_Id);
+		param.put("aqnId", aqn_Id);		
+		return submitAssessAnsDao.getAssessResultFromOrder(param);
+	}
+	
+	/**
+	 * 验证是否答题人数达到需要收集人数，如果达到将问卷状态改为6，数量完成
+	 */
+	public void changeDeliveryStatus(int deliveryId) {
+		
+		Assess assess = submitAssessAnsDao.getCollectedNumById(deliveryId);
+		
+		if (assess.getCollectedNum() >= assess.getCollectNum()) {
+			submitAssessAnsDao.changeDeliveryStatus(deliveryId);
+			log.info("-------------------->> Delivery status has been changed into 6 number is over");// 6为数量完成状态
+		} else {
+			log.info("-------------------->> Delivery status is not changed");
+		}
+	}
+
+	// 查询测评结果 
+	public AjaxResult getAssessResultFromOrder(HttpServletRequest request) {
+		
+		AjaxResult ajaxResult = new AjaxResult();
+
+		HttpSession newSession = request.getSession(true);
+		Object userId = newSession.getAttribute("userId");
+		
+		String aqnId_str = request.getParameter("aqnId");
+		int aqnId = Integer.parseInt(aqnId_str);
+		
+		// 判断当前测评问卷的类型
+		if (userId != null) {
+			int user_Id = Integer.parseInt(userId.toString());
+			
+			Map<String, Object> dataMap = new HashMap<String, Object>();// 将参数封装成map格式
+			
+			dataMap.put("userId", user_Id);
+			dataMap.put("aqnId", aqnId);		
+			
+			// 根据用户id , 问卷id , 查询订单表, 如果有记录, 代表当前问卷被当前用户答过 
+			AssessResult assessResultFromOrder = submitAssessAnsDao.getAssessResultFromOrder(dataMap);
+			
+			if(assessResultFromOrder != null){
+				
+				String resultSummary = assessResultFromOrder.getResultSummary();
+				String resultDetail = assessResultFromOrder.getResultDetail();
+				
+				ajaxResult.put("success", true);
+				ajaxResult.put("resultSummary", resultSummary);
+				ajaxResult.put("resultDetail", resultDetail);
+				
+				
+			}else{
+				log.info("----------------->>加载测评结果页面为空 ..... 可能当前用户未答过当前这道题");
+				return AjaxResult.errorCode("当前用户未答过当前这道题", "002");
+			}
+
+		}else{
+			return AjaxResult.errorCode("用户未登录,无法加载测评问卷答题结果页", "001");
+		}
+		
+		return ajaxResult;
+	}
+
+	//测评问卷提交
+	public AjaxResult submitAssessAnswer(HttpServletRequest request) {
+		
+		// 取出request的参数，其中answers为JSONArray,其余变量为单值变量
+		HttpSession newSession = request.getSession(true);
+		Object userId_obj = newSession.getAttribute("userId");
+		
+		/**
+		 * 生成临时用户id 迁移到加载测评问卷中
+		 */
+		if(userId_obj == null){
+			log.info("===================>>当前登录用户id为空");
+			return AjaxResult.errorCode("用户未登录", "001");
+		}else{
+			//用户已经登录
+			// --------------------------从页面获取一堆参数 -------------begin-----------
+			Integer userId = Integer.parseInt(userId_obj.toString());
+			
+			String answerNum = request.getParameter("answerNum").trim();
+			String aqnId = request.getParameter("aqnId").trim();
+			String awardIdStr = request.getParameter("awardId").trim();
+			String answerBTimeStr = request.getParameter("answerBTime").trim();
+			String answers = request.getParameter("answers");
+			String deliveryId = request.getParameter("deliveryId").trim();
+			String awardMethodStr = request.getParameter("awardMethod").trim();
+			String aqnCategoryStr = request.getParameter("aqnCategory").trim();
+
+			
+			int answer_Num = Integer.parseInt(answerNum);
+			int aqn_Id = Integer.parseInt(aqnId);
+			int award_Id = 0;
+			if (StrUtils.isNotEmpty(awardIdStr)) {
+				award_Id = Integer.parseInt(awardIdStr);
+			}
+			Timestamp answerBTime = Timestamp.valueOf(answerBTimeStr);
+			int delivery_Id = Integer.parseInt(deliveryId);
+			int aqnCategory = 0;
+			if(StrUtils.isNotEmpty(aqnCategoryStr)){
+				aqnCategory = Integer.parseInt(aqnCategoryStr);
+			}
+			int awardMethod = 0;
+			if (StrUtils.isNotEmpty(awardMethodStr)) {
+				awardMethod = Integer.parseInt(awardMethodStr);
+			}
+			// 将answers转化成大的JSON对象
+			String answerStr = "{'answers':" + answers + "}";
+			JSONObject jsonObject = JSONObject.fromObject(answerStr);
+			// 取出answers的JSONArray
+			JSONArray jsonAnswerArray = jsonObject.getJSONArray("answers");
+			// --------------------------从页面获取一堆参数 -------------end-----------
+			
+			// 根据投放id查询投放状态
+			AssessDelivery assessDelivery = assessDeliveryService.getDeliveryStatusById(delivery_Id);
+			
+			if (assessDelivery != null) {
+				int deliveryStatus = assessDelivery.getStatus();
+				if (deliveryStatus == 2) {
+					// 如果投放状态为投放中则向下进行
+					// 创建一条订单，返回订单创建是否成功的状态
+					/*
+					 * 用户答题时需要判断当前用户是否答过该道题, 如果答过就直接显示答题结果页 
+					 * 如何判断用户是否答过当前这道题, 以前的业务逻辑是先到订单表中根据 用户id,问卷id查询, 如果有记录则说明用户已经答过题
+					 * 用户答题数据需要存储到两张表 Order表和 Answer表, 
+					 * 先到 order表查询是否有记录, 如果没有则新增, 如果有就返回已经答过标识, 当用户未答过该题, Order表中新增数据后, 又需向 Answer表中新增数据
+					 * 我遇到过一次问题是, Order表中根据用户id,问卷id查询是没有记录, 但是 根据用户id,问卷id 查询answer表 居然有数据, 这时候如果向 Answer表新增数据就会主键冲突
+					 * 不知道是数据的问题还是什么 ? 
+					 * 按道理来说之前的逻辑安全性不够好, 不能在一张表中判断是否答过题,然后向另一张表新增数据 
+					 * 
+					 * */
+					
+					// 判断用户是否已经答过题 , 如果已经答过, order表, answer表中都应该有数据 , 如果没有数据则代表没有答过这道题
+					
+					// 创建order前先查询并判断这条订单是否存在
+					Map<String, Object> dataMap = new HashMap<String, Object>();// 将参数封装成map格式
+					dataMap.put("userId", userId);
+					dataMap.put("aqnId", aqn_Id);
+					AssessOrder assessOrder = assessOrderDao.getAssessOrder(dataMap);
+					
+					// 如果没有数据则代表没有答过这道题
+					if(assessOrder == null){
+						// 新增数据到 order表, answer表
+						assessOrder = new AssessOrder(); // 订单不存在, 创建一条新的订单
+						
+						Timestamp orderCTime = new Timestamp(System.currentTimeMillis());// 获取当前系统时间
+						Timestamp answerETime = new Timestamp(System.currentTimeMillis());
+
+						assessOrder.setUserId(userId);
+						assessOrder.setDeliveryId(delivery_Id);
+						assessOrder.setAqnId(aqn_Id);
+						assessOrder.setOrderCTime(orderCTime);
+						assessOrder.setAnswerETime(answerETime);
+						assessOrder.setOrderStatus(1);// 订单状态为订单生成
+						assessOrder.setAnswerBTime(answerBTime);
+						assessOrder.setAwardId(award_Id);
+						assessOrder.setAwardMethod(awardMethod);
+						// 如果该订单结果不存在则生成一条订单
+						// 递交给Dao生成订单
+						
+						try {
+							submitAssessAnsDao.initAssessOrder(assessOrder);
+							log.info("------------------------->> 测评问卷答题  已经新增数据到 order表中  ");
+						} catch (Exception e) {
+							e.printStackTrace();
+							log.info("===============================>>测评问卷答题新增到order表失败");
+							return AjaxResult.errorCode("用户答题创建订单失败", "005");
+						}
+						
+						AjaxResult insertAssessAnswer = insertAssessAnswer(userId, answer_Num, aqn_Id, jsonAnswerArray, delivery_Id, aqnCategory);
+						
+						return insertAssessAnswer;
+					}else{
+						// 如果已经答过, order表, answer表中都应该有数据 
+						return AjaxResult.errorCode("当前用户已经答过这道题", "004");
+					}
+					
+				} else {
+					return AjaxResult.errorCode("当前测评投放状态并不是投放中", "003");
+				}
+
+			} else {
+				return AjaxResult.errorCode("当前测评投放不存在", "002");
+			}
+			
+			
+			
+		}
+	}
+}

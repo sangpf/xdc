@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html manifest="newIns.manifest">
+
+<head>
+    <meta charset="utf-8">
+    <title>心发现</title>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/mui/mui.css">
+    <link rel="stylesheet" href="css/xdc/xdc_survey.css">
+</head>
+
+<body>
+    <div class="mui-content">
+        <form class="mui-input-group" name="form" id="form">
+            <div class="mui-input-row">
+                <label>收件人姓名</label>
+                <input type="text" name="recipientName" class="mui-input-clear" placeholder="请输入收件人姓名">
+            </div>
+            <div class="mui-input-row">
+                <label>学校</label>
+                <input type="text" name="recipientSchool" class="mui-input-clear" placeholder="请输入学校名称">
+            </div>
+            <div class="mui-input-row">
+                <label>电子邮箱</label>
+                <input type="text" name="emailAddress" class="mui-input-clear" placeholder="请输邮箱地址">
+            </div>
+        </form>
+        <div class="mui-content-padded">
+            <p>提示：请认真填写个人信息，如信息填写错误导致您未能收到奖品，超级调查不负有任何责任！</p>
+            <button class="mui-btn xdc-btn-submit mui-btn-block" id="submit-postal-virtual">提交</button>
+        </div>
+    </div>
+    <!-- JS -->
+    <script type="text/javascript" src="http://pingjs.qq.com/h5/stats.js" name="MTAH5" sid="500158849" cid="500158852"></script>
+    <script src="js/mui/mui.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/xdc/usefulFun.js"></script>
+    <script src="js/xdc/validate.js"></script>
+    <script src="js/xdc/postal_info.js"></script>
+    <script>
+    if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+        window.applicationCache.update();
+    }
+    </script>
+</body>
+
+</html>

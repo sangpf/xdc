@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+encoding//src/resource=UTF-8
+encoding//src/resource/config.properties=UTF-8
+encoding//src/resource/jdbc.properties=UTF-8
+encoding//src/resource/wx-config.properties=UTF-8

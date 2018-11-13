@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 	<mapper namespace="com.newins.dao.InsertJsonToDbDao">
+ 	<resultMap type="com.newins.model.InsertJson" id="InsertJson">
+ 		<result property="sex" column="sex"/>
+ 		<result property="stu_No" column="stu_No"/>
+ 		<result property="school_Name" column="school_Name"/>
+ 		<result property="nickName" column="nickName"/>
+ 		<result property="headImg" column="headImg"/>
+ 		<result property="userId" column="userId"/>
+ 		<result property="bind_Ecard" column="bind_Ecard"/>
+ 		<result property="outId" column="outId"/>
+ 		<result property="school_Id" column="school_Id"/>
+ 		<result property="city_Id" column="city_Id"/>
+ 		<result property="name" column="name"/>
+ 		<result property="account" column="account"/>
+ 		<result property="openId" column="openId"/>
+ 		<result property="customer_Id" column="customer_Id"/>
+ 		<result property="ecard_UId" column="ecard_UId"/>
+ 		<result property="mobile" column="mobile"/>
+ 	</resultMap>
+ 		<select id="InsertJsonData" resultType="com.newins.model.InsertJson">
+ 			select sex,stu_No,school_Name,nickName,headImg,userId,bind_Ecard,school_Id,city_Id,name,
+ 			account,customer_Id,mobile from 4167_detail_distinct
+ 		</select>
+ 		<select id="selectUserBaseUserId" resultType="int" parameterType="java.lang.Integer">
+ 			select count(*) from ni_user_base where userId=#{userId}
+ 		</select>
+ 		<select id="selectEduUserId" resultType="int" parameterType="java.lang.Integer">
+ 			select count(*) from ni_user_education where userId=#{userId}
+ 		</select>
+ 		<select id="selectEduHistUserId" resultType="int" parameterType="java.lang.Integer">
+ 			select count(*) from ni_user_edu_hist where userId=#{userId}
+ 		</select>
+ 	</mapper>

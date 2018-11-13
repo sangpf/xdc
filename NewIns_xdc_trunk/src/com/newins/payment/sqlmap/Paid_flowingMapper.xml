@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newins.payment.dao.Paid_flowingDao">
+	
+	
+	<insert id="insert" parameterType="com.newins.payment.model.Paid_flowing">
+		insert into ni_paid_flowing (
+			contentId,contentType,userId,out_trade_no,transactionId,payTime,money
+		) values (
+			#{contentId},#{contentType},#{userId},#{out_trade_no},#{transactionId},#{payTime},#{money}
+		)
+		
+	</insert>
+	
+	
+</mapper>

@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newins.dao.NiUserIdentiferMapper" >
+  <sql id="Base_Column_List" >
+    userId, qqOpenId, qqOpenIdCtime, qqOpenIdChannel, weixOpenId, weixOpenIdCtime, weixOpenIdChannel, 
+    weixServOpenId, weixServOpenIdCtime, weixSubsOpenId, weixSubsOpenIdCtime, weixUnionId, 
+    weixUnionIdCtime, weixUnionIdChannel, wanxUserId, wanxNickname, wanxOpenId, wanxOpenIdCtime, 
+    wanxOpenIdChannel, bindPhone, bindPhoneCtime, bindPhoneIMEI, bindPhoneIMEICtime, 
+    bindPhoneMAC, bindPhoneMACCtime, bindPhoneUUID, bindPhoneUUIDCtime, phone2, phone2Ctime, 
+    phone2IMEI, phone2IMEICtime, phone2MAC, phone2MACCtime, phone2UUID, phone2UUIDCtime, 
+    comment
+  </sql>
+
+    <!-- 根据玩xiaoid查询标识信息表 -->
+  <select id="selectByWanxuserId" parameterType="java.lang.Integer" resultType="com.newins.model.NiUserIdentifer"
+   statementType="CALLABLE">
+		{call selectByWanxuserId_Info(#{wanxuserId}) }
+  </select>
+
+ <!-- 根据新洞察主键查询用户标识信息表 -->
+  <select id="selectByPrimaryKey" resultType="com.newins.model.NiUserIdentifer" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ni_user_identifer
+    where userId = #{userId}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ni_user_identifer
+    where userId = #{userid,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.newins.model.NiUserIdentifer" >
+	  <selectKey keyProperty="userId" order="AFTER" resultType="java.lang.Integer">
+	  	select LAST_INSERT_ID()
+	  </selectKey>
+    insert into ni_user_identifer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        userId,
+      </if>
+      <if test="qqOpenId != null" >
+        qqOpenId,
+      </if>
+      <if test="qqOpenIdCtime != null" >
+        qqOpenIdCtime,
+      </if>
+      <if test="qqOpenIdChannel != null" >
+        qqOpenIdChannel,
+      </if>
+      <if test="weixOpenId != null" >
+        weixOpenId,
+      </if>
+      <if test="weixOpenIdCtime != null" >
+        weixOpenIdCtime,
+      </if>
+      <if test="weixOpenIdChannel != null" >
+        weixOpenIdChannel,
+      </if>
+      <if test="weixServOpenId != null" >
+        weixServOpenId,
+      </if>
+      <if test="weixServOpenIdCtime != null" >
+        weixServOpenIdCtime,
+      </if>
+      <if test="weixSubsOpenId != null" >
+        weixSubsOpenId,
+      </if>
+      <if test="weixSubsOpenIdCtime != null" >
+        weixSubsOpenIdCtime,
+      </if>
+      <if test="weixUnionId != null" >
+        weixUnionId,
+      </if>
+      <if test="weixUnionIdCtime != null" >
+        weixUnionIdCtime,
+      </if>
+      <if test="weixUnionIdChannel != null" >
+        weixUnionIdChannel,
+      </if>
+      <if test="wanxUserId != null" >
+        wanxUserId,
+      </if>
+      <if test="wanxHeadImg != null">
+      	wanxHeadImg,
+      </if>
+      <if test="wanxNickname != null" >
+        wanxNickname,
+      </if>
+      <if test="wanxOpenId != null" >
+        wanxOpenId,
+      </if>
+      <if test="wanxOpenIdCtime != null" >
+        wanxOpenIdCtime,
+      </if>
+      <if test="wanxOpenIdChannel != null" >
+        wanxOpenIdChannel,
+      </if>
+      <if test="bindPhone != null" >
+        bindPhone,
+      </if>
+      <if test="bindPhoneCtime != null" >
+        bindPhoneCtime,
+      </if>
+      <if test="bindPhoneIMEI != null" >
+        bindPhoneIMEI,
+      </if>
+      <if test="bindPhoneIMEICtime != null" >
+        bindPhoneIMEICtime,
+      </if>
+      <if test="bindPhoneMAC != null" >
+        bindPhoneMAC,
+      </if>
+      <if test="bindPhoneMACCtime != null" >
+        bindPhoneMACCtime,
+      </if>
+      <if test="bindPhoneUUID != null" >
+        bindPhoneUUID,
+      </if>
+      <if test="bindPhoneUUIDCtime != null" >
+        bindPhoneUUIDCtime,
+      </if>
+      <if test="phone2 != null" >
+        phone2,
+      </if>
+      <if test="phone2Ctime != null" >
+        phone2Ctime,
+      </if>
+      <if test="phone2IMEI != null" >
+        phone2IMEI,
+      </if>
+      <if test="phone2IMEICtime != null" >
+        phone2IMEICtime,
+      </if>
+      <if test="phone2MAC != null" >
+        phone2MAC,
+      </if>
+      <if test="phone2MACCtime != null" >
+        phone2MACCtime,
+      </if>
+      <if test="phone2UUID != null" >
+        phone2UUID,
+      </if>
+      <if test="phone2UUIDCtime != null" >
+        phone2UUIDCtime,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId},
+      </if>
+      <if test="qqOpenId != null" >
+        #{qqOpenId},
+      </if>
+      <if test="qqOpenIdCtime != null" >
+        #{qqOpenIdCtime},
+      </if>
+      <if test="qqOpenIdChannel != null" >
+        #{qqOpenIdChannel},
+      </if>
+      <if test="weixOpenId != null" >
+        #{weixOpenId},
+      </if>
+      <if test="weixOpenIdCtime != null" >
+        #{weixOpenIdCtime},
+      </if>
+      <if test="weixOpenIdChannel != null" >
+        #{weixOpenIdChannel},
+      </if>
+      <if test="weixServOpenId != null" >
+        #{weixServOpenId},
+      </if>
+      <if test="weixServOpenIdCtime != null" >
+        #{weixServOpenIdCtime},
+      </if>
+      <if test="weixSubsOpenId != null" >
+        #{weixSubsOpenId},
+      </if>
+      <if test="weixSubsOpenIdCtime != null" >
+        #{weixSubsOpenIdCtime},
+      </if>
+      <if test="weixUnionId != null" >
+        #{weixUnionId},
+      </if>
+      <if test="weixUnionIdCtime != null" >
+        #{weixUnionIdCtime},
+      </if>
+      <if test="weixUnionIdChannel != null" >
+        #{weixUnionIdChannel},
+      </if>
+      <if test="wanxUserId != null" >
+        #{wanxUserId},
+      </if>
+      <if test="wanxHeadImg != null">
+      	#{wanxHeadImg},
+      </if>
+      <if test="wanxNickname != null" >
+        #{wanxNickname},
+      </if>
+      <if test="wanxOpenId != null" >
+        #{wanxOpenId},
+      </if>
+      <if test="wanxOpenIdCtime != null" >
+        #{wanxOpenIdCtime},
+      </if>
+      <if test="wanxOpenIdChannel != null" >
+        #{wanxOpenIdChannel},
+      </if>
+      <if test="bindPhone != null" >
+        #{bindPhone},
+      </if>
+      <if test="bindPhoneCtime != null" >
+        #{bindPhoneCtime},
+      </if>
+      <if test="bindPhoneIMEI != null" >
+        #{bindPhoneIMEI},
+      </if>
+      <if test="bindPhoneIMEICtime != null" >
+        #{bindPhoneIMEICtime},
+      </if>
+      <if test="bindPhoneMAC != null" >
+        #{bindPhoneMAC},
+      </if>
+      <if test="bindPhoneMACCtime != null" >
+        #{bindPhoneMACCtime},
+      </if>
+      <if test="bindPhoneUUID != null" >
+        #{bindPhoneUUID},
+      </if>
+      <if test="bindPhoneUUIDCtime != null" >
+        #{bindPhoneUUIDCtime},
+      </if>
+      <if test="phone2 != null" >
+        #{phone2},
+      </if>
+      <if test="phone2Ctime != null" >
+        #{phone2Ctime},
+      </if>
+      <if test="phone2IMEI != null" >
+        #{phone2IMEI},
+      </if>
+      <if test="phone2IMEICtime != null" >
+        #{phone2IMEICtime},
+      </if>
+      <if test="phone2MAC != null" >
+        #{phone2MAC},
+      </if>
+      <if test="phone2MACCtime != null" >
+        #{phone2MACCtime},
+      </if>
+      <if test="phone2UUID != null" >
+        #{phone2UUID},
+      </if>
+      <if test="phone2UUIDCtime != null" >
+        #{phone2UUIDCtime},
+      </if>
+      <if test="comment != null" >
+        #{comment},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.newins.model.NiUserIdentifer" >
+    update ni_user_identifer
+    <set >
+      <if test="qqOpenId != null" >
+        qqOpenId = #{qqOpenId},
+      </if>
+      <if test="qqOpenIdCtime != null" >
+        qqOpenIdCtime = #{qqOpenIdCtime},
+      </if>
+      <if test="qqOpenIdChannel != null" >
+        qqOpenIdChannel = #{qqOpenIdChannel},
+      </if>
+      <if test="weixOpenId != null" >
+        weixOpenId = #{weixOpenId},
+      </if>
+      <if test="weixOpenIdCtime != null" >
+        weixOpenIdCtime = #{weixOpenIdCtime},
+      </if>
+      <if test="weixOpenIdChannel != null" >
+        weixOpenIdChannel = #{weixOpenIdChannel},
+      </if>
+      <if test="weixServOpenId != null" >
+        weixServOpenId = #{weixServOpenId},
+      </if>
+      <if test="weixServOpenIdCtime != null" >
+        weixServOpenIdCtime = #{weixServOpenIdCtime},
+      </if>
+      <if test="weixSubsOpenId != null" >
+        weixSubsOpenId = #{weixSubsOpenId},
+      </if>
+      <if test="weixSubsOpenIdCtime != null" >
+        weixSubsOpenIdCtime = #{weixSubsOpenIdCtime},
+      </if>
+      <if test="weixUnionId != null" >
+        weixUnionId = #{weixUnionId},
+      </if>
+      <if test="weixUnionIdCtime != null" >
+        weixUnionIdCtime = #{weixUnionIdCtime},
+      </if>
+      <if test="weixUnionIdChannel != null" >
+        weixUnionIdChannel = #{weixUnionIdChannel},
+      </if>
+      <if test="wanxUserId != null" >
+        wanxUserId = #{wanxUserId},
+      </if>
+      <if test="wanxHeadImg != null">
+      	wanxHeadImg = #{wanxHeadImg},
+      </if>
+      <if test="wanxNickname != null" >
+        wanxNickname = #{wanxNickname},
+      </if>
+      <if test="wanxOpenId != null" >
+        wanxOpenId = #{wanxOpenId},
+      </if>
+      <if test="wanxOpenIdCtime != null" >
+        wanxOpenIdCtime = #{wanxOpenIdCtime},
+      </if>
+      <if test="wanxOpenIdChannel != null" >
+        wanxOpenIdChannel = #{wanxOpenIdChannel},
+      </if>
+      <if test="bindPhone != null" >
+        bindPhone = #{bindPhone},
+      </if>
+      <if test="bindPhoneCtime != null" >
+        bindPhoneCtime = #{bindPhoneCtime},
+      </if>
+      <if test="bindPhoneIMEI != null" >
+        bindPhoneIMEI = #{bindPhoneIMEI},
+      </if>
+      <if test="bindPhoneIMEICtime != null" >
+        bindPhoneIMEICtime = #{bindPhoneIMEICtime},
+      </if>
+      <if test="bindPhoneMAC != null" >
+        bindPhoneMAC = #{bindPhoneMAC},
+      </if>
+      <if test="bindPhoneMACCtime != null" >
+        bindPhoneMACCtime = #{bindPhoneMACCtime},
+      </if>
+      <if test="bindPhoneUUID != null" >
+        bindPhoneUUID = #{bindPhoneUUID},
+      </if>
+      <if test="bindPhoneUUIDCtime != null" >
+        bindPhoneUUIDCtime = #{bindPhoneUUIDCtime},
+      </if>
+      <if test="phone2 != null" >
+        phone2 = #{phone2},
+      </if>
+      <if test="phone2Ctime != null" >
+        phone2Ctime = #{phone2Ctime},
+      </if>
+      <if test="phone2IMEI != null" >
+        phone2IMEI = #{phone2IMEI},
+      </if>
+      <if test="phone2IMEICtime != null" >
+        phone2IMEICtime = #{phone2IMEICtime},
+      </if>
+      <if test="phone2MAC != null" >
+        phone2MAC = #{phone2MAC},
+      </if>
+      <if test="phone2MACCtime != null" >
+        phone2MACCtime = #{phone2MACCtime},
+      </if>
+      <if test="phone2UUID != null" >
+        phone2UUID = #{phone2UUID},
+      </if>
+      <if test="phone2UUIDCtime != null" >
+        phone2UUIDCtime = #{phone2UUIDCtime},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment},
+      </if>
+    </set>
+    where userId = #{userId}
+  </update>
+
+</mapper>

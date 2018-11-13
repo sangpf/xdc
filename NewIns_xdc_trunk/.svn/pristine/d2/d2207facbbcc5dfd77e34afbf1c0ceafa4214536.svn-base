@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper .//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newins.dao.CarouselDao">
+	<resultMap type="com.newins.model.Carousel" id="carouselMap">
+		<result property="carouselId" column="carouselId" />
+		<result property="adId" column="adId" />
+		<result property="adType" column="adType" />
+		<result property="showOrder" column="showOrder" />
+		<result property="adTitle" column="adTitle" />
+		<result property="adImg" column="adImg" />
+		<result property="adLink" column="adLink" />
+	</resultMap>
+
+	<select id="getCarousel" resultMap="carouselMap" parameterType="java.lang.Integer">
+		select carouselId,ni_carousel_wanx.adId,showOrder,adTitle,adImg,adLink,deliveryId,qnType,adType,replaceAdId
+		from ni_ad_info,ni_carousel_wanx
+		where ni_ad_info.adId=ni_carousel_wanx.adId AND ni_carousel_wanx.status=1 AND channelId=#{channelId}
+		order by ni_carousel_wanx.showOrder
+	</select>
+
+
+</mapper>

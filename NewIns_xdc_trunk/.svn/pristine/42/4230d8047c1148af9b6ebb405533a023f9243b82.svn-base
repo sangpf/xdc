@@ -1,0 +1,77 @@
+package com.newins.controller;
+
+import java.io.UnsupportedEncodingException;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.newins.service.NiCommentService;
+import com.newins.util.AjaxResult;
+
+/**
+ * 评论
+ * @author 11409
+ *
+ */
+@Controller
+@RequestMapping("/wanx")
+public class NiCommentController {
+	
+	@Resource
+	private NiCommentService niCommentService;
+	
+	/**
+	 * 添加评论
+	 * @return
+	 */
+	@RequestMapping(value="/addNiComment",method=RequestMethod.POST)
+	@ResponseBody
+	public AjaxResult addNiComment(HttpServletRequest request,HttpServletResponse response){
+		//设置请求编码
+		response.setCharacterEncoding("utf-8");
+		response.setHeader("Content-Type", "text/html;charset=utf-8");
+		response.setContentType("text/html;charset=utf-8");
+		try {
+			request.setCharacterEncoding("utf-8");
+		} catch (UnsupportedEncodingException e3) {
+			// TODO Auto-generated catch block
+			e3.printStackTrace();
+		}
+		AjaxResult addNiComment = niCommentService.addNiComment(request,response);
+		
+		return addNiComment;
+	}
+	
+	/**
+	 * 列表 :返回 当前问卷或报告的  总:评论总数，    分 :每条评论的头像，昵称，学校，点赞数，评论时间，评论内容
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/getCommentList")
+	@ResponseBody
+	public AjaxResult listNiComment(HttpServletRequest request, HttpServletResponse response){
+		
+		AjaxResult listNiComment = niCommentService.listNiComment(request);
+		
+		return listNiComment;
+	}
+	
+	/**
+	 * 点赞
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/praiseComment")
+	@ResponseBody
+	public AjaxResult praiseComment(HttpServletRequest request){
+		AjaxResult praiseComment = niCommentService.praiseComment(request);
+		return praiseComment;
+	}
+	
+}

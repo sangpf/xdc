@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>支付</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="css/mui/mui.css" />
+		<link rel="stylesheet" href="css/xdc/xdc_main.css" />
+	</head>
+	<body>
+		
+		
+		<div class="mui-content">
+
+			<!--购买信息-->
+			<div class="mui-row pay-title bg-color">
+		    	    <div class="mui-col-xs-12">付费评测服务</div>
+		    	</div>
+		    <div class="mui-row bg-color mbottom">
+		        <div class="mui-col-xs-12 pay-title-author"><span>名称：</span><span></span></div>
+		        <div class="mui-col-xs-12 pay-name-author">作者：<span>心发现专家团队</span></div>
+		        <div class="mui-col-xs-12 pay-price">价格：<span><b></b></span><div>优惠价格</div></div>
+		    </div>
+		    <!--支付方式-->
+		    <div class="mui-row mbottom bg-color">
+		        <div class="mui-row pay-method-title">
+		            <div class="mui-col-xs-12">
+		            	支付方式
+		            </div>
+		        </div>
+		            <div class="mui-col-xs-12 pay-method-mar">
+		            	<div class="mui-row">
+		            	    <div class="mui-col-xs-3 pay-method-img"><img src="img/pay/weChat.png" alt="微信" /></div>
+				            <div class="mui-col-xs-3 pay-method-app">微信</div>
+				            <div class="mui-col-xs-6">
+					            <div class="mui-input-row mui-radio pay-method-switch">
+					                <input name="radio" type="radio" class="pay_method" checked value="1">
+					            </div>
+				            </div>
+		            	</div>
+		            	
+		            </div>
+		            <div class="mui-col-xs-12 pay-method-mar">
+		            	<div class="mui-row">
+		            	    <div class="mui-col-xs-3 pay-method-img"><img src="img/pay/alipay.png" alt="支付宝" /></div>
+				            <div class="mui-col-xs-3 pay-method-app">支付宝</div>
+				            <div class="mui-col-xs-6">
+				            	<div class="mui-input-row mui-radio pay-method-switch">
+					                <input name="radio" type="radio" class="pay_method" value="2">
+					            </div>
+				            </div>
+		            	</div>
+		            </div>
+		         <!--<div class="mui-col-xs-12 pay-method-mar">
+		            	<div class="mui-row">
+		            	    <div class="mui-col-xs-3 pay-method-img"><img src="img/ff/u19.png" alt="玩校" /></div>
+				            <div class="mui-col-xs-3 pay-method-app">粮票</div>
+				            <div class="mui-col-xs-6">
+				            	<div class="mui-input-row pay-method-switch">
+					            	<div class="mui-switch mui-switch-mini" id="mySwitch">
+					            	    <div class="mui-switch-handle"></div>
+					            	</div>
+					            </div>
+				            </div>
+		            	</div>
+		            </div>-->
+		    </div>
+		    <div class="mui-row pay-notice">
+		        <div class="mui-col-xs-12">声明：本次支付为购买当前测试，支付完成后不予退款。</div>
+		    </div>
+		    
+		    
+		    
+		    
+		</div>
+		<div class="mui-row pay">
+		    <div class="back bg-color po-r fl mui-action-back"><img src="img/pay/u86.png" class="po-a"/>返回</div>
+		    <div class="purchase fl"><a id="pay">立即购买</a></div>
+		</div>
+			<!-- loading动画 -->
+		<div id="over" class="over">
+		  <iframe frameborder="0" scrolling="no" src="fireloading.html" width="100%" height="100%"></iframe>
+		</div>
+		<div id="layout" class="layout">
+		  <div class="loading">  
+		  </div>
+		  <p class="loading-text">Loading...</p>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/lib/wanxiao-js-api-V1.1.6-external.js"></script>
+	<script type="text/javascript" src="js/mui/mui.js"></script>
+	<script type="text/javascript" src="js/lib/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="js/lib/resetPage.js"></script>
+	<script type="text/javascript" src="js/config.js"></script>
+	<script type="text/javascript" src="js/xdc/usefulFun.js"></script>
+	<script type="text/javascript" src="js/xdc/Product_package.js"></script>
+	<script type="text/javascript">
+//	WeChatpay()
+//$(window).ready(function(){
+//	//	获取上个页面的内容
+//	var title=sessionStorage.getItem("title");//获取产品包的标题	
+//	var yuan=sessionStorage.getItem("yuan");//获取产品包的价格
+//	var packageId=sessionStorage.getItem("packageId");//获取产品包的id
+////	创建到本页面
+//	$('.pay-price span b').html(yuan+"元");
+//	$('.pay-title-author span').eq(1).html(title);
+////	微信支付
+////			隐藏loading动画
+//	hideLoading();
+//
+////微信支付
+//	document.getElementById('pay').addEventListener('tap',function(){
+//		if($(".pay_method:checked").val()==1){//根据用户选择的支付方式而调用不同的支付接口
+//			mui.ajax(baseUrl+'/NewIns/wanx/wanxPay',{//微信支付
+//				type:'get',
+//				dataType:'json',
+//				timeout:10000,
+//				success:function(data){
+//					console.log(data)
+//					console.log(data.orderInfo)
+//					console.log(typeof data.orderInfo)
+//					
+//					var orderInfo=JSON.parse(data.orderInfo);
+//					console.log(orderInfo)
+//					
+//					console.log(typeof orderInfo)
+//					var pay_data= {};
+//			        pay_data.orderInfo=orderInfo;
+//			        pay_data.targetUrl="";
+//			        //转换为string
+//			        console.log(pay_data)
+//			        var dataStr=JSON.stringify(pay_data);
+////			        	去掉字符串中的\
+////			       	var dataStr1=dataStr.replace(/[\\]/g ,"");
+//			        //拼接 玩校支付收银台scheme
+//			        //schemeURI是一个还是两个
+//			        
+//		        	var schemeURI="wanxiao://17wanxiao.com?page=payway&iosLaunchType=iosLaunchTypeModal&data="+dataStr;
+//		        	console.log(dataStr)
+//		        	console.log(schemeURI)
+//			        //跳转到scheme
+//			        window.location.href= schemeURI;
+//			        
+//		        	
+//
+//				},
+//				error:function(){
+//					mui.toast("网络错误...")
+//				}
+//			})
+//		}else if($(".pay_method:checked").val()==2){//支付宝支付
+//			mui.alert("支付宝支付功能暂时没有上线，现在仅支持微信支付","提示","确定",function(){
+//				$(".pay_method").eq(0).attr("checked","checked")
+//			})
+//		}
+//	})
+//	
+//	})
+pay_page(function(){
+//	隐藏loading动画
+	hideLoading();
+})
+	</script>
+</html>
